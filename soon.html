@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduVision - Coming Soon</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(-45deg, #1e3c72, #2a5298, #4776b3, #7db9e8);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      z-index: 10;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #7db9e8;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 6vw, 2.8rem);
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .tagline {
+      font-size: clamp(1rem, 3.5vw, 1.5rem);
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+      opacity: 0.9;
+    }
+
+    p {
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .highlight {
+      color: #7db9e8;
+      font-weight: 600;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .countdown-item {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 1rem;
+      border-radius: 10px;
+      min-width: 70px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    .countdown-item:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .countdown-number {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .countdown-label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .features {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .feature {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      width: 160px;
+      transition: all 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #7db9e8;
+    }
+
+    .feature-text {
+      font-size: 0.9rem;
+    }
+
+    .subscribe-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 2rem;
+    }
+
+    .email-input, .submit-btn {
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      min-height: 44px;
+      border: none;
+      outline: none;
+    }
+
+    .email-input {
+      padding: 0.8rem 1rem;
+      border-radius: 50px;
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.9);
+      margin-bottom: 1rem;
+    }
+
+    .submit-btn {
+      padding: 0.8rem 1.5rem;
+      background: #1e3c72;
+      color: white;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.3s;
+      width: 100%;
+      max-width: 200px;
+    }
+
+    .submit-btn:hover {
+      background: #2a5298;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .social-icon {
+      color: white;
+      font-size: 1.5rem;
+      transition: transform 0.3s;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-5px) scale(1.2);
+      color: #7db9e8;
+    }
+
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .floating-element {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(-100vh) rotate(360deg); }
+    }
+
+    @media (max-width: 400px) {
+      .feature {
+        width: 100%;
+      }
+
+      .feature-icon {
+        font-size: 1.2rem;
+      }
+
+      .feature-text {
+        text-align: center;
+      }
+
+      .countdown-item {
+        min-width: 60px;
+        padding: 0.5rem;
+      }
+
+      .countdown-number {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+  <div class="floating-elements" id="floatingElements"></div>
+
+  <div class="container">
+    <div class="logo">Gyanloop</div>
+    <h1>Coming soon ....</h1>
+    <div class="tagline">Learn Without Limits</div>
+    <p>We're building an <span class="highlight">interactive learning platform</span> that combines cutting-edge technology with expert-curated content to create the most engaging educational experience.</p>
+
+    <div class="countdown">
+      <div class="countdown-item">
+        <div class="countdown-number" id="days">00</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="hours">00</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="minutes">00</div>
+        <div class="countdown-label">Minutes</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="seconds">00</div>
+        <div class="countdown-label">Seconds</div>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <div class="feature-text">Expert Instructors</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-laptop-code"></i></div>
+        <div class="feature-text">Interactive Lessons</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+        <div class="feature-text">Certifications</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-users"></i></div>
+        <div class="feature-text">Community Learning</div>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <script>
+    const launchDate = new Date(2025, 5, 15, 0, 0, 0).getTime();
+
+    const countdown = setInterval(function () {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
+      document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
+      document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+      document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+
+      if (distance < 0) {
+        clearInterval(countdown);
+        document.querySelector(".countdown").innerHTML = "<h2>We're Live!</h2>";
+      }
+    }, 1000);
+
+    const floatingElements = document.getElementById('floatingElements');
+    const colors = ['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.05)'];
+
+    for (let i = 0; i < 20; i++) {
+      const element = document.createElement('div');
+      element.classList.add('floating-element');
+
+      const size = Math.random() * 50 + 10;
+      element.style.width = `${size}px`;
+      element.style.height = `${size}px`;
+      element.style.left = `${Math.random() * 100}%`;
+      element.style.bottom = `-${size}px`;
+
+      const duration = Math.random() * 25 + 15;
+      element.style.animationDuration = `${duration}s`;
+
+      element.style.animationDelay = `${Math.random() * 10}s`;
+      element.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+      floatingElements.appendChild(element);
+    }
+
+    document.querySelector('.submit-btn').addEventListener('click', function () {
+      const emailInput = document.querySelector('.email-input');
+      if (emailInput.value && emailInput.value.includes('@')) {
+        alert("Thank you for your interest! We'll notify you when we launch our educational platform.");
+        emailInput.value = '';
+      } else {
+        alert("Please enter a valid email address.");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -71,20 +71,18 @@
             transition: all 0.3s ease;
         }
         
-        /* Banner styles */
+        /* Banner styles - maintaining original ratio */
         .main-banner {
             width: 100%;
             display: block;
             margin-bottom: 30px;
             overflow: hidden;
             position: relative;
-            height: 300px;
         }
         
         .main-banner img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
             display: block;
             filter: brightness(0.8) contrast(1.1);
             transition: transform 5s ease;
@@ -263,7 +261,7 @@
         <div class="brand-name">Gyanloop</div>
     </nav>
     
-    <!-- Main Banner -->
+    <!-- Main Banner - Now maintains original aspect ratio -->
     <div class="main-banner">
         <img src="https://i.ibb.co/5gtWcM7C/image.png" alt="Educational Banner">
     </div>

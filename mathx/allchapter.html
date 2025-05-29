@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Learning Hub</title>
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #f5f7ff;
+            --dark: #2a2d3b;
+            --light: #f0f2f5;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .chapters-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .chapter-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(74, 107, 255, 0.2);
+        }
+        
+        .chapter-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: var(--primary);
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+        
+        .chapter-card:hover .chapter-icon {
+            background-color: var(--primary);
+            color: white;
+            transform: rotate(5deg) scale(1.1);
+        }
+        
+        .chapter-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+            color: var(--dark);
+        }
+        
+        .subtopics-container {
+            display: none;
+            margin-top: 15px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .subtopic-btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background-color: var(--light);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        
+        .subtopic-btn:hover {
+            background-color: var(--secondary);
+            transform: translateX(5px);
+        }
+        
+        .subtopic-btn i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .subtopic-name {
+            font-size: 14px;
+        }
+        
+        .active-chapter .subtopics-container {
+            display: block;
+        }
+        
+        .active-chapter {
+            border: 2px solid var(--primary);
+        }
+        
+        .back-btn {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background-color: #3a5bef;
+        }
+        
+        @media (max-width: 768px) {
+            .chapters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Math Learning Hub</h1>
+        <p>Explore math chapters and their sub-topics</p>
+    </div>
+    
+    <div class="chapters-container">
+        <button class="back-btn" onclick="showAllChapters()">
+            <i class="fas fa-arrow-left"></i> Back to All Chapters
+        </button>
+        
+        <div class="chapters-grid" id="chaptersGrid">
+            <!-- Algebra -->
+            <div class="chapter-card" onclick="showSubtopics(this, 'algebra')">
+                <div class="chapter-icon">
+                    <i class="fas fa-square-root-alt"></i>
+                </div>
+                <div class="chapter-title">Algebra</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('algebra-basics')">
+                        <i class="fas fa-calculator"></i>
+                        <span class="subtopic-name">Algebra Basics</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('linear-equations')">
+                        <i class="fas fa-equals"></i>
+                        <span class="subtopic-name">Linear Equations</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('quadratic-equations')">
+                        <i class="fas fa-superscript"></i>
+                        <span class="subtopic-name">Quadratic Equations</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('polynomials')">
+                        <i class="fas fa-function"></i>
+                        <span class="subtopic-name">Polynomials</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Geometry -->
+            <div class="chapter-card" onclick="showSubtopics(this, 'geometry')">
+                <div class="chapter-icon">
+                    <i class="fas fa-shapes"></i>
+                </div>
+                <div class="chapter-title">Geometry</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('euclidean-geometry')">
+                        <i class="fas fa-draw-polygon"></i>
+                        <span class="subtopic-name">Euclidean Geometry</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('triangles')">
+                        <i class="fas fa-triangle"></i>
+                        <span class="subtopic-name">Triangles</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('circles')">
+                        <i class="fas fa-circle"></i>
+                        <span class="subtopic-name">Circles</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('coordinate-geometry')">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span class="subtopic-name">Coordinate Geometry</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Trigonometry -->
+            <div class="chapter-card" onclick="showSubtopics(this, 'trigonometry')">
+                <div class="chapter-icon">
+                    <i class="fas fa-wave-square"></i>
+                </div>
+                <div class="chapter-title">Trigonometry</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('trigonometric-functions')">
+                        <i class="fas fa-sine-wave"></i>
+                        <span class="subtopic-name">Trigonometric Functions</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('identities')">
+                        <i class="fas fa-project-diagram"></i>
+                        <span class="subtopic-name">Identities</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('triangle-solutions')">
+                        <i class="fas fa-ruler-combined"></i>
+                        <span class="subtopic-name">Triangle Solutions</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('graphs')">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="subtopic-name">Graphs</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Calculus -->
+            <div class="chapter-card" onclick="showSubtopics(this, 'calculus')">
+                <div class="chapter-icon">
+                    <i class="fas fa-infinity"></i>
+                </div>
+                <div class="chapter-title">Calculus</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('limits')">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span class="subtopic-name">Limits</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('derivatives')">
+                        <i class="fas fa-slope"></i>
+                        <span class="subtopic-name">Derivatives</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('integrals')">
+                        <i class="fas fa-integral"></i>
+                        <span class="subtopic-name">Integrals</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('applications')">
+                        <i class="fas fa-calculator"></i>
+                        <span class="subtopic-name">Applications</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="chapter-card" onclick="showSubtopics(this, 'statistics')">
+                <div class="chapter-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="chapter-title">Statistics</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('descriptive-stats')">
+                        <i class="fas fa-chart-pie"></i>
+                        <span class="subtopic-name">Descriptive Statistics</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('probability')">
+                        <i class="fas fa-dice"></i>
+                        <span class="subtopic-name">Probability</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('distributions')">
+                        <i class="fas fa-bell"></i>
+                        <span class="subtopic-name">Distributions</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('hypothesis-testing')">
+                        <i class="fas fa-check-double"></i>
+                        <span class="subtopic-name">Hypothesis Testing</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Arithmetic -->
+            <div class="chapter-card" onclick="showSubtopics(this, 'arithmetic')">
+                <div class="chapter-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="chapter-title">Arithmetic</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('number-system')">
+                        <i class="fas fa-sort-numeric-up"></i>
+                        <span class="subtopic-name">Number System</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('fractions')">
+                        <i class="fas fa-divide"></i>
+                        <span class="subtopic-name">Fractions</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('decimals')">
+                        <i class="fas fa-decimal-point"></i>
+                        <span class="subtopic-name">Decimals</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('percentages')">
+                        <i class="fas fa-percent"></i>
+                        <span class="subtopic-name">Percentages</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show subtopics for a chapter
+        function showSubtopics(card, chapter) {
+            // Hide all chapter cards
+            const allCards = document.querySelectorAll('.chapter-card');
+            allCards.forEach(c => {
+                c.classList.remove('active-chapter');
+                c.style.display = 'none';
+            });
+            
+            // Show only the selected chapter card
+            card.classList.add('active-chapter');
+            card.style.display = 'block';
+            
+            // Show the back button
+            document.querySelector('.back-btn').style.display = 'inline-block';
+            
+            // Update header
+            document.querySelector('.header h1').textContent = chapter.charAt(0).toUpperCase() + chapter.slice(1);
+            document.querySelector('.header p').textContent = 'Explore sub-topics';
+        }
+        
+        // Show all chapters again
+        function showAllChapters() {
+            const allCards = document.querySelectorAll('.chapter-card');
+            allCards.forEach(c => {
+                c.classList.remove('active-chapter');
+                c.style.display = 'block';
+            });
+            
+            // Hide the back button
+            document.querySelector('.back-btn').style.display = 'none';
+            
+            // Reset header
+            document.querySelector('.header h1').textContent = 'Math Learning Hub';
+            document.querySelector('.header p').textContent = 'Explore math chapters and their sub-topics';
+        }
+        
+        // Redirect to topic page (simulated)
+        function redirectToTopic(topic) {
+            // In a real app, this would redirect to the topic page
+            // For this demo, we'll just show an alert
+            alert(`Redirecting to ${topic.replace('-', ' ')} page...`);
+            
+            // Simulate redirect (remove in production)
+            // window.location.href = `/topics/${topic}`;
+        }
+        
+        // Prevent event bubbling so subtopic buttons work properly
+        document.querySelectorAll('.subtopic-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>

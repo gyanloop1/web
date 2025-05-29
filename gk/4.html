@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কুইজ ওয়েবসাইট</title>
+    <!-- Add Tiro Bangla font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tiro Bangla', Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .logo {
+            margin-top: 20px;
+            animation: bounce 2s infinite;
+        }
+        .logo img {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s;
+        }
+        .logo img:hover {
+            transform: rotate(360deg);
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            transform: scale(0.95);
+            transition: transform 0.5s, box-shadow 0.5s;
+        }
+        .quiz-container:hover {
+            transform: scale(1);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #8A2BE2;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: slideIn 0.5s forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .option:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        .option.selected {
+            background-color: #8A2BE2;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+        .option.wrong {
+            background-color: #ff4444;
+            color: white;
+            animation: shake 0.5s;
+        }
+        .next-btn, .prev-btn, .start-btn {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #8A2BE2;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-family: 'Tiro Bangla', Arial, sans-serif;
+        }
+        .next-btn:hover, .prev-btn:hover, .start-btn:hover {
+            background-color: #7B1FA2;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .next-btn:active, .prev-btn:active, .start-btn:active {
+            transform: translateY(1px);
+        }
+        .result {
+            font-size: 1.5em;
+            color: #8A2BE2;
+            margin-top: 20px;
+            animation: fadeIn 1s;
+        }
+        .timer {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #333;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border: 2px solid #8A2BE2;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #8A2BE2;
+            border-radius: 5px;
+            width: 0;
+            transition: width 0.5s ease, background-color 0.5s;
+        }
+        .review {
+            margin-top: 20px;
+            text-align: left;
+            animation: fadeIn 1s;
+        }
+        .review-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            animation: slideIn 0.5s forwards;
+        }
+        .correct-answer {
+            color: green;
+            font-weight: bold;
+        }
+        .user-answer {
+            color: #8A2BE2;
+            font-weight: bold;
+        }
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #8A2BE2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin: 20px auto;
+            animation: grow 0.5s, bounce 1s;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+        .wrong-questions {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: fadeIn 1s;
+        }
+        .remark {
+            font-size: 1.2em;
+            color: #333;
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border: 2px solid #8A2BE2;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s;
+        }
+        .instructions {
+            text-align: left;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 10px;
+            border-left: 5px solid #8A2BE2;
+            animation: fadeIn 1s;
+        }
+        .instructions h2 {
+            color: #8A2BE2;
+            margin-top: 0;
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        @keyframes grow {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        /* Delay animations for options */
+        .option:nth-child(1) { animation-delay: 0.1s; }
+        .option:nth-child(2) { animation-delay: 0.2s; }
+        .option:nth-child(3) { animation-delay: 0.3s; }
+        .option:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- Logo Section -->
+    <div class="logo">
+        <a href="https://imgbb.com/">
+            <img src="https://i.ibb.co/0VCHsqH4/kk.png" alt="Genius-Nest" border="0">
+        </a>
+    </div>
+
+    <!-- Quiz Container -->
+    <div class="quiz-container" id="main-container">
+        <!-- Instruction Page -->
+        <div id="instruction-page">
+            <h1>GK-1</h1>
+            <div class="instructions">
+                <h2>কুইজ নির্দেশনা</h2>
+                <ol>
+                    <li>এই কুইজে মোট 15 টি প্রশ্ন রয়েছে</li>
+                    <li>প্রতিটি প্রশ্নের জন্য একটি করে সঠিক উত্তর নির্বাচন করুন</li>
+                    <li>প্রতিটি প্রশ্নের জন্য নির্দিষ্ট সময় বরাদ্দ আছে</li>
+                    <li>পরবর্তী প্রশ্নে যেতে "পরবর্তী প্রশ্ন" বাটনে ক্লিক করুন</li>
+                    <li>কুইজ শেষ হলে আপনার স্কোর দেখানো হবে</li>
+                    <li>ভুল উত্তরের জন্য কোন নেগেটিভ মার্কিং নেই</li>
+                </ol>
+                <p>শুভকামনা!</p>
+            </div>
+            <button class="start-btn" onclick="startQuiz()">কুইজ শুরু করুন</button>
+        </div>
+
+        <!-- Quiz Page (initially hidden) -->
+        <div id="quiz-page" style="display: none;">
+            <h1>GK-1</h1>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+            <div id="timer" class="timer">সময় বাকি: 10:00</div>
+            <div id="wrong-questions" class="wrong-questions"></div>
+            <div id="quiz">
+                <!-- Questions will be dynamically inserted here -->
+            </div>
+            <button id="prev-btn" class="prev-btn" onclick="prevQuestion()">পূর্ববর্তী প্রশ্ন</button>
+            <button id="next-btn" class="next-btn" onclick="nextQuestion()">পরবর্তী প্রশ্ন</button>
+            <div id="result" class="result"></div>
+            <div id="score-circle" class="score-circle" style="display: none;">0/10</div>
+            <div id="remark" class="remark"></div>
+            <div id="review" class="review"></div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz data
+        const quizData =[
+  {
+    "question": "০১. ভারতের ম্যানচেস্টার কাকে বলা হয় ?",
+    "options": [
+      "দেরাদুনকে",
+      "আমেদাবাদকে",
+      "কোচিনকে",
+      "সুরাটকে"
+    ],
+    "answer": "আমেদাবাদকে"
+  },
+  {
+    "question": "০২. কোলকাতা বন্দরের সহযোগী বন্দর কোনটি ?",
+    "options": [
+      "হলদিয়া",
+      "চেন্নাই",
+      "কোলাঘাট",
+      "কোচিন"
+    ],
+    "answer": "হলদিয়া"
+  },
+  {
+    "question": "০৩. নিম্নের কোনটি পৃথিবীর নিরব শহর নামে পরিচিত ?",
+    "options": [
+      "প্যারিস",
+      "ওয়াশিংটন",
+      "লন্ডন",
+      "রোম"
+    ],
+    "answer": "রোম"
+  },
+  {
+    "question": "০৪. সূর্যসিদ্ধান্ত গ্ৰন্থটি কে রচনা করেন ?",
+    "options": [
+      "হর্ষবর্ধন",
+      "বানভট্ট",
+      "আর্যভট্ট",
+      "মহেন্দ্র বর্মণ"
+    ],
+    "answer": "আর্যভট্ট"
+  },
+  {
+    "question": "০৫. কে হরিয়ানার হ্যারিকেন নামে পরিচিত ?",
+    "options": [
+      "কপিল দেব",
+      "রাহুল দ্রাবিড়",
+      "কে এল রাহুল",
+      "ভিভিএস লক্ষণ"
+    ],
+    "answer": "কপিল দেব"
+  },
+  {
+    "question": "০৬. কোন দেশের মহিলারা প্রথম ভোটাধিকারের সুযোগ পায় ?",
+    "options": [
+      "অষ্ট্রেলিয়ার মহিলা",
+      "ফ্রান্সের মহিলা",
+      "ভারতের মহিলা",
+      "নিউজিল্যান্ডের মহিলারা"
+    ],
+    "answer": "নিউজিল্যান্ডের মহিলারা"
+  },
+  {
+    "question": "০৭. আব্রাহাম লিংকন কোন দেশের প্রেসিডেন্ট ছিলেন ?",
+    "options": [
+      "মার্কিন যুক্তরাষ্ট্রের",
+      "জাপানের",
+      "ব্রাজিলের",
+      "আর্জেন্টিনার"
+    ],
+    "answer": "মার্কিন যুক্তরাষ্ট্রের"
+  },
+  {
+    "question": "০৮. আমেরিকা যুক্তরাষ্ট্র জাপানে পরমাণু বোমা হামলা চালায় -",
+    "options": [
+      "১৯৩৯ সালে",
+      "১৯৪২ সালে",
+      "১৯৪৫ সালে",
+      "১৯৪৬ সালে"
+    ],
+    "answer": "১৯৪৫ সালে"
+  },
+  {
+    "question": "০৯. প্রাচীন অলিম্পিক গেমস প্রথম শুরু হয় -",
+    "options": [
+      "৭৭৬ খ্রিষ্টাব্দে",
+      "৭৭৬ খ্রিষ্টপূর্বে",
+      "৯০০ খ্রিষ্টাব্দে",
+      "৯০০ খ্রিষ্টপূর্বে"
+    ],
+    "answer": "৭৭৬ খ্রিষ্টপূর্বে"
+  },
+  {
+    "question": "১০. আয়তনে পৃথিবীর সবচেয়ে বড়ো হ্রদ কোনটি ?",
+    "options": [
+      "বৈকাল",
+      "কাস্পিয়ান সাগর",
+      "সম্বর",
+      "ভেম্বনাদ"
+    ],
+    "answer": "কাস্পিয়ান সাগর"
+  },
+  {
+    "question": "১১. দৈর্ঘ‍্যে পৃথিবীর বৃহত্তম পর্বতমালা কোনটি ?",
+    "options": [
+      "আন্দিজ",
+      "হিমালয়",
+      "আলপ্স",
+      "ভঙ্গিল"
+    ],
+    "answer": "আন্দিজ"
+  },
+  {
+    "question": "১২. জৈনদের ২৩তম তীর্থংকর কে ?",
+    "options": [
+      "মহাবীর",
+      "পার্শ্বনাথ",
+      "ঋষভনাথ",
+      "মহেন্দ্রনাথ"
+    ],
+    "answer": "পার্শ্বনাথ"
+  },
+  {
+    "question": "১৩. গ্ৰিসের রাজধানীর নাম কি ?",
+    "options": [
+      "ব্যাঙ্কক",
+      "বেজিং",
+      "ওসলো",
+      "এথেন্স"
+    ],
+    "answer": "এথেন্স"
+  },
+  {
+    "question": "১৪. বলাইচাঁদ মুখোপাধ্যায়ের ছদ্মনাম কি ?",
+    "options": [
+      "বনফুল",
+      "মৌমাছি",
+      "বীরবল",
+      "সত্যপীর"
+    ],
+    "answer": "বনফুল"
+  },
+  {
+    "question": "১৫. আরব সাগরের রানী বলা হয় কাকে ?",
+    "options": [
+      "ভূপালকে",
+      "সুরাটকে",
+      "কোচিনকে",
+      "কচ্ছকে"
+    ],
+    "answer": "কোচিনকে"
+  }
+]
+;
+
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+        let timeLeft = 600; // 10 minutes in seconds
+        let timerInterval;
+        let userAnswers = []; // Store user's answers
+        let quizStarted = false;
+
+        // Start the quiz
+        function startQuiz() {
+            quizStarted = true;
+            document.getElementById("instruction-page").style.display = "none";
+            document.getElementById("quiz-page").style.display = "block";
+            loadQuiz();
+            startTimer();
+            
+            // Add animation to container
+            const container = document.getElementById("main-container");
+            container.style.animation = "none";
+            void container.offsetWidth; // Trigger reflow
+            container.style.animation = "fadeIn 1s";
+        }
+
+        // Load the quiz
+        function loadQuiz() {
+            const quizElement = document.getElementById("quiz");
+            const questionData = quizData[currentQuestion];
+
+            quizElement.innerHTML = `
+                <div class="question">${questionData.question}</div>
+                <div class="options">
+                    ${questionData.options.map(option => `
+                        <div class="option" onclick="selectOption(this, '${option}')">${option}</div>
+                    `).join("")}
+                </div>
+            `;
+
+            // Highlight user's previous answer if available
+            if (userAnswers[currentQuestion]) {
+                const options = document.querySelectorAll(".option");
+                options.forEach(opt => {
+                    if (opt.innerText === userAnswers[currentQuestion]) {
+                        opt.classList.add("selected");
+                    }
+                });
+            }
+
+            // Update progress bar
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            document.getElementById("progress-bar-fill").style.width = `${progress}%`;
+            
+            // Change progress bar color based on progress
+            if (progress > 70) {
+                document.getElementById("progress-bar-fill").style.backgroundColor = "#4CAF50";
+            } else if (progress > 40) {
+                document.getElementById("progress-bar-fill").style.backgroundColor = "#FFC107";
+            } else {
+                document.getElementById("progress-bar-fill").style.backgroundColor = "#8A2BE2";
+            }
+
+            // Enable/disable Previous button
+            document.getElementById("prev-btn").disabled = currentQuestion === 0;
+            
+            // Change next button text on last question
+            if (currentQuestion === quizData.length - 1) {
+                document.getElementById("next-btn").innerText = "কুইজ শেষ করুন";
+            } else {
+                document.getElementById("next-btn").innerText = "পরবর্তী প্রশ্ন";
+            }
+        }
+
+        // Select an option
+        function selectOption(element, option) {
+            const options = document.querySelectorAll(".option");
+            options.forEach(opt => opt.classList.remove("selected", "wrong")); // Remove previous selection
+            
+            // Add animation to selected option
+            element.classList.add("selected"); // Add purple background to selected option
+            element.style.transform = "scale(1.05)";
+            setTimeout(() => {
+                element.style.transform = "scale(1)";
+            }, 300);
+            
+            selectedOption = option;
+        }
+
+        // Move to the next question
+        function nextQuestion() {
+            if (!selectedOption && !userAnswers[currentQuestion]) {
+                alert("দয়া করে একটি উত্তর নির্বাচন করুন");
+                return;
+            }
+            
+            userAnswers[currentQuestion] = selectedOption || userAnswers[currentQuestion] || "উত্তর দেওয়া হয়নি"; // Store user's answer
+            if (selectedOption === quizData[currentQuestion].answer) {
+                score++;
+            }
+            
+            currentQuestion++;
+            if (currentQuestion < quizData.length) {
+                // Add transition effect
+                const quizElement = document.getElementById("quiz");
+                quizElement.style.animation = "fadeOut 0.3s";
+                setTimeout(() => {
+                    quizElement.style.animation = "fadeIn 0.3s";
+                    loadQuiz();
+                }, 300);
+            } else {
+                endQuiz();
+            }
+            selectedOption = null; // Reset selected option
+        }
+
+        // Move to the previous question
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                // Add transition effect
+                const quizElement = document.getElementById("quiz");
+                quizElement.style.animation = "fadeOut 0.3s";
+                setTimeout(() => {
+                    quizElement.style.animation = "fadeIn 0.3s";
+                    loadQuiz();
+                }, 300);
+            }
+        }
+
+        // End the quiz and show results
+        function endQuiz() {
+            clearInterval(timerInterval);
+            const quizElement = document.getElementById("quiz");
+            const nextBtn = document.getElementById("next-btn");
+            const prevBtn = document.getElementById("prev-btn");
+            quizElement.innerHTML = "";
+            nextBtn.style.display = "none";
+            prevBtn.style.display = "none";
+
+            // Display score in a circle
+            const scoreCircle = document.getElementById("score-circle");
+            scoreCircle.style.display = "flex";
+            scoreCircle.innerText = `${score}/${quizData.length}`;
+
+            // Show wrong question numbers at the top
+            const wrongQuestions = [];
+            quizData.forEach((question, index) => {
+                if (userAnswers[index] !== question.answer) {
+                    wrongQuestions.push(index + 1);
+                }
+            });
+            
+            if (wrongQuestions.length > 0) {
+                document.getElementById("wrong-questions").innerText = `ভুল প্রশ্ন নম্বর: ${wrongQuestions.join(", ")}`;
+            } else {
+                document.getElementById("wrong-questions").innerText = "অভিনন্দন! আপনি কোন প্রশ্নে ভুল করেননি!";
+            }
+
+            // Display remark based on score
+            const remarkElement = document.getElementById("remark");
+            if (score === quizData.length) {
+                remarkElement.innerText = "অসাধারণ! আপনি সব প্রশ্নের সঠিক উত্তর দিয়েছেন।";
+            } else if (score >= quizData.length * 0.7) {
+                remarkElement.innerText = "ভালো হয়েছে! আরও কিছুটা চেষ্টা করুন।";
+            } else if (score >= quizData.length * 0.5) {
+                remarkElement.innerText = "ভালো চেষ্টা! ভুলগুলি থেকে শিখুন।";
+            } else {
+                remarkElement.innerText = "ভুলগুলি থেকে শিখুন এবং আরও চেষ্টা করুন।";
+            }
+
+            // Show all questions, user's answers, and correct answers
+            const reviewElement = document.getElementById("review");
+            reviewElement.innerHTML = "<h2>প্রশ্ন ও উত্তরসমূহ:</h2>";
+            quizData.forEach((question, index) => {
+                const userAnswer = userAnswers[index] || "উত্তর দেওয়া হয়নি";
+                const isCorrect = userAnswer === question.answer;
+
+                reviewElement.innerHTML += `
+                    <div class="review-item">
+                        <p>${question.question}</p>
+                        <p class="user-answer ${!isCorrect ? 'wrong' : ''}">আপনার উত্তর: ${userAnswer}</p>
+                        ${!isCorrect ? `<p class="correct-answer">সঠিক উত্তর: ${question.answer}</p>` : ''}
+                    </div>
+                `;
+            });
+            
+            // Scroll to results
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Timer function
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `সময় বাকি: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+                // Change color when time is running out
+                if (timeLeft <= 60) {
+                    document.getElementById("timer").style.backgroundColor = "#FFEBEE";
+                    document.getElementById("timer").style.borderColor = "#FF5252";
+                    document.getElementById("timer").style.color = "#D32F2F";
+                    document.getElementById("timer").style.animation = "pulse 1s infinite";
+                }
+
+                if (timeLeft <= 0) {
+                    endQuiz();
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
+

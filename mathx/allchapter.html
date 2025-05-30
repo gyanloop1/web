@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Learning Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #4a6bff;
@@ -19,7 +23,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Apply Alkatra for general text, with fallbacks */
+            font-family: 'Alkatra', cursive, sans-serif; 
         }
         
         body {
@@ -36,6 +41,8 @@
         .header h1 {
             color: var(--primary);
             margin-bottom: 10px;
+            /* Apply Tiro Bangla to the main heading, with fallbacks */
+            font-family: 'Tiro Bangla', serif;
         }
         
         .chapters-container {
@@ -89,6 +96,8 @@
             margin-bottom: 10px;
             text-align: center;
             color: var(--dark);
+            /* Apply Tiro Bangla to chapter titles, with fallbacks */
+            font-family: 'Tiro Bangla', serif;
         }
         
         .subtopics-container {
@@ -128,6 +137,8 @@
         
         .subtopic-name {
             font-size: 14px;
+            /* Apply Alkatra to subtopic names, with fallbacks */
+            font-family: 'Alkatra', cursive, sans-serif;
         }
         
         .active-chapter .subtopics-container {
@@ -164,7 +175,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Math Learning Hub</h1>
+        <h1>Gyanloop-Math</h1>
         <p>Explore math chapters and their sub-topics</p>
     </div>
     
@@ -174,158 +185,427 @@
         </button>
         
         <div class="chapters-grid" id="chaptersGrid">
-            <!-- Algebra -->
-            <div class="chapter-card" onclick="showSubtopics(this, 'algebra')">
+            <div class="chapter-card" onclick="showSubtopics(this, 'ekchalbishishto-dighat-somikoron')">
                 <div class="chapter-icon">
-                    <i class="fas fa-square-root-alt"></i>
+                    <i class="fas fa-book"></i>
                 </div>
-                <div class="chapter-title">Algebra</div>
+                <div class="chapter-title">একচলবিশিষ্ট দ্বিঘাত সমীকরণ</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('algebra-basics')">
-                        <i class="fas fa-calculator"></i>
-                        <span class="subtopic-name">Algebra Basics</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('https://youtu.be/mOEL8Q-2bSo?si=Y1wQKxZrKtQQQznr')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 1.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('linear-equations')">
-                        <i class="fas fa-equals"></i>
-                        <span class="subtopic-name">Linear Equations</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('ekchalbishishto-dighat-somikoron-koshe-dekhi-1-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 1.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('quadratic-equations')">
-                        <i class="fas fa-superscript"></i>
-                        <span class="subtopic-name">Quadratic Equations</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('ekchalbishishto-dighat-somikoron-koshe-dekhi-1-3')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 1.3</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('polynomials')">
-                        <i class="fas fa-function"></i>
-                        <span class="subtopic-name">Polynomials</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('ekchalbishishto-dighat-somikoron-koshe-dekhi-1-4')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 1.4</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('ekchalbishishto-dighat-somikoron-koshe-dekhi-1-5')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 1.5</span>
                     </button>
                 </div>
             </div>
-            
-            <!-- Geometry -->
-            <div class="chapter-card" onclick="showSubtopics(this, 'geometry')">
+            <div class="chapter-card" onclick="showSubtopics(this, 'sorol-sudkosha')">
                 <div class="chapter-icon">
-                    <i class="fas fa-shapes"></i>
+                    <i class="fas fa-book"></i>
                 </div>
-                <div class="chapter-title">Geometry</div>
+                <div class="chapter-title">সরল সুদকষা</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('euclidean-geometry')">
-                        <i class="fas fa-draw-polygon"></i>
-                        <span class="subtopic-name">Euclidean Geometry</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('triangles')">
-                        <i class="fas fa-triangle"></i>
-                        <span class="subtopic-name">Triangles</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('circles')">
-                        <i class="fas fa-circle"></i>
-                        <span class="subtopic-name">Circles</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('coordinate-geometry')">
-                        <i class="fas fa-map-marked-alt"></i>
-                        <span class="subtopic-name">Coordinate Geometry</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('sorol-sudkosha-koshe-dekhi-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 2</span>
                     </button>
                 </div>
             </div>
-            
-            <!-- Trigonometry -->
-            <div class="chapter-card" onclick="showSubtopics(this, 'trigonometry')">
+            <div class="chapter-card" onclick="showSubtopics(this, 'britto-somporkito-upopaddo')">
                 <div class="chapter-icon">
-                    <i class="fas fa-wave-square"></i>
+                    <i class="fas fa-book"></i>
                 </div>
-                <div class="chapter-title">Trigonometry</div>
+                <div class="chapter-title">বৃত্ত সম্পর্কিত উপপাদ্য</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('trigonometric-functions')">
-                        <i class="fas fa-sine-wave"></i>
-                        <span class="subtopic-name">Trigonometric Functions</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('britto-somporkito-upopaddo-koshe-dekhi-3-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 3.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('identities')">
-                        <i class="fas fa-project-diagram"></i>
-                        <span class="subtopic-name">Identities</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('triangle-solutions')">
-                        <i class="fas fa-ruler-combined"></i>
-                        <span class="subtopic-name">Triangle Solutions</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('graphs')">
-                        <i class="fas fa-chart-line"></i>
-                        <span class="subtopic-name">Graphs</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('britto-somporkito-upopaddo-koshe-dekhi-3-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 3.2</span>
                     </button>
                 </div>
             </div>
-            
-            <!-- Calculus -->
-            <div class="chapter-card" onclick="showSubtopics(this, 'calculus')">
+            <div class="chapter-card" onclick="showSubtopics(this, 'ayatoghon')">
                 <div class="chapter-icon">
-                    <i class="fas fa-infinity"></i>
+                    <i class="fas fa-book"></i>
                 </div>
-                <div class="chapter-title">Calculus</div>
+                <div class="chapter-title">আয়তঘন</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('limits')">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span class="subtopic-name">Limits</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('derivatives')">
-                        <i class="fas fa-slope"></i>
-                        <span class="subtopic-name">Derivatives</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('integrals')">
-                        <i class="fas fa-integral"></i>
-                        <span class="subtopic-name">Integrals</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('applications')">
-                        <i class="fas fa-calculator"></i>
-                        <span class="subtopic-name">Applications</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('ayatoghon-koshe-dekhi-4')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 4</span>
                     </button>
                 </div>
             </div>
-            
-            <!-- Statistics -->
-            <div class="chapter-card" onclick="showSubtopics(this, 'statistics')">
+            <div class="chapter-card" onclick="showSubtopics(this, 'onupat-o-somanupat')">
                 <div class="chapter-icon">
-                    <i class="fas fa-chart-bar"></i>
+                    <i class="fas fa-book"></i>
                 </div>
-                <div class="chapter-title">Statistics</div>
+                <div class="chapter-title">অনুপাত ও সমানুপাত</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('descriptive-stats')">
-                        <i class="fas fa-chart-pie"></i>
-                        <span class="subtopic-name">Descriptive Statistics</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('onupat-o-somanupat-koshe-dekhi-5-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 5.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('probability')">
-                        <i class="fas fa-dice"></i>
-                        <span class="subtopic-name">Probability</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('onupat-o-somanupat-koshe-dekhi-5-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 5.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('distributions')">
-                        <i class="fas fa-bell"></i>
-                        <span class="subtopic-name">Distributions</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('hypothesis-testing')">
-                        <i class="fas fa-check-double"></i>
-                        <span class="subtopic-name">Hypothesis Testing</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('onupat-o-somanupat-koshe-dekhi-5-3')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 5.3</span>
                     </button>
                 </div>
             </div>
-            
-            <!-- Arithmetic -->
-            <div class="chapter-card" onclick="showSubtopics(this, 'arithmetic')">
+            <div class="chapter-card" onclick="showSubtopics(this, 'chokrobri-sud-o-somohar-briddhi-ba-hras')">
                 <div class="chapter-icon">
-                    <i class="fas fa-calculator"></i>
+                    <i class="fas fa-book"></i>
                 </div>
-                <div class="chapter-title">Arithmetic</div>
+                <div class="chapter-title">চক্রবৃদ্ধি সুদ ও সমহার বৃদ্ধি বা হ্রাস</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('number-system')">
-                        <i class="fas fa-sort-numeric-up"></i>
-                        <span class="subtopic-name">Number System</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('chokrobri-sud-o-somohar-briddhi-ba-hras-koshe-dekhi-6-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 6.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('fractions')">
-                        <i class="fas fa-divide"></i>
-                        <span class="subtopic-name">Fractions</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('chokrobri-sud-o-somohar-briddhi-ba-hras-koshe-dekhi-6-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 6.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('decimals')">
-                        <i class="fas fa-decimal-point"></i>
-                        <span class="subtopic-name">Decimals</span>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'brittostho-kon-somporkito-upopaddo')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বৃত্তস্থ কোন সম্পর্কিত উপপাদ্য</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-koshe-dekhi-7-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 7.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('percentages')">
-                        <i class="fas fa-percent"></i>
-                        <span class="subtopic-name">Percentages</span>
+                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-koshe-dekhi-7-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 7.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-koshe-dekhi-7-3')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 7.3</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-nije-kori-7-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 7.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-nije-kori-7-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 7.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-nije-kori-7-3')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 7.3</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'lombo-brittakar-chong')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">লম্ব বৃত্তাকার চোঙ</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('lombo-brittakar-chong-koshe-dekhi-8')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 8</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'dighat-koroni')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">দ্বিঘাত করণী</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('dighat-koroni-koshe-dekhi-9-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 9.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('dighat-koroni-koshe-dekhi-9-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 9.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('dighat-koroni-koshe-dekhi-9-3')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 9.3</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'brittostho-choturbhuj-songkranto-upopaddo')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বৃত্তস্থ চতুর্ভুজ সংক্রান্ত উপপাদ্য</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-choturbhuj-songkranto-upopaddo-koshe-dekhi-10')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 10</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'tribhujer-poribritta-o-ontorbrita-onkon')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">ত্রিভুজের পরিবৃত্ত ও অন্তর্বৃত্ত অঙ্কন</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('tribhujer-poribritta-o-ontorbrita-onkon-koshe-dekhi-11-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 11.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('tribhujer-poribritta-o-ontorbrita-onkon-koshe-dekhi-11-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 11.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('tribhujer-poribritta-o-ontorbrita-onkon-nije-kori-11')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 11</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'golok')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">গোলক</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('golok-koshe-dekhi-12')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 12</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'bhed')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">ভেদ</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('bhed-koshe-dekhi-13')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 13</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'ongshodari-karbar')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">অংশীদারি কারবার</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('ongshodari-karbar-koshe-dekhi-14')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 14</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'britter-sporshok-songkranto-upopaddo')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বৃত্তের স্পর্শক সংক্রান্ত উপপাদ্য</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-songkranto-upopaddo-koshe-dekhi-15-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 15.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-songkranto-upopaddo-koshe-dekhi-15-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 15.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-songkranto-upopaddo-nije-kori-15-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 15.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-songkranto-upopaddo-nije-kori-15-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 15.2</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'lombo-brittakar-shonku')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">লম্ব বৃত্তাকার শঙ্কু</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('lombo-brittakar-shonku-koshe-dekhi-16')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 16</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'britter-sporshok-onkon')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বৃত্তের স্পর্শক অঙ্কন</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-onkon-koshe-dekhi-17')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 17</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'sodrishota')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">সদৃশতা</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('sodrishota-koshe-dekhi-18-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 18.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('sodrishota-koshe-dekhi-18-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 18.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('sodrishota-koshe-dekhi-18-3')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 18.3</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('sodrishota-koshe-dekhi-18-4')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 18.4</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'bibhinno-ghonobostu-songkranto-bastob-somossa')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বিভিন্ন ঘনবস্তু সংক্রান্ত বাস্তব সমস্যা</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('bibhinno-ghonobostu-songkranto-bastob-somossa-koshe-dekhi-19')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 19</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'kon-porimaper-dharona')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">কোন পরিমাপের ধারণা</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('kon-porimaper-dharona-koshe-dekhi-20')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 20</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'moddhasomanupati-nirnoy')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">মধ্যাসমানুপাতী নির্ণয়</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('moddhasomanupati-nirnoy-koshe-dekhi-21')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 21</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'pithagorasher-upopaddo')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">পিথাগোরাসের উপপাদ্য</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('pithagorasher-upopaddo-koshe-dekhi-22')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 22</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'trikonometik-onupat-ebong-trikonometik-obhedaboli')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">ত্রিকোণমিতিক অনুপাত এবং ত্রিকোণমিতিক অভেদাবলি</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('trikonometik-onupat-ebong-trikonometik-obhedaboli-koshe-dekhi-23-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 23.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('trikonometik-onupat-ebong-trikonometik-obhedaboli-koshe-dekhi-23-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 23.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('trikonometik-onupat-ebong-trikonometik-obhedaboli-koshe-dekhi-23-3')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 23.3</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'purak-koner-trikonometik-onupat')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">পূরক কোণের ত্রিকোণমিতিক অনুপাত</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('purak-koner-trikonometik-onupat-koshe-dekhi-24')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 24</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'uchota-o-durotto')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">উচ্চতা ও দূরত্ব</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('uchota-o-durotto-koshe-dekhi-25')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 25</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'rashibiggan')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">রাশিবিজ্ঞান</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="redirectToTopic('rashibiggan-koshe-dekhi-26-1')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 26.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('rashibiggan-koshe-dekhi-26-2')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 26.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('rashibiggan-koshe-dekhi-26-3')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 26.3</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="redirectToTopic('rashibiggan-koshe-dekhi-26-4')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 26.4</span>
                     </button>
                 </div>
             </div>
@@ -350,7 +630,7 @@
             document.querySelector('.back-btn').style.display = 'inline-block';
             
             // Update header
-            document.querySelector('.header h1').textContent = chapter.charAt(0).toUpperCase() + chapter.slice(1);
+            document.querySelector('.header h1').textContent = card.querySelector('.chapter-title').textContent; // Use the actual title from the card
             document.querySelector('.header p').textContent = 'Explore sub-topics';
         }
         
@@ -374,18 +654,11 @@
         function redirectToTopic(topic) {
             // In a real app, this would redirect to the topic page
             // For this demo, we'll just show an alert
-            alert(`Redirecting to ${topic.replace('-', ' ')} page...`);
+            alert(`Redirecting to ${topic.replace(/-/g, ' ')} page...`);
             
             // Simulate redirect (remove in production)
             // window.location.href = `/topics/${topic}`;
         }
-        
-        // Prevent event bubbling so subtopic buttons work properly
-        document.querySelectorAll('.subtopic-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        });
     </script>
 </body>
 </html>

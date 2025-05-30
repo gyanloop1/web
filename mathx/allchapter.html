@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Learning Hub</title>
+    <title>Math Learning Hub (Light Theme)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #4a6bff;
-            --secondary: #f5f7ff;
-            --dark: #2a2d3b;
-            --light: #f0f2f5;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
+            --primary: #4A90E2; /* Blue */
+            --secondary: #E0F2F7; /* Light Blue */
+            --dark: #333333; /* Dark gray for text */
+            --light: #FFFFFF; /* White for background */
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+            --card-bg: #F8F8F8; /* Very light gray for cards */
+            --text-muted: #666666; /* Medium gray for muted text */
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* Apply Alkatra for general text, with fallbacks */
             font-family: 'Alkatra', cursive, sans-serif; 
         }
         
@@ -31,6 +32,7 @@
             background-color: var(--light);
             color: var(--dark);
             padding: 20px;
+            min-height: 100vh;
         }
         
         .header {
@@ -41,8 +43,11 @@
         .header h1 {
             color: var(--primary);
             margin-bottom: 10px;
-            /* Apply Tiro Bangla to the main heading, with fallbacks */
             font-family: 'Tiro Bangla', serif;
+        }
+        
+        .header p {
+            color: var(--text-muted);
         }
         
         .chapters-container {
@@ -57,17 +62,18 @@
         }
         
         .chapter-card {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); /* Lighter shadow */
             transition: all 0.3s ease;
             cursor: pointer;
+            border: 1px solid #DDDDDD; /* Lighter border */
         }
         
         .chapter-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(74, 107, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.2); /* Primary color for hover shadow */
         }
         
         .chapter-icon {
@@ -96,7 +102,6 @@
             margin-bottom: 10px;
             text-align: center;
             color: var(--dark);
-            /* Apply Tiro Bangla to chapter titles, with fallbacks */
             font-family: 'Tiro Bangla', serif;
         }
         
@@ -117,16 +122,17 @@
             width: 100%;
             padding: 8px 12px;
             margin-bottom: 8px;
-            background-color: var(--light);
+            background-color: #EFEFEF; /* Slightly darker than card-bg */
             border: none;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
             text-align: left;
+            color: var(--dark);
         }
         
         .subtopic-btn:hover {
-            background-color: var(--secondary);
+            background-color: #DDDDDD; /* Even darker on hover */
             transform: translateX(5px);
         }
         
@@ -137,7 +143,6 @@
         
         .subtopic-name {
             font-size: 14px;
-            /* Apply Alkatra to subtopic names, with fallbacks */
             font-family: 'Alkatra', cursive, sans-serif;
         }
         
@@ -159,10 +164,11 @@
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s;
+            margin-bottom: 20px;
         }
         
         .back-btn:hover {
-            background-color: #3a5bef;
+            background-color: #3A80D5; /* Slightly darker primary on hover */
         }
         
         @media (max-width: 768px) {
@@ -191,23 +197,23 @@
                 </div>
                 <div class="chapter-title">একচলবিশিষ্ট দ্বিঘাত সমীকরণ</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('https://youtu.be/mOEL8Q-2bSo?si=Y1wQKxZrKtQQQznr')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter1.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 1.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('ekchalbishishto-dighat-somikoron-koshe-dekhi-1-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter1.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 1.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('ekchalbishishto-dighat-somikoron-koshe-dekhi-1-3')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter1.3', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 1.3</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('ekchalbishishto-dighat-somikoron-koshe-dekhi-1-4')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter1.4', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 1.4</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('ekchalbishishto-dighat-somikoron-koshe-dekhi-1-5')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter1.5', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 1.5</span>
                     </button>
@@ -219,7 +225,7 @@
                 </div>
                 <div class="chapter-title">সরল সুদকষা</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('sorol-sudkosha-koshe-dekhi-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 2</span>
                     </button>
@@ -231,11 +237,11 @@
                 </div>
                 <div class="chapter-title">বৃত্ত সম্পর্কিত উপপাদ্য</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('britto-somporkito-upopaddo-koshe-dekhi-3-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter3.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 3.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('britto-somporkito-upopaddo-koshe-dekhi-3-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter3.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 3.2</span>
                     </button>
@@ -247,7 +253,7 @@
                 </div>
                 <div class="chapter-title">আয়তঘন</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('ayatoghon-koshe-dekhi-4')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter4', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 4</span>
                     </button>
@@ -259,15 +265,15 @@
                 </div>
                 <div class="chapter-title">অনুপাত ও সমানুপাত</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('onupat-o-somanupat-koshe-dekhi-5-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter5.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 5.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('onupat-o-somanupat-koshe-dekhi-5-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter5.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 5.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('onupat-o-somanupat-koshe-dekhi-5-3')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter5.3', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 5.3</span>
                     </button>
@@ -279,11 +285,11 @@
                 </div>
                 <div class="chapter-title">চক্রবৃদ্ধি সুদ ও সমহার বৃদ্ধি বা হ্রাস</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('chokrobri-sud-o-somohar-briddhi-ba-hras-koshe-dekhi-6-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter6.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 6.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('chokrobri-sud-o-somohar-briddhi-ba-hras-koshe-dekhi-6-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter6.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 6.2</span>
                     </button>
@@ -295,27 +301,27 @@
                 </div>
                 <div class="chapter-title">বৃত্তস্থ কোন সম্পর্কিত উপপাদ্য</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-koshe-dekhi-7-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 7.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-koshe-dekhi-7-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 7.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-koshe-dekhi-7-3')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.3', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 7.3</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-nije-kori-7-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.1n', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">নিজে করি 7.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-nije-kori-7-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.2n', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">নিজে করি 7.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-kon-somporkito-upopaddo-nije-kori-7-3')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.3n', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">নিজে করি 7.3</span>
                     </button>
@@ -327,7 +333,7 @@
                 </div>
                 <div class="chapter-title">লম্ব বৃত্তাকার চোঙ</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('lombo-brittakar-chong-koshe-dekhi-8')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter8', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 8</span>
                     </button>
@@ -339,15 +345,15 @@
                 </div>
                 <div class="chapter-title">দ্বিঘাত করণী</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('dighat-koroni-koshe-dekhi-9-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter9.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 9.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('dighat-koroni-koshe-dekhi-9-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter9.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 9.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('dighat-koroni-koshe-dekhi-9-3')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter9.3', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 9.3</span>
                     </button>
@@ -359,7 +365,7 @@
                 </div>
                 <div class="chapter-title">বৃত্তস্থ চতুর্ভুজ সংক্রান্ত উপপাদ্য</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('brittostho-choturbhuj-songkranto-upopaddo-koshe-dekhi-10')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter10', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 10</span>
                     </button>
@@ -371,15 +377,15 @@
                 </div>
                 <div class="chapter-title">ত্রিভুজের পরিবৃত্ত ও অন্তর্বৃত্ত অঙ্কন</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('tribhujer-poribritta-o-ontorbrita-onkon-koshe-dekhi-11-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter11.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 11.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('tribhujer-poribritta-o-ontorbrita-onkon-koshe-dekhi-11-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter11.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 11.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('tribhujer-poribritta-o-ontorbrita-onkon-nije-kori-11')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter11n', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">নিজে করি 11</span>
                     </button>
@@ -391,7 +397,7 @@
                 </div>
                 <div class="chapter-title">গোলক</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('golok-koshe-dekhi-12')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter12', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 12</span>
                     </button>
@@ -403,7 +409,7 @@
                 </div>
                 <div class="chapter-title">ভেদ</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('bhed-koshe-dekhi-13')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter13', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 13</span>
                     </button>
@@ -415,7 +421,7 @@
                 </div>
                 <div class="chapter-title">অংশীদারি কারবার</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('ongshodari-karbar-koshe-dekhi-14')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter14', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 14</span>
                     </button>
@@ -427,19 +433,19 @@
                 </div>
                 <div class="chapter-title">বৃত্তের স্পর্শক সংক্রান্ত উপপাদ্য</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-songkranto-upopaddo-koshe-dekhi-15-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter15.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 15.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-songkranto-upopaddo-koshe-dekhi-15-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter15.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 15.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-songkranto-upopaddo-nije-kori-15-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter15.1n', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">নিজে করি 15.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-songkranto-upopaddo-nije-kori-15-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter15.2n', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">নিজে করি 15.2</span>
                     </button>
@@ -451,7 +457,7 @@
                 </div>
                 <div class="chapter-title">লম্ব বৃত্তাকার শঙ্কু</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('lombo-brittakar-shonku-koshe-dekhi-16')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter16', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 16</span>
                     </button>
@@ -463,7 +469,7 @@
                 </div>
                 <div class="chapter-title">বৃত্তের স্পর্শক অঙ্কন</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('britter-sporshok-onkon-koshe-dekhi-17')">
+                    <button class="subtopic-btn" onclick="window.open('https://youtu.be/mOEL8Q-2bSo?si=UdiRBZb-kvrJtEds', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 17</span>
                     </button>
@@ -475,19 +481,19 @@
                 </div>
                 <div class="chapter-title">সদৃশতা</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('sodrishota-koshe-dekhi-18-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter18.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 18.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('sodrishota-koshe-dekhi-18-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter18.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 18.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('sodrishota-koshe-dekhi-18-3')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter18.3', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 18.3</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('sodrishota-koshe-dekhi-18-4')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter18.4', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 18.4</span>
                     </button>
@@ -499,7 +505,7 @@
                 </div>
                 <div class="chapter-title">বিভিন্ন ঘনবস্তু সংক্রান্ত বাস্তব সমস্যা</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('bibhinno-ghonobostu-songkranto-bastob-somossa-koshe-dekhi-19')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter19', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 19</span>
                     </button>
@@ -511,7 +517,7 @@
                 </div>
                 <div class="chapter-title">কোন পরিমাপের ধারণা</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('kon-porimaper-dharona-koshe-dekhi-20')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter20', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 20</span>
                     </button>
@@ -523,7 +529,7 @@
                 </div>
                 <div class="chapter-title">মধ্যাসমানুপাতী নির্ণয়</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('moddhasomanupati-nirnoy-koshe-dekhi-21')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter21', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 21</span>
                     </button>
@@ -535,7 +541,7 @@
                 </div>
                 <div class="chapter-title">পিথাগোরাসের উপপাদ্য</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('pithagorasher-upopaddo-koshe-dekhi-22')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter22', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 22</span>
                     </button>
@@ -547,15 +553,15 @@
                 </div>
                 <div class="chapter-title">ত্রিকোণমিতিক অনুপাত এবং ত্রিকোণমিতিক অভেদাবলি</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('trikonometik-onupat-ebong-trikonometik-obhedaboli-koshe-dekhi-23-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter23.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 23.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('trikonometik-onupat-ebong-trikonometik-obhedaboli-koshe-dekhi-23-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter23.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 23.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('trikonometik-onupat-ebong-trikonometik-obhedaboli-koshe-dekhi-23-3')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter23.3', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 23.3</span>
                     </button>
@@ -567,7 +573,7 @@
                 </div>
                 <div class="chapter-title">পূরক কোণের ত্রিকোণমিতিক অনুপাত</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('purak-koner-trikonometik-onupat-koshe-dekhi-24')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter24', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 24</span>
                     </button>
@@ -579,7 +585,7 @@
                 </div>
                 <div class="chapter-title">উচ্চতা ও দূরত্ব</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('uchota-o-durotto-koshe-dekhi-25')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter25', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 25</span>
                     </button>
@@ -591,19 +597,19 @@
                 </div>
                 <div class="chapter-title">রাশিবিজ্ঞান</div>
                 <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="redirectToTopic('rashibiggan-koshe-dekhi-26-1')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter26.1', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 26.1</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('rashibiggan-koshe-dekhi-26-2')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter26.2', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 26.2</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('rashibiggan-koshe-dekhi-26-3')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter26.3', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 26.3</span>
                     </button>
-                    <button class="subtopic-btn" onclick="redirectToTopic('rashibiggan-koshe-dekhi-26-4')">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter26.4', '_blank')">
                         <i class="fas fa-file-alt"></i>
                         <span class="subtopic-name">কষে দেখি 26.4</span>
                     </button>
@@ -630,35 +636,26 @@
             document.querySelector('.back-btn').style.display = 'inline-block';
             
             // Update header
-            document.querySelector('.header h1').textContent = card.querySelector('.chapter-title').textContent; // Use the actual title from the card
-            document.querySelector('.header p').textContent = 'Explore sub-topics';
+            document.querySelector('.header h1').textContent = card.querySelector('.chapter-title').textContent;
+            document.querySelector('.header p').textContent = 'Select a sub-topic to learn more'; // Change subtitle
         }
-        
-        // Show all chapters again
+
+        // Show all chapters
         function showAllChapters() {
             const allCards = document.querySelectorAll('.chapter-card');
             allCards.forEach(c => {
                 c.classList.remove('active-chapter');
-                c.style.display = 'block';
+                c.style.display = 'block'; // Show all cards again
             });
-            
+
             // Hide the back button
             document.querySelector('.back-btn').style.display = 'none';
-            
+
             // Reset header
-            document.querySelector('.header h1').textContent = 'Math Learning Hub';
+            document.querySelector('.header h1').textContent = 'Gyanloop-Math';
             document.querySelector('.header p').textContent = 'Explore math chapters and their sub-topics';
         }
-        
-        // Redirect to topic page (simulated)
-        function redirectToTopic(topic) {
-            // In a real app, this would redirect to the topic page
-            // For this demo, we'll just show an alert
-            alert(`Redirecting to ${topic.replace(/-/g, ' ')} page...`);
-            
-            // Simulate redirect (remove in production)
-            // window.location.href = `/topics/${topic}`;
-        }
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </body>
 </html>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Learning Hub (Light Theme)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4A90E2; /* Blue */
+            --secondary: #E0F2F7; /* Light Blue */
+            --dark: #333333; /* Dark gray for text */
+            --light: #FFFFFF; /* White for background */
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+            --card-bg: #F8F8F8; /* Very light gray for cards */
+            --text-muted: #666666; /* Medium gray for muted text */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Alkatra', cursive, sans-serif; 
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-family: 'Tiro Bangla', serif;
+        }
+        
+        .header p {
+            color: var(--text-muted);
+        }
+        
+        .chapters-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .chapter-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #DDDDDD; /* Lighter border */
+        }
+        
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.2); /* Primary color for hover shadow */
+        }
+        
+        .chapter-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: var(--primary);
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+        
+        .chapter-card:hover .chapter-icon {
+            background-color: var(--primary);
+            color: white;
+            transform: rotate(5deg) scale(1.1);
+        }
+        
+        .chapter-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+            color: var(--dark);
+            font-family: 'Tiro Bangla', serif;
+        }
+        
+        .subtopics-container {
+            display: none;
+            margin-top: 15px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .subtopic-btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background-color: #EFEFEF; /* Slightly darker than card-bg */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            color: var(--dark);
+        }
+        
+        .subtopic-btn:hover {
+            background-color: #DDDDDD; /* Even darker on hover */
+            transform: translateX(5px);
+        }
+        
+        .subtopic-btn i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .subtopic-name {
+            font-size: 14px;
+            font-family: 'Alkatra', cursive, sans-serif;
+        }
+        
+        .active-chapter .subtopics-container {
+            display: block;
+        }
+        
+        .active-chapter {
+            border: 2px solid var(--primary);
+        }
+        
+        .back-btn {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn:hover {
+            background-color: #3A80D5; /* Slightly darker primary on hover */
+        }
+        
+        @media (max-width: 768px) {
+            .chapters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Gyanloop-Math</h1>
+        <p>Explore math chapters and their sub-topics</p>
+    </div>
+    
+    <div class="chapters-container">
+        <button class="back-btn" onclick="showAllChapters()">
+            <i class="fas fa-arrow-left"></i> Back to All Chapters
+        </button>
+        
+        <div class="chapters-grid" id="chaptersGrid">
+            <div class="chapter-card" onclick="showSubtopics(this, 'ekchalbishishto-dighat-somikoron')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">একচলবিশিষ্ট দ্বিঘাত সমীকরণ</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://drive.google.com/file/d/1SRyT-eAzWyaaf2oBAEzpUgUhLcu-co_I/view?usp=sharing', '_blank')">
+                        <i class="fa-brands fa-youtube"></i>
+                        <span class="subtopic-name">কষে দেখি 1.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter1.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 1.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter1.3', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 1.3</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter1.4', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 1.4</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter1.5', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 1.5</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'sorol-sudkosha')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">সরল সুদকষা</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 2</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'britto-somporkito-upopaddo')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বৃত্ত সম্পর্কিত উপপাদ্য</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter3.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 3.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter3.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 3.2</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'ayatoghon')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">আয়তঘন</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter4', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 4</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'onupat-o-somanupat')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">অনুপাত ও সমানুপাত</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter5.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 5.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter5.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 5.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter5.3', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 5.3</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'chokrobri-sud-o-somohar-briddhi-ba-hras')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">চক্রবৃদ্ধি সুদ ও সমহার বৃদ্ধি বা হ্রাস</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter6.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 6.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter6.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 6.2</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'brittostho-kon-somporkito-upopaddo')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বৃত্তস্থ কোন সম্পর্কিত উপপাদ্য</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 7.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 7.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.3', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 7.3</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.1n', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 7.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.2n', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 7.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter7.3n', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 7.3</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'lombo-brittakar-chong')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">লম্ব বৃত্তাকার চোঙ</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter8', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 8</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'dighat-koroni')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">দ্বিঘাত করণী</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter9.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 9.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter9.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 9.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter9.3', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 9.3</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'brittostho-choturbhuj-songkranto-upopaddo')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বৃত্তস্থ চতুর্ভুজ সংক্রান্ত উপপাদ্য</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter10', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 10</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'tribhujer-poribritta-o-ontorbrita-onkon')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">ত্রিভুজের পরিবৃত্ত ও অন্তর্বৃত্ত অঙ্কন</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter11.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 11.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter11.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 11.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter11n', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 11</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'golok')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">গোলক</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter12', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 12</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'bhed')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">ভেদ</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter13', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 13</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'ongshodari-karbar')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">অংশীদারি কারবার</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter14', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 14</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'britter-sporshok-songkranto-upopaddo')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বৃত্তের স্পর্শক সংক্রান্ত উপপাদ্য</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter15.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 15.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter15.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 15.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter15.1n', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 15.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter15.2n', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">নিজে করি 15.2</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'lombo-brittakar-shonku')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">লম্ব বৃত্তাকার শঙ্কু</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter16', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 16</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'britter-sporshok-onkon')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বৃত্তের স্পর্শক অঙ্কন</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://youtu.be/mOEL8Q-2bSo?si=UdiRBZb-kvrJtEds', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 17</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'sodrishota')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">সদৃশতা</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter18.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 18.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter18.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 18.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter18.3', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 18.3</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter18.4', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 18.4</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'bibhinno-ghonobostu-songkranto-bastob-somossa')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">বিভিন্ন ঘনবস্তু সংক্রান্ত বাস্তব সমস্যা</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter19', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 19</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'kon-porimaper-dharona')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">কোন পরিমাপের ধারণা</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter20', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 20</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'moddhasomanupati-nirnoy')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">মধ্যাসমানুপাতী নির্ণয়</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter21', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 21</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'pithagorasher-upopaddo')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">পিথাগোরাসের উপপাদ্য</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter22', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 22</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'trikonometik-onupat-ebong-trikonometik-obhedaboli')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">ত্রিকোণমিতিক অনুপাত এবং ত্রিকোণমিতিক অভেদাবলি</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter23.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 23.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter23.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 23.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter23.3', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 23.3</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'purak-koner-trikonometik-onupat')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">পূরক কোণের ত্রিকোণমিতিক অনুপাত</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter24', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 24</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'uchota-o-durotto')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">উচ্চতা ও দূরত্ব</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter25', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 25</span>
+                    </button>
+                </div>
+            </div>
+            <div class="chapter-card" onclick="showSubtopics(this, 'rashibiggan')">
+                <div class="chapter-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="chapter-title">রাশিবিজ্ঞান</div>
+                <div class="subtopics-container">
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter26.1', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 26.1</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter26.2', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 26.2</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter26.3', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 26.3</span>
+                    </button>
+                    <button class="subtopic-btn" onclick="window.open('https://gyanloop1.github.io/web/mathx/allchapter26.4', '_blank')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="subtopic-name">কষে দেখি 26.4</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show subtopics for a chapter
+        function showSubtopics(card, chapter) {
+            // Hide all chapter cards
+            const allCards = document.querySelectorAll('.chapter-card');
+            allCards.forEach(c => {
+                c.classList.remove('active-chapter');
+                c.style.display = 'none';
+            });
+            
+            // Show only the selected chapter card
+            card.classList.add('active-chapter');
+            card.style.display = 'block';
+            
+            // Show the back button
+            document.querySelector('.back-btn').style.display = 'inline-block';
+            
+            // Update header
+            document.querySelector('.header h1').textContent = card.querySelector('.chapter-title').textContent;
+            document.querySelector('.header p').textContent = 'Select a sub-topic to learn more'; // Change subtitle
+        }
+
+        // Show all chapters
+        function showAllChapters() {
+            const allCards = document.querySelectorAll('.chapter-card');
+            allCards.forEach(c => {
+                c.classList.remove('active-chapter');
+                c.style.display = 'block'; // Show all cards again
+            });
+
+            // Hide the back button
+            document.querySelector('.back-btn').style.display = 'none';
+
+            // Reset header
+            document.querySelector('.header h1').textContent = 'Gyanloop-Math';
+            document.querySelector('.header p').textContent = 'Explore math chapters and their sub-topics';
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</body>
+</html>

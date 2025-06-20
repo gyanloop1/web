@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Fresh: Color Match Challenge</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            touch-action: manipulation;
+        }
+
+        .game-container {
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .color-box {
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .color-box:active {
+            transform: scale(0.95);
+        }
+
+        #red {
+            background-color: #ff5252;
+        }
+
+        #blue {
+            background-color: #4285f4;
+        }
+
+        #green {
+            background-color: #0f9d58;
+        }
+
+        #yellow {
+            background-color: #ffb900;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #3367d6;
+        }
+
+        .message {
+            margin-top: 15px;
+            min-height: 20px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 500px) {
+            .color-grid {
+                gap: 10px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Color Match Challenge</h1>
+        <div class="score-display">
+            <span>Level: <span id="level">1</span></span>
+            <span>Score: <span id="score">0</span></span>
+        </div>
+        <div class="color-grid">
+            <div class="color-box" id="red" data-color="red"></div>
+            <div class="color-box" id="blue" data-color="blue"></div>
+            <div class="color-box" id="green" data-color="green"></div>
+            <div class="color-box" id="yellow" data-color="yellow"></div>
+        </div>
+        <div class="controls">
+            <button id="start-btn">Start Game</button>
+            <div class="message" id="message"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const colorBoxes = document.querySelectorAll('.color-box');
+            const startBtn = document.getElementById('start-btn');
+            const levelDisplay = document.getElementById('level');
+            const scoreDisplay = document.getElementById('score');
+            const messageDisplay = document.getElementById('message');
+            
+            let sequence = [];
+            let playerSequence = [];
+            let level = 1;
+            let score = 0;
+            let gameStarted = false;
+            let waitingForPlayer = false;
+            
+            // Initialize game
+            function init() {
+                sequence = [];
+                playerSequence = [];
+                level = 1;
+                score = 0;
+                gameStarted = false;
+                waitingForPlayer = false;
+                updateDisplays();
+                enableColorBoxes(false);
+                messageDisplay.textContent = 'Press Start to begin!';
+            }
+            
+            // Start the game
+            function startGame() {
+                if (gameStarted) return;
+                
+                gameStarted = true;
+                startBtn.textContent = 'Restart Game';
+                messageDisplay.textContent = 'Watch the sequence...';
+                nextLevel();
+            }
+            
+            // Proceed to next level
+            function nextLevel() {
+                level++;
+                sequence.push(getRandomColor());
+                playerSequence = [];
+                waitingForPlayer = false;
+                updateDisplays();
+                playSequence();
+            }
+            
+            // Play the current sequence
+            function playSequence() {
+                let i = 0;
+                waitingForPlayer = false;
+                enableColorBoxes(false);
+                
+                const interval = setInterval(() => {
+                    if (i >= sequence.length) {
+                        clearInterval(interval);
+                        waitingForPlayer = true;
+                        enableColorBoxes(true);
+                        messageDisplay.textContent = 'Your turn! Repeat the sequence.';
+                        return;
+                    }
+                    
+                    const color = sequence[i];
+                    highlightColor(color);
+                    i++;
+                }, 800);
+            }
+            
+            // Player clicks a color
+            function handleColorClick(e) {
+                if (!waitingForPlayer) return;
+                
+                const color = e.target.dataset.color;
+                playerSequence.push(color);
+                highlightColor(color);
+                
+                // Check if the sequence matches
+                if (playerSequence[playerSequence.length - 1] !== sequence[playerSequence.length - 1]) {
+                    gameOver();
+                    return;
+                }
+                
+                // If sequence is complete
+                if (playerSequence.length === sequence.length) {
+                    score += level * 10;
+                    updateDisplays();
+                    waitingForPlayer = false;
+                    enableColorBoxes(false);
+                    messageDisplay.textContent = 'Correct! Next level...';
+                    setTimeout(nextLevel, 1000);
+                }
+            }
+            
+            // Game over
+            function gameOver() {
+                messageDisplay.textContent = `Game Over! Final Score: ${score}`;
+                enableColorBoxes(false);
+                gameStarted = false;
+                startBtn.textContent = 'Try Again';
+            }
+            
+            // Helper functions
+            function getRandomColor() {
+                const colors = ['red', 'blue', 'green', 'yellow'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            function highlightColor(color) {
+                const box = document.getElementById(color);
+                box.style.opacity = '0.5';
+                setTimeout(() => {
+                    box.style.opacity = '1';
+                }, 300);
+            }
+            
+            function enableColorBoxes(enable) {
+                colorBoxes.forEach(box => {
+                    box.style.pointerEvents = enable ? 'auto' : 'none';
+                });
+            }
+            
+            function updateDisplays() {
+                levelDisplay.textContent = level;
+                scoreDisplay.textContent = score;
+            }
+            
+            // Event listeners
+            startBtn.addEventListener('click', init);
+            startBtn.addEventListener('click', startGame);
+            
+            colorBoxes.forEach(box => {
+                box.addEventListener('click', handleColorClick);
+            });
+            
+            // Initialize the game
+            init();
+        });
+    </script>
+</body>
+</html>

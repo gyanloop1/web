@@ -128,73 +128,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .search-bar {
-      display: flex;
-      align-items: center;
-      background-color: var(--card-bg);
-      padding: 8px 15px;
-      border-radius: 30px;
-      width: 300px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    .search-bar:hover {
-      box-shadow: 0 2px 15px rgba(108, 92, 231, 0.3);
-    }
-
-    .search-bar input {
-      border: none;
-      outline: none;
-      width: 100%;
-      padding: 5px;
-      background: transparent;
-      color: var(--text-light);
-    }
-
-    .search-bar i {
-      color: var(--text-light);
-      margin-right: 10px;
-    }
-
-    .user-actions {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .notification, .user-profile {
-      position: relative;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .notification:hover, .user-profile:hover {
-      transform: scale(1.1);
-    }
-
-    .notification-badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background-color: var(--danger);
-      color: white;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -243,6 +176,7 @@
     .card-title {
       font-weight: 600;
       color: var(--text-dark);
+      font-size: 1.5rem;
     }
 
     .card-icon {
@@ -269,16 +203,17 @@
       background-color: var(--primary);
       color: white;
       border: none;
-      padding: 10px 15px;
+      padding: 12px 15px;
       border-radius: 5px;
       cursor: pointer;
       display: block;
       width: 100%;
-      margin-top: 15px;
+      margin-top: 20px;
       transition: all 0.3s ease;
       font-weight: 500;
       text-align: center;
       text-decoration: none;
+      font-size: 1rem;
     }
 
     .join-btn:hover {
@@ -287,34 +222,31 @@
       transform: translateY(-2px);
     }
 
-    .progress-item {
-      margin-bottom: 15px;
-    }
-
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 5px;
+    .class-date {
       color: var(--text-light);
+      margin: 10px 0;
+      font-size: 1rem;
     }
 
-    .progress-bar {
-      height: 8px;
-      background-color: rgba(255,255,255,0.1);
-      border-radius: 4px;
-      overflow: hidden;
+    .teacher-info {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
     }
 
-    .progress-fill {
-      height: 100%;
-      border-radius: 4px;
-      transition: width 1s ease;
+    .teacher-image {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 15px;
+      border: 2px solid var(--primary);
     }
 
-    .algebra .progress-fill { width: 65%; background-color: var(--primary); }
-    .geometry .progress-fill { width: 40%; background-color: var(--danger); }
-    .calculus .progress-fill { width: 30%; background-color: var(--success); }
-    .statistics .progress-fill { width: 20%; background-color: #ff4a6b; }
+    .teacher-name {
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
 
     .upcoming-classes {
       margin-top: 30px;
@@ -374,12 +306,6 @@
       box-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
     }
 
-    .teacher {
-      color: var(--text-light);
-      margin: 5px 0;
-      font-size: 0.9rem;
-    }
-
     @media (max-width: 768px) {
       .dashboard {
         grid-template-columns: 1fr;
@@ -389,10 +315,6 @@
       }
       .cards-grid {
         grid-template-columns: 1fr;
-      }
-      .search-bar {
-        width: 100%;
-        margin: 10px 0;
       }
     }
   </style>
@@ -420,19 +342,6 @@
     <div class="main-content">
       <div class="header">
         <h2 style="color: var(--text-dark);">Welcome back, Student!</h2>
-        <div class="search-bar">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Search for topics, classes..." />
-        </div>
-        <div class="user-actions">
-          <div class="notification">
-            <i class="fas fa-bell"></i>
-            <span class="notification-badge">3</span>
-          </div>
-          <div class="user-profile">
-            <i class="fas fa-user-circle" style="font-size: 24px; color: var(--primary);"></i>
-          </div>
-        </div>
       </div>
 
       <!-- Cards -->
@@ -442,9 +351,12 @@
             <h3 class="card-title">Live Class</h3>
             <div class="card-icon"><i class="fas fa-video"></i></div>
           </div>
-          <p>15 June 2025</p>
-          <p class="teacher">Sumit Haldar</p>
-          <a href="https://meet.google.com/mjm-pdkd-gvb" class="join-btn" target="_blank">Join at 7:00 am</a>
+          <p class="class-date">15 June 2025</p>
+          <div class="teacher-info">
+            <img src="https://i.ibb.co/DDZtvDJs/Whats-App-Image-2025-06-21-at-09-17-47-6ca508b9-removebg-preview.png" alt="Teacher" class="teacher-image">
+            <span class="teacher-name">Sumit Haldar</span>
+          </div>
+          <a href="https://meet.google.com/mjm-pdkd-gvb" class="join-btn" target="_blank">Join at 7:30 pm</a>
         </div>
 
         <div class="card resources-card">
@@ -475,7 +387,6 @@
               <a href="https://youtube.com/shorts/8xStEDBu7x8?feature=share" target="_blank" style="text-decoration: none; color: inherit; display: flex; align-items: center; transition: color 0.3s ease;">
                 <i class="fa-brands fa-youtube"style="color: #f82727; margin-right: 10px;"></i>
                 কিভাবে ক্লাসরুম জয়েন করব?
-
               </a>
             </li>
           </ul>
@@ -483,8 +394,8 @@
 
         <div class="card quiz-card">
           <div class="card-header">
-            <h3 class="card-title">All materials</h3>
-            <div class="card-icon"><i class="fas fa-question-circle"></i></div>
+            <h3 class="card-title">RECORDED CLASS .. </h3>
+            <div class="card-icon"><i class="fa-brands fa-youtube"></i></div>
           </div>
           <p>Start your learning journey</p>
           <a href="https://gyanloop1.github.io/web/mathx/allchapter" class="join-btn" style="background-color:#6c5ce7;" target="_blank">Start learning</a>
@@ -557,33 +468,6 @@
         }
       });
     });
-
-    // Add animation to notification bell
-    document.querySelector('.notification').addEventListener('click', function() {
-      this.querySelector('.notification-badge').style.display = 'none';
-      this.querySelector('i').style.transform = 'rotate(20deg)';
-      setTimeout(() => {
-        this.querySelector('i').style.transform = 'rotate(-20deg)';
-        setTimeout(() => {
-          this.querySelector('i').style.transform = 'rotate(0)';
-        }, 200);
-      }, 200);
-    });
-
-    // Animate progress bars on scroll
-    function animateProgressBars() {
-      const progressBars = document.querySelectorAll('.progress-fill');
-      progressBars.forEach(bar => {
-        const width = bar.style.width;
-        bar.style.width = '0';
-        setTimeout(() => {
-          bar.style.width = width;
-        }, 100);
-      });
-    }
-
-    // Run animation when page loads
-    window.addEventListener('load', animateProgressBars);
 
     // Add hover effect to all links
     document.querySelectorAll('a').forEach(link => {

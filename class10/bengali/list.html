@@ -67,47 +67,46 @@
         .banner {
             width: 100%;
             height: 300px;
-            background-image: linear-gradient(135deg, #1e3a8a, #111827);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
+            background: url('https://i.ibb.co/Myf3sZGH/image.png') center/cover no-repeat;
             margin-bottom: 2rem;
             position: relative;
-            overflow: hidden;
             margin-top: -70px; /* Counteract body padding */
             padding-top: 70px; /* Make content appear below nav */
         }
         
-        .banner::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
-            opacity: 0.3;
+        /* MCQ Test Button */
+        .mcq-button-container {
+            display: flex;
+            justify-content: center;
+            margin: -1rem auto 2rem auto;
+            max-width: 1400px;
+            padding: 0 2rem;
         }
-        
-        .banner-content {
-            position: relative;
-            z-index: 1;
-            padding: 2rem;
-            max-width: 800px;
+
+        .mcq-button {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: #4dabf7;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(77, 171, 247, 0.4);
+            font-weight: 600;
+            text-decoration: none;
         }
-        
-        .banner h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+        .mcq-button:hover {
+            background-color: #3b8fd6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(77, 171, 247, 0.6);
         }
-        
-        .banner p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
+
+        .mcq-button i {
+            font-size: 1.2rem;
+            margin-right: 0.8rem;
         }
         
         /* Main Content */
@@ -248,14 +247,6 @@
                 height: 250px;
             }
             
-            .banner h1 {
-                font-size: 2rem;
-            }
-            
-            .banner p {
-                font-size: 1rem;
-            }
-            
             .container {
                 padding: 0 1rem 2rem;
             }
@@ -263,6 +254,22 @@
             .buttons-grid {
                 grid-template-columns: 1fr;
             }
+
+            .mcq-button-container {
+                padding: 0 1rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        /* Light theme styles for MCQ button */
+        body.light-theme .mcq-button {
+            background-color: #1e88e5;
+            box-shadow: 0 4px 15px rgba(30, 136, 229, 0.4);
+        }
+
+        body.light-theme .mcq-button:hover {
+            background-color: #1976d2;
+            box-shadow: 0 6px 20px rgba(30, 136, 229, 0.6);
         }
     </style>
 </head>
@@ -277,11 +284,14 @@
     </nav>
     
     <!-- Banner -->
-    <div class="banner">
-        <div class="banner-content">
-            <h1>বাংলা শেখার আদর্শ স্থান</h1>
-            <p>#Be better everyday</p>
-        </div>
+    <div class="banner"></div>
+
+    <!-- MCQ Test Button -->
+    <div class="mcq-button-container">
+        <a href="https://gyanloop1.github.io/web/mcq/bengali/sublist" class="mcq-button">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Take MCQ Test Now</span>
+        </a>
     </div>
     
     <!-- Main Content -->
@@ -392,7 +402,7 @@
             }
             
             body.light-theme .banner {
-                background-image: linear-gradient(135deg, #4dabf7, #1e88e5);
+                background-image: url('https://i.ibb.co/Myf3sZGH/image.png');
             }
             
             body.light-theme .sub-button i {

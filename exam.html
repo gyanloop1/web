@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Examination Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            touch-action: none;
+            overflow-x: hidden;
+        }
+        
+        .top-nav {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .exam-time-info {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 3px;
+            text-align: right;
+        }
+        
+        .exam-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .waiting-room {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        
+        .waiting-room h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+        
+        .questions-wrapper {
+            display: none;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .question-container {
+            position: relative;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .question-header {
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        
+        .question-image-wrapper {
+            width: 100%;
+            overflow: hidden;
+            touch-action: none;
+        }
+        
+        .question-image {
+            display: block;
+            width: 100%;
+            transform-origin: 0 0;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        
+        .submission-period {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        
+        .submission-period h2 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .exam-ended {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        
+        .exam-ended h2 {
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+        
+        .status-message {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="logo">Exam Platform</div>
+        <div class="timer-container">
+            <div class="timer" id="examTimer">--:--:--</div>
+            <div class="exam-time-info">
+                <div>Date: 28/06/2025</div>
+                <div>Ends at: <span id="examEndTimeDisplay">6:52 PM</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="exam-container">
+        <!-- Waiting Room -->
+        <div class="waiting-room" id="waitingRoom">
+            <h2>Waiting Room</h2>
+            <p class="status-message">Your exam will begin shortly</p>
+            <div class="timer" id="startTimer">Starting in: 05:00</div>
+            <p>Please wait for the exam to start. Do not refresh the page.</p>
+        </div>
+        
+        <!-- Questions (hidden initially) -->
+        <div class="questions-wrapper" id="questionsWrapper">
+            <div class="question-container">
+                <div class="question-header">Question 1</div>
+                <div class="question-image-wrapper">
+                    <img src="https://i.ibb.co/fVP95vsR/i.png" alt="Question 1" class="question-image">
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-header">Question 2</div>
+                <div class="question-image-wrapper">
+                    <img src="https://i.ibb.co/mCZ7DH5k/image.png" alt="Question 2" class="question-image">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Submission Period -->
+        <div class="submission-period" id="submissionPeriod">
+            <h2>Exam Time Ended</h2>
+            <p class="status-message">You now have 15 minutes to submit your paper.</p>
+            <div class="timer" id="submissionTimer">15:00</div>
+        </div>
+        
+        <!-- Exam Ended -->
+        <div class="exam-ended" id="examEnded">
+            <h2>Exam Successfully Completed</h2>
+            <p class="status-message">Thank you for taking the exam.</p>
+        </div>
+    </div>
+
+    <script>
+        // Exam timing configuration
+        const now = new Date();
+        
+        // Set exam start time (current time + 5 minutes for demo)
+        const examStartTime = new Date(2025, 5, 28, 20, 30, 0);
+        
+        // Set exam end time (6:52 PM on 28/6/2025)
+        const examEndTime = new Date(2025, 6, 28, 20, 31, 0);
+        
+        // Format exam end time for display
+        document.getElementById('examEndTimeDisplay').textContent = 
+            examEndTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        // DOM elements
+        const waitingRoom = document.getElementById('waitingRoom');
+        const questionsWrapper = document.getElementById('questionsWrapper');
+        const startTimer = document.getElementById('startTimer');
+        const examTimer = document.getElementById('examTimer');
+        const submissionTimer = document.getElementById('submissionTimer');
+        const submissionPeriod = document.getElementById('submissionPeriod');
+        const examEnded = document.getElementById('examEnded');
+        
+        // Initialize zoom/pan for all question images
+        const questionImages = document.querySelectorAll('.question-image');
+        
+        questionImages.forEach((img) => {
+            let scale = 1;
+            let posX = 0;
+            let posY = 0;
+            let lastX = 0;
+            let lastY = 0;
+            let isDragging = false;
+            let startDist = 0;
+            
+            // Store transform data
+            img.dataset.scale = '1';
+            img.dataset.posX = '0';
+            img.dataset.posY = '0';
+            
+            // Touch events
+            img.addEventListener('touchstart', handleTouchStart, { passive: false });
+            img.addEventListener('touchmove', handleTouchMove, { passive: false });
+            img.addEventListener('touchend', handleTouchEnd);
+            
+            // Mouse events
+            img.addEventListener('mousedown', handleMouseDown);
+            img.addEventListener('mousemove', handleMouseMove);
+            img.addEventListener('mouseup', handleMouseUp);
+            img.addEventListener('mouseleave', handleMouseUp);
+            img.addEventListener('wheel', handleWheel, { passive: false });
+            
+            function handleTouchStart(e) {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    const touch1 = e.touches[0];
+                    const touch2 = e.touches[1];
+                    startDist = Math.hypot(
+                        touch2.clientX - touch1.clientX,
+                        touch2.clientY - touch1.clientY
+                    );
+                    scale = parseFloat(img.dataset.scale);
+                } else if (e.touches.length === 1 && scale > 1) {
+                    e.preventDefault();
+                    isDragging = true;
+                    lastX = e.touches[0].clientX;
+                    lastY = e.touches[0].clientY;
+                }
+            }
+            
+            function handleTouchMove(e) {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    const touch1 = e.touches[0];
+                    const touch2 = e.touches[1];
+                    const dist = Math.hypot(
+                        touch2.clientX - touch1.clientX,
+                        touch2.clientY - touch1.clientY
+                    );
+                    
+                    const newScale = Math.max(1, Math.min(scale * (dist / startDist), 3));
+                    
+                    if (newScale !== scale) {
+                        scale = newScale;
+                        img.dataset.scale = scale.toString();
+                        updateTransform();
+                    }
+                } else if (e.touches.length === 1 && isDragging) {
+                    e.preventDefault();
+                    const deltaX = e.touches[0].clientX - lastX;
+                    const deltaY = e.touches[0].clientY - lastY;
+                    
+                    lastX = e.touches[0].clientX;
+                    lastY = e.touches[0].clientY;
+                    
+                    posX += deltaX;
+                    posY += deltaY;
+                    
+                    // Limit panning
+                    const maxX = (scale - 1) * img.width / 2;
+                    const maxY = (scale - 1) * img.height / 2;
+                    
+                    posX = Math.max(-maxX, Math.min(posX, maxX));
+                    posY = Math.max(-maxY, Math.min(posY, maxY));
+                    
+                    img.dataset.posX = posX.toString();
+                    img.dataset.posY = posY.toString();
+                    
+                    updateTransform();
+                }
+            }
+            
+            function handleTouchEnd() {
+                isDragging = false;
+            }
+            
+            function handleMouseDown(e) {
+                if (scale > 1) {
+                    e.preventDefault();
+                    isDragging = true;
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+                }
+            }
+            
+            function handleMouseMove(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    const deltaX = e.clientX - lastX;
+                    const deltaY = e.clientY - lastY;
+                    
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+                    
+                    posX += deltaX;
+                    posY += deltaY;
+                    
+                    // Limit panning
+                    const maxX = (scale - 1) * img.width / 2;
+                    const maxY = (scale - 1) * img.height / 2;
+                    
+                    posX = Math.max(-maxX, Math.min(posX, maxX));
+                    posY = Math.max(-maxY, Math.min(posY, maxY));
+                    
+                    img.dataset.posX = posX.toString();
+                    img.dataset.posY = posY.toString();
+                    
+                    updateTransform();
+                }
+            }
+            
+            function handleMouseUp() {
+                isDragging = false;
+            }
+            
+            function handleWheel(e) {
+                e.preventDefault();
+                
+                // Get mouse position relative to image
+                const rect = img.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                
+                // Calculate image coordinates before zoom
+                const imgX = (mouseX - posX) / scale;
+                const imgY = (mouseY - posY) / scale;
+                
+                // Apply zoom
+                const delta = -e.deltaY;
+                if (delta > 0) {
+                    scale = Math.min(scale * 1.1, 3);
+                } else {
+                    scale = Math.max(scale / 1.1, 1);
+                }
+                
+                // Calculate new position to zoom toward mouse
+                posX = mouseX - imgX * scale;
+                posY = mouseY - imgY * scale;
+                
+                // Limit panning
+                const maxX = (scale - 1) * img.width / 2;
+                const maxY = (scale - 1) * img.height / 2;
+                
+                posX = Math.max(-maxX, Math.min(posX, maxX));
+                posY = Math.max(-maxY, Math.min(posY, maxY));
+                
+                img.dataset.scale = scale.toString();
+                img.dataset.posX = posX.toString();
+                img.dataset.posY = posY.toString();
+                
+                updateTransform();
+            }
+            
+            function updateTransform() {
+                img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+            }
+            
+            // Load saved transform when image loads
+            img.addEventListener('load', function() {
+                scale = parseFloat(img.dataset.scale);
+                posX = parseFloat(img.dataset.posX);
+                posY = parseFloat(img.dataset.posY);
+                updateTransform();
+            });
+        });
+        
+        // Main timer function
+        function updateTimers() {
+            const now = new Date();
+            
+            // Before exam starts
+            if (now < examStartTime) {
+                const timeLeft = examStartTime - now;
+                const minutes = Math.floor(timeLeft / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                startTimer.textContent = `Starting in: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                examTimer.textContent = "--:--:--";
+            }
+            // During exam
+            else if (now < examEndTime) {
+                waitingRoom.style.display = 'none';
+                questionsWrapper.style.display = 'flex';
+                
+                const timeLeft = examEndTime - now;
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                examTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            // Submission period
+            else if (now < new Date(examEndTime.getTime() + 15 * 60 * 1000)) {
+                questionsWrapper.style.display = 'none';
+                submissionPeriod.style.display = 'block';
+                
+                const submissionTimeLeft = new Date(examEndTime.getTime() + 15 * 60 * 1000) - now;
+                const minutes = Math.floor(submissionTimeLeft / (1000 * 60));
+                const seconds = Math.floor((submissionTimeLeft % (1000 * 60)) / 1000);
+                
+                submissionTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            // Exam completely ended
+            else {
+                endExam();
+            }
+        }
+        
+        function endExam() {
+            submissionPeriod.style.display = 'none';
+            examEnded.style.display = 'block';
+            examTimer.textContent = "Exam Ended";
+        }
+        
+        // Update timers every second
+        updateTimers();
+        setInterval(updateTimers, 1000);
+    </script>
+</body>
+</html>

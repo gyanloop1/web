@@ -1,385 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Educational Website</title>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Top navigation styles */
-        .top-nav {
-            display: flex;
-            align-items: center;
-            background-color: #1a1a1a;
-            padding: 15px 30px;
-            color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: all 0.3s ease;
-        }
-        
-        .top-nav.scrolled {
-            padding: 10px 30px;
-            background-color: rgba(26, 26, 26, 0.95);
-            backdrop-filter: blur(5px);
-        }
-        
-        .logo {
-            width: 40px;
-            height: 40px;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            background: linear-gradient(135deg, #3498db, #2c3e50);
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-        }
-        
-        .logo:hover {
-            transform: rotate(15deg) scale(1.1);
-        }
-        
-        .brand-name {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(to right, #3498db, #2ecc71);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: all 0.3s ease;
-        }
-        
-        /* Banner styles - maintaining original ratio */
-        .main-banner {
-            width: 100%;
-            display: block;
-            margin-bottom: 30px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .main-banner img {
-            width: 100%;
-            height: auto;
-            display: block;
-            filter: brightness(0.8) contrast(1.1);
-            transition: transform 5s ease;
-        }
-        
-        .main-banner:hover img {
-            transform: scale(1.05);
-        }
-        
-        /* Subjects grid */
-        .subjects-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .subjects-title {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 32px;
-            position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .subjects-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(to right, transparent, #3498db, transparent);
-            border-radius: 3px;
-        }
-        
-        .subjects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-        
-        .subject-card {
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            text-align: center;
-            padding: 25px 20px;
-            position: relative;
-            z-index: 1;
-            border: 1px solid #2d2d2d;
-        }
-        
-        .subject-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .subject-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-            border-color: #3498db;
-        }
-        
-        .subject-card:hover::before {
-            opacity: 1;
-        }
-        
-        .subject-icon {
-            font-size: 50px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease, filter 0.3s ease;
-        }
-        
-        .subject-card:hover .subject-icon {
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 5px currentColor);
-        }
-        
-        .subject-info {
-            padding: 0 10px;
-        }
-        
-        .subject-name {
-            font-size: 20px;
-            margin-bottom: 10px;
-            transition: color 0.3s ease;
-        }
-        
-        .subject-card:hover .subject-name {
-            color: white;
-        }
-        
-        .subject-desc {
-            color: #a0a0a0;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-        
-        .subject-card:hover .subject-desc {
-            color: #d0d0d0;
-        }
-        
-        /* Subject specific colors */
-        .bengali { color: #e74c3c; }
-        .english { color: #3498db; }
-        .math { color: #e67e22; }
-        .science { color: #2ecc71; }
-        .history { color: #9b59b6; }
-        .geography { color: #1abc9c; }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Apply animation to cards with delay */
-        .subject-card {
-            opacity: 0;
-            animation: fadeInUp 0.5s ease forwards;
-        }
-        
-        .subject-card:nth-child(1) { animation-delay: 0.1s; }
-        .subject-card:nth-child(2) { animation-delay: 0.2s; }
-        .subject-card:nth-child(3) { animation-delay: 0.3s; }
-        .subject-card:nth-child(4) { animation-delay: 0.4s; }
-        .subject-card:nth-child(5) { animation-delay: 0.5s; }
-        .subject-card:nth-child(6) { animation-delay: 0.6s; }
-        .subject-card:nth-child(7) { animation-delay: 0.7s; }
-        
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #3498db;
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #2980b9;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobile Video List</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 10px;
+    }
+
+    .top-banner {
+      width: 100%;
+      height: auto;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .video-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .video-card {
+      display: flex;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .video-card:hover {
+      background-color: #f0f0f0;
+    }
+
+    .thumbnail {
+      width: 130px;
+      height: 80px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .video-details {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+    }
+
+    .video-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 5px;
+    }
+
+    .video-meta {
+      font-size: 13px;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav" id="topNav">
-        <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-        </div>
-        <div class="brand-name">Gyanloop</div>
-    </nav>
-    
-    <!-- Main Banner - Now maintains original aspect ratio -->
-    <div class="main-banner">
-        <img src="https://i.ibb.co/5gtWcM7C/image.png" alt="Educational Banner">
-    </div>
-    
-    <!-- Subjects Section -->
-    <div class="subjects-container">
-        <h2 class="subjects-title">Explore Our Subjects</h2>
-        
-        <div class="subjects-grid">
-            <!-- Bengali -->
-            <div class="subject-card" onclick="window.location.href='https://gyanloop1.github.io/web/class10/bengali/list'">
-                <div class="subject-icon bengali">
-                    <i class="fas fa-language"></i>
-                </div>
-                <div class="subject-info">
-                    <h3 class="subject-name">Bengali</h3>
-                    <p class="subject-desc">Master the beautiful Bengali language and literature.</p>
-                </div>
-            </div>
-            
-            <!-- English -->
-            <div class="subject-card" onclick="window.location.href='https://gyanloop1.github.io/web/class10/english/list'">
-                <div class="subject-icon english">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <div class="subject-info">
-                    <h3 class="subject-name">English</h3>
-                    <p class="subject-desc">Improve your English language skills and comprehension.</p>
-                </div>
-            </div>
-            
-            <!-- Math -->
-            <div class="subject-card" onclick="window.location.href='https://gyanloop1.github.io/web/class10/math/list'">
-                <div class="subject-icon math">
-                    <i class="fas fa-square-root-alt"></i>
-                </div>
-                <div class="subject-info">
-                    <h3 class="subject-name">Mathematics</h3>
-                    <p class="subject-desc">Solve problems and understand mathematical concepts.</p>
-                </div>
-            </div>
-            
-            <!-- P.Science -->
-            <div class="subject-card" onclick="window.location.href='https://gyanloop1.github.io/web/class10/pscience/list'">
-                <div class="subject-icon science">
-                    <i class="fas fa-flask"></i>
-                </div>
-                <div class="subject-info">
-                    <h3 class="subject-name">P.Science</h3>
-                    <p class="subject-desc">Explore the wonders of the natural world.</p>
-                </div>
-            </div>
 
-             <!-- L.Science -->
-            <div class="subject-card" onclick="window.location.href='https://gyanloop1.github.io/web/class10/lscience/list'">
-                <div class="subject-icon science">
-                    <i class="fa-solid fa-dna"></i>
-                </div>
-                <div class="subject-info">
-                    <h3 class="subject-name">L.Science</h3>
-                    <p class="subject-desc">Explore the wonders of the natural world.</p>
-                </div>
-            </div>
-            
-            <!-- History -->
-            <div class="subject-card" onclick="window.location.href='https://gyanloop1.github.io/web/class10/history/list'">
-                <div class="subject-icon history">
-                    <i class="fas fa-landmark"></i>
-                </div>
-                <div class="subject-info">
-                    <h3 class="subject-name">History</h3>
-                    <p class="subject-desc">Learn about past events and their impact on today's world.</p>
-                </div>
-            </div>
-            
-            <!-- Geography -->
-            <div class="subject-card" onclick="window.location.href='https://gyanloop1.github.io/web/class10/geography/list'">
-                <div class="subject-icon geography">
-                    <i class="fas fa-globe-asia"></i>
-                </div>
-                <div class="subject-info">
-                    <h3 class="subject-name">Geography</h3>
-                    <p class="subject-desc">Study Earth's landscapes, environments, and people.</p>
-                </div>
-            </div>
-        </div>
+  <!-- ✅ Banner Image -->
+  <img class="top-banner" src="https://i.ibb.co/fdTGHq7c/13.png" alt="Top Banner" />
+
+  <div class="video-section">
+
+    <!-- Video 1 -->
+    <div class="video-card" onclick="redirectTo('https://gyanloop1.github.io/web/class10/bengali/list')">
+      <img class="thumbnail" src="https://i.ibb.co/8D0X6bfZ/image.png" alt="Video Thumbnail">
+      <div class="video-details">
+        <div class="video-title">BENGALI</div>
+        <div class="video-meta">বাংলার জগতে প্রবেশ করুন</div>
+      </div>
     </div>
-    
-    <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const nav = document.getElementById('topNav');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
-        
-        // Add hover effect to subject cards
-        document.querySelectorAll('.subject-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.zIndex = 10;
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.zIndex = 1;
-            });
-        });
-        
-        // Smooth scroll to top when logo is clicked
-        document.querySelector('.logo').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    </script>
+
+    <!-- Video 2 -->
+    <div class="video-card" onclick="redirectTo('https://gyanloop1.github.io/web/class10/english/list')">
+      <img class="thumbnail" src="https://i.ibb.co/Xrsm8FM2/image.png" alt="Video Thumbnail">
+      <div class="video-details">
+        <div class="video-title">English </div>
+        <div class="video-meta">ইংরেজির জগতে প্রবেশ করুন</div>
+      </div>
+    </div>
+    <!-- Video 3 -->
+    <div class="video-card" onclick="redirectTo('https://gyanloop1.github.io/web/class10/pscience/list')">
+      <img class="thumbnail" src="https://i.ibb.co/NnT4fXqC/image.png" alt="Video Thumbnail">
+      <div class="video-details">
+        <div class="video-title">PHYSICAL SCIENCE </div>
+        <div class="video-meta">ভৌত বিজ্ঞানের জগতে প্রবেশ করুন</div>
+      </div>
+    </div>
+    <!-- Video 4 -->
+    <div class="video-card" onclick="redirectTo('https://gyanloop1.github.io/web/class10/lscience/list')">
+      <img class="thumbnail" src="https://i.ibb.co/bMCg7FR2/image.png" alt="Video Thumbnail">
+      <div class="video-details">
+        <div class="video-title">LIFE SCIENCE </div>
+        <div class="video-meta">জীবন বিজ্ঞানের জগতে প্রবেশ করুন</div>
+      </div>
+    </div>
+    <!-- Video 5 -->
+    <div class="video-card" onclick="redirectTo('https://gyanloop1.github.io/web/class10/math/list')">
+      <img class="thumbnail" src="https://i.ibb.co/WpG4st94/image.png" alt="Video Thumbnail">
+      <div class="video-details">
+        <div class="video-title">MATHS </div>
+        <div class="video-meta">গণিতের জগতে প্রবেশ করুন</div>
+      </div>
+    </div>
+    <!-- Video 6 -->
+    <div class="video-card" onclick="redirectTo('https://gyanloop1.github.io/web/class10/history/list')">
+      <img class="thumbnail" src="https://i.ibb.co/mC7GXRqg/image.png" alt="Video Thumbnail">
+      <div class="video-details">
+        <div class="video-title">HISTORY</div>
+        <div class="video-meta">ইতিহাসের জগতে প্রবেশ করুন</div>
+      </div>
+    </div>
+    <!-- Video 7 -->
+    <div class="video-card" onclick="redirectTo('https://gyanloop1.github.io/web/class10/geography/list')">
+      <img class="thumbnail" src="https://i.ibb.co/5xKyt1m2/image.png" alt="Video Thumbnail">
+      <div class="video-details">
+        <div class="video-title">GEOGRAPHY </div>
+        <div class="video-meta">ভূগোল জগতে প্রবেশ করুন</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function redirectTo(url) {
+      window.open(url, '_blank'); // ✅ Opens in a new tab
+    }
+  </script>
+
 </body>
 </html>

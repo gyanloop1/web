@@ -1,265 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Learning Hub (Light Theme)</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --primary: #4A90E2; /* Blue */
-            --secondary: #E0F2F7; /* Light Blue */
-            --dark: #333333; /* Dark gray for text */
-            --light: #FFFFFF; /* White for background */
-            --success: #4CAF50;
-            --warning: #FF9800;
-            --danger: #F44336;
-            --card-bg: #F8F8F8; /* Very light gray for cards */
-            --text-muted: #666666; /* Medium gray for muted text */
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Alkatra', cursive, sans-serif;
-        }
-        
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .header h1 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-family: 'Tiro Bangla', serif;
-        }
-        
-        .header p {
-            color: var(--text-muted);
-        }
-        
-        .chapters-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .chapters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .chapter-card {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); /* Lighter shadow */
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid #DDDDDD; /* Lighter border */
-        }
-        
-        .chapter-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.2); /* Primary color for hover shadow */
-        }
-        
-        .chapter-icon {
-            width: 60px;
-            height: 60px;
-            background-color: var(--secondary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            color: var(--primary);
-            font-size: 24px;
-            transition: all 0.3s;
-        }
-        
-        .chapter-card:hover .chapter-icon {
-            background-color: var(--primary);
-            color: white;
-            transform: rotate(5deg) scale(1.1);
-        }
-        
-        .chapter-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            text-align: center;
-            color: var(--dark);
-            font-family: 'Tiro Bangla', serif;
-        }
-        
-        .subtopics-container {
-            display: none;
-            margin-top: 15px;
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .subtopic-btn {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 8px 12px;
-            margin-bottom: 8px;
-            background-color: #EFEFEF; /* Slightly darker than card-bg */
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: left;
-            color: var(--dark);
-        }
-        
-        .subtopic-btn:hover {
-            background-color: #DDDDDD; /* Even darker on hover */
-            transform: translateX(5px);
-        }
-        
-        .subtopic-btn i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-        
-        .subtopic-name {
-            font-size: 14px;
-            font-family: 'Alkatra', cursive, sans-serif;
-        }
-        
-        .active-chapter .subtopics-container {
-            display: block;
-        }
-        
-        .active-chapter {
-            border: 2px solid var(--primary);
-        }
-        
-        .back-btn {
-            display: none;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 20px;
-        }
-        
-        .back-btn:hover {
-            background-color: #3A80D5; /* Slightly darker primary on hover */
-        }
-        
-        @media (max-width: 768px) {
-            .chapters-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Learning Hub (Light Theme)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #4A90E2;
+      --secondary: #E0F2F7;
+      --dark: #333;
+      --light: #fff;
+      --card-bg: #F8F8F8;
+      --text-muted: #666;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Alkatra', cursive, sans-serif;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      color: var(--primary);
+      font-family: 'Tiro Bangla', serif;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: var(--text-muted);
+    }
+
+    .chapters-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .chapter-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid #DDDDDD;
+    }
+
+    .chapter-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(74, 144, 226, 0.2);
+    }
+
+    .chapter-icon {
+      width: 60px;
+      height: 60px;
+      background-color: var(--secondary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      color: var(--primary);
+      font-size: 24px;
+      transition: all 0.3s;
+    }
+
+    .chapter-card:hover .chapter-icon {
+      background-color: var(--primary);
+      color: white;
+      transform: rotate(5deg) scale(1.1);
+    }
+
+    .chapter-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-align: center;
+      color: var(--dark);
+      font-family: 'Tiro Bangla', serif;
+    }
+
+    .subtopics-container {
+      display: none;
+      margin-top: 15px;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .subtopic-btn {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      width: 100%;
+      background-color: var(--light);
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .subtopic-btn:hover {
+      background-color: #f1f1f1;
+    }
+
+    .subtopic-btn .video-thumbnail {
+      width: 120px;
+      height: auto;
+      border-radius: 8px;
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+
+    .video-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .video-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--dark);
+      font-family: 'Tiro Bangla', serif;
+    }
+
+    .subtopic-name {
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .video-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .active-chapter .subtopics-container {
+      display: block;
+    }
+
+    .active-chapter {
+      border: 2px solid var(--primary);
+    }
+
+    .back-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+      background-color: #3A80D5;
+    }
+
+    @media (max-width: 768px) {
+      .chapters-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Recorded classes </h1>
-        <p>Explore math chapters and their sub-topics</p>
-    </div>
-    
-    <div class="chapters-container">
-        <button class="back-btn" onclick="showAllChapters()">
-            <i class="fas fa-arrow-left"></i> Back to All Chapters
-        </button>
-        
-        <div class="chapters-grid" id="chaptersGrid">
-            <div class="chapter-card" onclick="showSubtopics(this, 'ekchalbishishto-dighat-somikoron')">
-                <div class="chapter-icon">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="chapter-title">একচলবিশিষ্ট দ্বিঘাত সমীকরণ</div>
-                <div class="subtopics-container">
-                    
-                    <button class="subtopic-btn" onclick="window.open('https://youtu.be/8wV1xaV81TI', '_blank')">
-                        <i class="fa-brands fa-youtube"></i>
-                        <span class="subtopic-name">live class recording 1/6/25</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="window.open('https://youtu.be/IYB0q0mf4II', '_blank')">
-                        <i class="fa-brands fa-youtube"></i>
-                        <span class="subtopic-name">live class recording 9/6/25</span>
-                    </button>
-                    
-                </div>
+  <div class="header">
+    <h1>Recorded classes</h1>
+    <p>Explore math chapters and their sub-topics</p>
+  </div>
+
+  <div class="chapters-container">
+    <button class="back-btn" onclick="showAllChapters()">
+      <i class="fas fa-arrow-left"></i> Back to All Chapters
+    </button>
+
+    <div class="chapters-grid" id="chaptersGrid">
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon"><i class="fas fa-book"></i></div>
+        <div class="chapter-title">একচলবিশিষ্ট দ্বিঘাত সমীকরণ</div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://youtu.be/8wV1xaV81TI', '_blank')">
+            <img src="https://img.youtube.com/vi/8wV1xaV81TI/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <div class="video-info">
+              <div class="video-title">Quadratic Equations - Class 1</div>
+              <div class="subtopic-name">Live Class Recording - 1/6/25</div>
+              <div class="video-date">Published: June 1, 2025</div>
             </div>
-              <div class="chapter-card" onclick="showSubtopics(this, 'ekchalbishishto-dighat-somikoron')">
-                <div class="chapter-icon">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="chapter-title">কোন পরিমাপের ধারণা</div>
-                <div class="subtopics-container">
-                    <button class="subtopic-btn" onclick="window.open(' https://youtu.be/UnD2Rl3UA9E ', '_blank')">
-                        <i class="fa-brands fa-youtube"></i>
-                        <span class="subtopic-name">live class recording 21/6/25</span>
-                    </button>
-                    <button class="subtopic-btn" onclick="window.open(' https://youtu.be/welOroS61Lw  ', '_blank')">
-                        <i class="fa-brands fa-youtube"></i>
-                        <span class="subtopic-name">live class recording 22/6/25</span>
-                    </button>
-                </div>
+          </button>
+          <button class="subtopic-btn" onclick="window.open('https://youtu.be/IYB0q0mf4II', '_blank')">
+            <img src="https://img.youtube.com/vi/IYB0q0mf4II/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <div class="video-info">
+              <div class="video-title">Quadratic Equations - Class 2</div>
+              <div class="subtopic-name">Live Class Recording - 9/6/25</div>
+              <div class="video-date">Published: June 9, 2025</div>
             </div>
-           
+          </button>
         </div>
+      </div>
+
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon"><i class="fas fa-book"></i></div>
+        <div class="chapter-title">কোন পরিমাপের ধারণা</div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://youtu.be/UnD2Rl3UA9E', '_blank')">
+            <img src="https://img.youtube.com/vi/UnD2Rl3UA9E/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <div class="video-info">
+              <div class="video-title">Angle Measurement - Intro</div>
+              <div class="subtopic-name">Live Class Recording - 21/6/25</div>
+              <div class="video-date">Published: June 21, 2025</div>
+            </div>
+          </button>
+          <button class="subtopic-btn" onclick="window.open('https://youtu.be/welOroS61Lw', '_blank')">
+            <img src="https://img.youtube.com/vi/welOroS61Lw/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <div class="video-info">
+              <div class="video-title">Angle Measurement - Advanced</div>
+              <div class="subtopic-name">Live Class Recording - 22/6/25</div>
+              <div class="video-date">Published: June 22, 2025</div>
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // Show subtopics for a chapter
-        function showSubtopics(card, chapter) {
-            // Hide all chapter cards
-            const allCards = document.querySelectorAll('.chapter-card');
-            allCards.forEach(c => {
-                c.classList.remove('active-chapter');
-                c.style.display = 'none';
-            });
-            
-            // Show only the selected chapter card
-            card.classList.add('active-chapter');
-            card.style.display = 'block';
-            
-            // Show the back button
-            document.querySelector('.back-btn').style.display = 'block';
-        }
+  <script>
+    function showSubtopics(card) {
+      const allCards = document.querySelectorAll('.chapter-card');
+      allCards.forEach(c => {
+        c.classList.remove('active-chapter');
+        c.style.display = 'none';
+      });
 
-        // Show all chapters
-        function showAllChapters() {
-            const allCards = document.querySelectorAll('.chapter-card');
-            allCards.forEach(c => {
-                c.classList.remove('active-chapter');
-                c.style.display = 'block'; // Show all cards again
-            });
-            // Hide the back button
-            document.querySelector('.back-btn').style.display = 'none';
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+      card.classList.add('active-chapter');
+      card.style.display = 'block';
+      document.querySelector('.back-btn').style.display = 'block';
+    }
+
+    function showAllChapters() {
+      const allCards = document.querySelectorAll('.chapter-card');
+      allCards.forEach(c => {
+        c.classList.remove('active-chapter');
+        c.style.display = 'block';
+      });
+      document.querySelector('.back-btn').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
-
-

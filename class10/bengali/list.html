@@ -33,6 +33,49 @@
       min-height: 100vh;
     }
 
+    /* Disclaimer Popup */
+    #disclaimerPopup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    #disclaimerPopup .popup-box {
+      background: #fff;
+      padding: 30px;
+      max-width: 600px;
+      border-radius: 10px;
+      text-align: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #disclaimerPopup h2 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    #disclaimerPopup p {
+      font-size: 15px;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    #disclaimerPopup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4A90E2;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
     .top-banner img {
       width: 100%;
       max-width: 100%;
@@ -191,49 +234,114 @@
         grid-template-columns: 1fr;
       }
     }
-    /* Image Button Styles */
-        .image-btn-container {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .image-btn {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .image-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
-            border-color: var(--primary-color);
-        }
   </style>
 </head>
 <body>
+
+  <!-- Disclaimer Popup -->
+  <div id="disclaimerPopup">
+    <div class="popup-box">
+      <h2>Disclaimer & Credit Notice</h2>
+      <p>
+        We do not own the rights to the YouTube videos shared on this website. All videos are the original works of their respective creators and are publicly available on YouTube.<br><br>
+        These videos are shared solely for educational purposes to help students. Full credit goes to the original creators.<br><br>
+        If you're a content owner and would like any content removed, please contact us.
+      </p>
+      <button onclick="agreeDisclaimer()">I Agree</button>
+    </div>
+  </div>
 
   <!-- Top banner image -->
   <div class="top-banner" id="topBanner">
     <img src="https://i.ibb.co/y9PfYgY/image.png" alt="Top Banner">
   </div>
- <!-- Image Button that redirects to gyanloop.com -->
-            <div class="image-btn-container">
-                <a href="https://sites.google.com/view/gyanloop-class/class" target="_blank">
-                    <img src="https://i.ibb.co/5X1WXqDm/5.png" alt="Join Live Class" class="image-btn">
-                </a>
+
+  <div class="chapters-container">
+    <button class="back-btn" onclick="showAllChapters()">
+      <i class="fas fa-arrow-left"></i> Back to All Chapters
+    </button>
+
+    <div class="chapters-grid" id="chaptersGrid">
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/y12DRRM/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-title">জ্ঞানচক্ষু</div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=GUZRox5RICw', '_blank')">
+            <img src="https://img.youtube.com/vi/GUZRox5RICw/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <div class="video-info">
+              <div class="video-title">জ্ঞানচক্ষু গল্পের সম্পূর্ণ আলোচনা</div>
+              
+              <div class="video-date">Credit: Smarat Exclusive</div>
             </div>
-             <div class="image-btn-container">
-                <a href="https://gyanloop1.github.io/web/mathx/allchapter" target="_blank">
-                    <img src="https://i.ibb.co/wNKkZws3/3.png" alt="Join Live Class" class="image-btn">
-                </a>
+          </button>
+          <button class="subtopic-btn" onclick="window.open('https://youtu.be/9nZNhHp-3IQ', '_blank')">
+            <img src="https://img.youtube.com/vi/9nZNhHp-3IQ/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <div class="video-info">
+              <div class="video-title">জ্ঞানচক্ষু নাটক</div>
+              
+              <div class="video-date">Credit: Saptarshi</div>
             </div>
-            
-        
+          </button>
+        </div>
+      </div>
+
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/nMcTbhpn/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-title">কঅসুখী একজন</div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://youtu.be/wh0fAPZVOPc', '_blank')">
+            <img src="https://img.youtube.com/vi/wh0fAPZVOPc/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <div class="video-info">
+              <div class="video-title">অসুখী একজন কবিতার বিষয়বস্তু</div>
+              
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+          
+        </div>
+      </div>
+      <div class="chapters-grid" id="chaptersGrid">
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/y12DRRM/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-title">জ্ঞানচক্ষু</div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=GUZRox5RICw', '_blank')">
+            <img src="https://img.youtube.com/vi/GUZRox5RICw/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <div class="video-info">
+              <div class="video-title">জ্ঞানচক্ষু গল্পের সম্পূর্ণ আলোচনা</div>
+              
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+          <button class="subtopic-btn" onclick="window.open('https://youtu.be/9nZNhHp-3IQ', '_blank')">
+            <img src="https://img.youtube.com/vi/9nZNhHp-3IQ/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <div class="video-info">
+              <div class="video-title">জ্ঞানচক্ষু নাটক</div>
+              
+              <div class="video-date">Credit: Saptarshi</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
+    function agreeDisclaimer() {
+      document.getElementById('disclaimerPopup').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    window.onload = function () {
+      document.body.style.overflow = 'hidden';
+    };
+
     function showSubtopics(card) {
       const allCards = document.querySelectorAll('.chapter-card');
       allCards.forEach(c => {
@@ -244,8 +352,6 @@
       card.classList.add('active-chapter');
       card.style.display = 'block';
       document.querySelector('.back-btn').style.display = 'block';
-
-      // Hide banner when subtopics show
       document.getElementById('topBanner').style.display = 'none';
     }
 
@@ -257,12 +363,8 @@
       });
 
       document.querySelector('.back-btn').style.display = 'none';
-
-      // Show banner again
       document.getElementById('topBanner').style.display = 'block';
     }
   </script>
 </body>
 </html>
-
-

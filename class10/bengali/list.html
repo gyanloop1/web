@@ -1,436 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genius Nest</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #4A90E2;
+      --secondary: #E0F2F7;
+      --dark: #333;
+      --light: #fff;
+      --card-bg: #F8F8F8;
+      --text-muted: #666;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Alkatra', cursive, sans-serif;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .top-banner img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .chapters-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .chapter-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid #DDDDDD;
+    }
+
+    .chapter-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(74, 144, 226, 0.2);
+    }
+
+    .chapter-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 0 auto 15px;
+      transition: all 0.3s;
+    }
+
+    .chapter-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .chapter-card:hover .chapter-icon {
+      transform: rotate(5deg) scale(1.1);
+    }
+
+    .chapter-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-align: center;
+      color: var(--dark);
+      font-family: 'Tiro Bangla', serif;
+    }
+
+    .subtopics-container {
+      display: none;
+      margin-top: 15px;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .subtopic-btn {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      width: 100%;
+      background-color: var(--light);
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .subtopic-btn:hover {
+      background-color: #f1f1f1;
+    }
+
+    .subtopic-btn .video-thumbnail {
+      width: 120px;
+      height: auto;
+      border-radius: 8px;
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+
+    .video-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .video-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--dark);
+      font-family: 'Tiro Bangla', serif;
+    }
+
+    .subtopic-name {
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .video-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .active-chapter .subtopics-container {
+      display: block;
+    }
+
+    .active-chapter {
+      border: 2px solid var(--primary);
+    }
+
+    .back-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+      background-color: #3A80D5;
+    }
+
+    @media (max-width: 768px) {
+      .chapters-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    /* Image Button Styles */
+        .image-btn-container {
+            margin-top: 30px;
+            text-align: center;
         }
-        
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            min-height: 100vh;
-            padding-top: 70px; /* To account for fixed navbar */
-        }
-        
-        /* Top Navigation - Now Fixed */
-        .top-nav {
-            background-color: #1e1e1e;
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        .brand-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        
-        .brand-name span {
-            color: #4dabf7;
-        }
-        
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: #e0e0e0;
-            font-size: 1.2rem;
+
+        .image-btn {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-        
-        .theme-toggle:hover {
-            background-color: #333;
-        }
-        
-        /* Banner - Adjusted for fixed nav */
-        .banner {
-            width: 100%;
-            height: 300px;
-            background: url('https://i.ibb.co/Myf3sZGH/image.png') center/cover no-repeat;
-            margin-bottom: 2rem;
-            position: relative;
-            margin-top: -70px; /* Counteract body padding */
-            padding-top: 70px; /* Make content appear below nav */
-        }
-        
-        /* MCQ Test Button */
-        .mcq-button-container {
-            display: flex;
-            justify-content: center;
-            margin: -1rem auto 2rem auto;
-            max-width: 1400px;
-            padding: 0 2rem;
+            border: 2px solid transparent;
         }
 
-        .mcq-button {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background-color: #4dabf7;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(77, 171, 247, 0.4);
-            font-weight: 600;
-            text-decoration: none;
+        .image-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+            border-color: var(--primary-color);
         }
-
-        .mcq-button:hover {
-            background-color: #3b8fd6;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(77, 171, 247, 0.6);
-        }
-
-        .mcq-button i {
-            font-size: 1.2rem;
-            margin-right: 0.8rem;
-        }
-        
-        /* Main Content */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem 3rem;
-        }
-        
-        /* Buttons Grid */
-        .buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        /* Main Button Style */
-        .main-button {
-            display: flex;
-            align-items: center;
-            padding: 1.2rem 1.5rem;
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-            min-height: 80px;
-            width: 100%;
-        }
-        
-        .main-button:hover {
-            background-color: #2d2d2d;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-        
-        .main-button.active {
-            background-color: #4dabf7;
-            color: white;
-        }
-        
-        .main-button.active i {
-            color: white;
-        }
-        
-        .main-button i {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: #4dabf7;
-            transition: all 0.3s ease;
-            min-width: 30px;
-        }
-        
-        .main-button:hover i {
-            transform: scale(1.1);
-        }
-        
-        .button-text h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-            line-height: 1.4;
-        }
-        
-        /* Sub Buttons Container */
-        .sub-buttons {
-            grid-column: 1 / -1;
-            display: none;
-            background-color: #252525;
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            margin-top: -0.5rem;
-            margin-bottom: 1rem;
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .sub-buttons.active {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-        
-        /* Sub Button Style */
-        .sub-button {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem 1rem;
-            background-color: #333;
-            color: #e0e0e0;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: left;
-            text-decoration: none;
-        }
-        
-        .sub-button:hover {
-            background-color: #4dabf7;
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .sub-button i {
-            font-size: 1rem;
-            margin-right: 0.8rem;
-            color: #4dabf7;
-            transition: all 0.2s ease;
-        }
-        
-        .sub-button:hover i {
-            color: white;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            body {
-                padding-top: 60px;
-            }
-            
-            .top-nav {
-                padding: 0.8rem 1rem;
-            }
-            
-            .banner {
-                margin-top: -60px;
-                padding-top: 60px;
-                height: 250px;
-            }
-            
-            .container {
-                padding: 0 1rem 2rem;
-            }
-            
-            .buttons-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .mcq-button-container {
-                padding: 0 1rem;
-                margin-bottom: 1.5rem;
-            }
-        }
-
-        /* Light theme styles for MCQ button */
-        body.light-theme .mcq-button {
-            background-color: #1e88e5;
-            box-shadow: 0 4px 15px rgba(30, 136, 229, 0.4);
-        }
-
-        body.light-theme .mcq-button:hover {
-            background-color: #1976d2;
-            box-shadow: 0 6px 20px rgba(30, 136, 229, 0.6);
-        }
-    </style>
+  </style>
 </head>
 <body>
-    <!-- Top Navigation - Now Fixed -->
-    <nav class="top-nav">
-        <div class="brand-name">Gyanloop <span>বাংলা
-</span></div>
-        <button class="theme-toggle" id="themeToggle">
-            <i class="fas fa-moon"></i>
-        </button>
-    </nav>
-    
-    <!-- Banner -->
-    <div class="banner"></div>
 
-    <!-- MCQ Test Button -->
-    <div class="mcq-button-container">
-        <a href="https://gyanloop1.github.io/web/mcq/bengali/sublist" class="mcq-button">
-            <i class="fas fa-clipboard-list"></i>
-            <span>Take MCQ Test Now</span>
-        </a>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="container">
-        <div class="buttons-grid">
-            <!-- Math Topic Buttons -->
-           <button class="main-button" onclick="toggleSubButtons(this, 'quadratic')">
-    <i class="fad fa-clipboard"></i>
-    <div class="button-text">
-        <h3>mcq test </h3>
-    </div>
-</button>
+  <!-- Top banner image -->
+  <div class="top-banner" id="topBanner">
+    <img src="https://i.ibb.co/y9PfYgY/image.png" alt="Top Banner">
+  </div>
+ <!-- Image Button that redirects to gyanloop.com -->
+            <div class="image-btn-container">
+                <a href="https://sites.google.com/view/gyanloop-class/class" target="_blank">
+                    <img src="https://i.ibb.co/5X1WXqDm/5.png" alt="Join Live Class" class="image-btn">
+                </a>
+            </div>
+             <div class="image-btn-container">
+                <a href="https://gyanloop1.github.io/web/mathx/allchapter" target="_blank">
+                    <img src="https://i.ibb.co/wNKkZws3/3.png" alt="Join Live Class" class="image-btn">
+                </a>
+            </div>
+            
+        
 
-<div class="sub-buttons" id="quadratic">
-    <a href="https://gyanloop1.github.io/web/mcq/bengali/sublist" class="sub-button">
-       <i class="fa-regular fa-clipboard"></i>
-        <div class="button-text">go</div>
-    </a>
-    
-</div>
+  <script>
+    function showSubtopics(card) {
+      const allCards = document.querySelectorAll('.chapter-card');
+      allCards.forEach(c => {
+        c.classList.remove('active-chapter');
+        c.style.display = 'none';
+      });
 
+      card.classList.add('active-chapter');
+      card.style.display = 'block';
+      document.querySelector('.back-btn').style.display = 'block';
 
-            
-            <!-- Continue with all other topics following the same pattern -->
-        </div>
-    </div>
-    
-    <script>
-        // Toggle sub-buttons
-        function toggleSubButtons(button, subId) {
-            // Close all other sub-buttons first
-            document.querySelectorAll('.sub-buttons').forEach(sub => {
-                if (sub.id !== subId) {
-                    sub.classList.remove('active');
-                    const mainBtn = document.querySelector(`.main-button[onclick*="${sub.id}"]`);
-                    if (mainBtn) mainBtn.classList.remove('active');
-                }
-            });
-            
-            // Toggle the clicked one
-            const subButtons = document.getElementById(subId);
-            subButtons.classList.toggle('active');
-            button.classList.toggle('active');
-        }
-        
-        // Close sub-buttons when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.main-button') && !event.target.closest('.sub-buttons')) {
-                document.querySelectorAll('.sub-buttons').forEach(sub => {
-                    sub.classList.remove('active');
-                });
-                document.querySelectorAll('.main-button').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-            }
-        });
-        
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('light-theme');
-            
-            if (document.body.classList.contains('light-theme')) {
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('theme', 'light');
-            } else {
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-        
-        // Check for saved theme preference
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-theme');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-        
-        // Add light theme styles
-        const style = document.createElement('style');
-        style.textContent = `
-            body.light-theme {
-                background-color: #f5f5f5;
-                color: #333;
-            }
-            
-            body.light-theme .top-nav {
-                background-color: #4dabf7;
-                color: white;
-            }
-            
-            body.light-theme .main-button {
-                background-color: white;
-                color: #333;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            
-            body.light-theme .main-button:hover {
-                background-color: #f0f0f0;
-            }
-            
-            body.light-theme .sub-buttons {
-                background-color: #f0f0f0;
-            }
-            
-            body.light-theme .sub-button {
-                background-color: #e0e0e0;
-                color: #333;
-            }
-            
-            body.light-theme .banner {
-                background-image: url('https://i.ibb.co/Myf3sZGH/image.png');
-            }
-            
-            body.light-theme .sub-button i {
-                color: #4dabf7;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Animation for buttons when they come into view
-        document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('.main-button');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            buttons.forEach((button, index) => {
-                button.style.opacity = '0';
-                button.style.transform = 'translateY(20px)';
-                button.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
-                observer.observe(button);
-            });
-        });
-    </script>
+      // Hide banner when subtopics show
+      document.getElementById('topBanner').style.display = 'none';
+    }
+
+    function showAllChapters() {
+      const allCards = document.querySelectorAll('.chapter-card');
+      allCards.forEach(c => {
+        c.classList.remove('active-chapter');
+        c.style.display = 'block';
+      });
+
+      document.querySelector('.back-btn').style.display = 'none';
+
+      // Show banner again
+      document.getElementById('topBanner').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
+
+

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Toll Map Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+        
+        .map-container {
+            position: relative;
+            margin: 20px auto;
+            border: 2px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .map-container:hover {
+            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+        }
+        
+        #india-map {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        #india-map:hover {
+            transform: scale(1.01);
+        }
+        
+        .marker {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        
+        .marker:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        }
+        
+        .marker.correct {
+            background-color: #2ecc71;
+            animation: pulse 0.5s 2;
+        }
+        
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.3); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 25px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        #start-btn {
+            background-color: #2ecc71;
+        }
+        
+        #start-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        #submit-btn {
+            background-color: #f39c12;
+        }
+        
+        #submit-btn:hover {
+            background-color: #e67e22;
+        }
+        
+        #reset-btn {
+            background-color: #e74c3c;
+        }
+        
+        #reset-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        #question-display {
+            font-size: 20px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #2c3e50;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        #result-display {
+            font-size: 18px;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            min-height: 27px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        #result-display.show {
+            opacity: 1;
+            height: auto;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #2ecc71;
+        }
+        
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .toll-info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e7f1ff;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .toll-info h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        
+        .toll-info p {
+            color: #34495e;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            #question-display {
+                font-size: 18px;
+                padding: 12px;
+            }
+            
+            button {
+                padding: 10px 20px;
+                font-size: 15px;
+                flex: 1 1 100%;
+            }
+            
+            .controls {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>India Toll Location Quiz</h1>
+        
+        <div id="question-display">Click "Start Quiz" to begin</div>
+        
+        <div class="map-container">
+            <img id="india-map" src="https://i.ibb.co/Kcvr5d9b/image.png" alt="India Map">
+            <div id="marker-container"></div>
+        </div>
+        
+        <div id="result-display"></div>
+        
+        <div class="controls">
+            <button id="start-btn">Start Quiz</button>
+            <button id="submit-btn" disabled>Submit Answer</button>
+            <button id="reset-btn">Reset</button>
+        </div>
+        
+        <div class="toll-info">
+            <h3>About Toll Plazas in India</h3>
+            <p>India has an extensive network of national highways with toll plazas. Major toll plazas are located at strategic points on highways connecting major cities. The National Highways Authority of India (NHAI) manages most toll collection in the country.</p>
+        </div>
+    </div>
+
+    <script>
+        // Toll locations with coordinates (x%, y% of the map image)
+        const tollLocations = [
+            { name: "Delhi", x: 34, y: 27 },
+            { name: "Mumbai", x: 25, y: 45 },
+            { name: "Bangalore", x: 40, y: 70 },
+            { name: "Chennai", x: 55, y: 65 },
+            { name: "Kolkata", x: 65, y: 35 },
+            { name: "Hyderabad", x: 45, y: 55 }
+        ];
+        
+        // DOM elements
+        const mapContainer = document.querySelector('.map-container');
+        const indiaMap = document.getElementById('india-map');
+        const markerContainer = document.getElementById('marker-container');
+        const questionDisplay = document.getElementById('question-display');
+        const resultDisplay = document.getElementById('result-display');
+        const startBtn = document.getElementById('start-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        
+        // Quiz variables
+        let currentQuestion = null;
+        let userMarker = null;
+        let mapWidth, mapHeight;
+        
+        // Initialize the map dimensions
+        function initMapDimensions() {
+            mapWidth = indiaMap.offsetWidth;
+            mapHeight = indiaMap.offsetHeight;
+        }
+        
+        // Start the quiz
+        function startQuiz() {
+            // Reset previous state
+            resetQuiz();
+            
+            // Select a random toll location
+            currentQuestion = tollLocations[Math.floor(Math.random() * tollLocations.length)];
+            
+            // Display the question with animation
+            questionDisplay.style.animation = 'none';
+            void questionDisplay.offsetWidth; // Trigger reflow
+            questionDisplay.style.animation = 'fadeIn 0.5s ease';
+            questionDisplay.textContent = `Where is the toll plaza near ${currentQuestion.name} located?`;
+            
+            // Enable submit button
+            submitBtn.disabled = false;
+            
+            // Initialize map click handler
+            indiaMap.addEventListener('click', placeMarker);
+        }
+        
+        // Place marker on map click
+        function placeMarker(e) {
+            // Remove previous marker if exists
+            if (userMarker) {
+                markerContainer.removeChild(userMarker);
+            }
+            
+            // Calculate position relative to the map
+            const rect = indiaMap.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / mapWidth) * 100;
+            const y = ((e.clientY - rect.top) / mapHeight) * 100;
+            
+            // Create new marker
+            userMarker = document.createElement('div');
+            userMarker.className = 'marker';
+            userMarker.style.left = `${x}%`;
+            userMarker.style.top = `${y}%`;
+            
+            // Add animation
+            userMarker.style.transform = 'translate(-50%, -50%) scale(0)';
+            setTimeout(() => {
+                userMarker.style.transform = 'translate(-50%, -50%) scale(1)';
+            }, 10);
+            
+            // Store the coordinates
+            userMarker.dataset.x = x;
+            userMarker.dataset.y = y;
+            
+            markerContainer.appendChild(userMarker);
+        }
+        
+        // Check the answer
+        function checkAnswer() {
+            if (!userMarker || !currentQuestion) return;
+            
+            const userX = parseFloat(userMarker.dataset.x);
+            const userY = parseFloat(userMarker.dataset.y);
+            const correctX = currentQuestion.x;
+            const correctY = currentQuestion.y;
+            
+            // Calculate distance between user's marker and correct location
+            const distance = Math.sqrt(Math.pow(userX - correctX, 2) + Math.pow(userY - correctY, 2));
+            
+            // Threshold for considering the answer correct (adjust as needed)
+            const threshold = 5;
+            
+            if (distance <= threshold) {
+                resultDisplay.textContent = "Correct! Well done!";
+                resultDisplay.className = "result-display correct show";
+                
+                // Make user marker green and animate
+                userMarker.classList.add('correct');
+                
+                // Show confetti effect
+                showConfetti();
+            } else {
+                resultDisplay.textContent = `Incorrect. The correct location is marked in green.`;
+                resultDisplay.className = "result-display incorrect show";
+                
+                // Show correct location with animation
+                const correctMarker = document.createElement('div');
+                correctMarker.className = 'marker correct';
+                correctMarker.style.left = `${correctX}%`;
+                correctMarker.style.top = `${correctY}%`;
+                correctMarker.style.zIndex = '1';
+                markerContainer.appendChild(correctMarker);
+                
+                // Add line between markers
+                drawLine(userMarker, correctMarker);
+            }
+            
+            // Disable further interaction
+            submitBtn.disabled = true;
+            indiaMap.removeEventListener('click', placeMarker);
+        }
+        
+        // Draw line between two markers
+        function drawLine(marker1, marker2) {
+            const line = document.createElement('div');
+            line.className = 'distance-line';
+            
+            const x1 = parseFloat(marker1.style.left);
+            const y1 = parseFloat(marker1.style.top);
+            const x2 = parseFloat(marker2.style.left);
+            const y2 = parseFloat(marker2.style.top);
+            
+            // Calculate line properties
+            const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+            
+            // Position the line
+            line.style.position = 'absolute';
+            line.style.left = `${x1}%`;
+            line.style.top = `${y1}%`;
+            line.style.width = `${length}%`;
+            line.style.height = '2px';
+            line.style.backgroundColor = '#e74c3c';
+            line.style.transformOrigin = '0 0';
+            line.style.transform = `rotate(${angle}deg)`;
+            line.style.zIndex = '5';
+            
+            markerContainer.appendChild(line);
+        }
+        
+        // Simple confetti effect
+        function showConfetti() {
+            const colors = ['#2ecc71', '#3498db', '#e74c3c', '#f1c40f', '#9b59b6'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.position = 'absolute';
+                confetti.style.width = '8px';
+                confetti.style.height = '8px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = '50%';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${Math.random() * 30}%`;
+                confetti.style.zIndex = '100';
+                confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
+                
+                document.querySelector('.map-container').appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+            
+            // Add CSS for animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes confetti-fall {
+                    0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+                    100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Reset the quiz
+        function resetQuiz() {
+            // Clear markers with animation
+            markerContainer.querySelectorAll('.marker, .distance-line').forEach(el => {
+                el.style.transition = 'all 0.3s ease';
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.remove();
+                }, 300);
+            });
+            
+            // Clear confetti
+            document.querySelectorAll('.confetti').forEach(el => el.remove());
+            
+            userMarker = null;
+            currentQuestion = null;
+            
+            // Reset displays with animation
+            questionDisplay.style.animation = 'none';
+            void questionDisplay.offsetWidth;
+            questionDisplay.style.animation = 'fadeIn 0.5s ease';
+            questionDisplay.textContent = 'Click "Start Quiz" to begin';
+            
+            resultDisplay.className = 'result-display';
+            resultDisplay.textContent = '';
+            
+            // Reset buttons
+            submitBtn.disabled = true;
+            
+            // Remove event listener
+            indiaMap.removeEventListener('click', placeMarker);
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', checkAnswer);
+        resetBtn.addEventListener('click', resetQuiz);
+        
+        // Initialize when image is loaded
+        indiaMap.addEventListener('load', initMapDimensions);
+        
+        // Also handle window resize
+        window.addEventListener('resize', initMapDimensions);
+        
+        // Initial setup
+        initMapDimensions();
+    </script>
+</body>
+</html>

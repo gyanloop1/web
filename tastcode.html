@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Geography Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            touch-action: manipulation;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: 0;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .question-title {
+            margin: 5px 0;
+            font-size: 1.2em;
+            color: #333;
+            font-weight: bold;
+            padding: 0 10px;
+            text-align: center;
+            word-break: break-word;
+        }
+        
+        .container {
+            position: relative;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        #question-image {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            display: block;
+        }
+        
+        #answer-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        #answer-image.show {
+            opacity: 0.8;
+        }
+        
+        #drawing-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            flex: 1 1 120px;
+            min-width: 0;
+            white-space: nowrap;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        button i {
+            font-size: 14px;
+        }
+        
+        #show-answer-btn {
+            background-color: #2196F3;
+        }
+        
+        #clear-btn {
+            background-color: #f44336;
+        }
+        
+        #save-btn {
+            background-color: #FF9800;
+        }
+        
+        #saved-list-btn {
+            background-color: #9C27B0;
+        }
+        
+        #prev-btn {
+            background-color: #607D8B;
+        }
+        
+        #next-btn {
+            background-color: #009688;
+        }
+        
+        .tool-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 800px;
+            padding: 0 10px;
+        }
+        
+        .tool-options label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .tool-options input[type="radio"] {
+            margin: 0;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .modal-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+        }
+        
+        .saved-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .saved-item:last-child {
+            border-bottom: none;
+        }
+        
+        .saved-item button {
+            padding: 5px 10px;
+            font-size: 12px;
+            flex: 0 0 auto;
+        }
+        
+        @media (max-width: 480px) {
+            button {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+            
+            button i {
+                font-size: 12px;
+            }
+            
+            .question-title {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="question-title" id="question-title">Question 1: Mark the Himalayas</div>
+    </div>
+    
+    <div class="tool-options">
+        <label>
+            <input type="radio" name="tool" value="draw" checked>
+            <i class="fas fa-pen"></i> Draw (Red)
+        </label>
+        <label>
+            <input type="radio" name="tool" value="erase">
+            <i class="fas fa-eraser"></i> Eraser
+        </label>
+    </div>
+    
+    <div class="container">
+        <img id="question-image" src="https://i.ibb.co/jPXfb9nW/image.png" alt="Question Image">
+        <img id="answer-image" src="https://i.ibb.co/qbGfcdz/image.png" alt="Answer Image">
+        <canvas id="drawing-canvas"></canvas>
+    </div>
+    
+    <div class="controls">
+        <button id="prev-btn"><i class="fas fa-arrow-left"></i> Previous</button>
+        <button id="show-answer-btn"><i class="fas fa-eye"></i> Show Answer</button>
+        <button id="clear-btn"><i class="fas fa-trash-alt"></i> Clear</button>
+        <button id="save-btn"><i class="fas fa-save"></i> Save</button>
+        <button id="saved-list-btn"><i class="fas fa-list"></i> Saved</button>
+        <button id="next-btn"><i class="fas fa-arrow-right"></i> Next</button>
+    </div>
+    
+    <div class="modal" id="saved-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Saved Questions</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="saved-list"></div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const questionTitle = document.getElementById('question-title');
+            const questionImage = document.getElementById('question-image');
+            const answerImage = document.getElementById('answer-image');
+            const canvas = document.getElementById('drawing-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Buttons
+            const showAnswerBtn = document.getElementById('show-answer-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const savedListBtn = document.getElementById('saved-list-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const toolRadios = document.querySelectorAll('input[name="tool"]');
+            
+            // Modal Elements
+            const savedModal = document.getElementById('saved-modal');
+            const closeModal = document.querySelector('.close-modal');
+            const savedList = document.getElementById('saved-list');
+            
+            // State variables
+            let isDrawing = false;
+            let currentTool = 'draw';
+            let currentQuestion = 0;
+            let savedQuestions = JSON.parse(localStorage.getItem('savedGeographyQuestions')) || [];
+            
+            // Questions data
+            const questions = [
+                {
+                    title: "Question 1: Mark the Himalayas",
+                    questionImage: "https://i.ibb.co/jPXfb9nW/image.png",
+                    answerImage: "https://i.ibb.co/qbGfcdz/image.png"
+                },
+                {
+                    title: "Question 2: Mark Kolkata",
+                    questionImage: "https://i.ibb.co/jPXfb9nW/image.png",
+                    answerImage: "https://i.ibb.co/4W6w1vZ/kolkata.png" // Replace with actual Kolkata marker image
+                },
+                {
+                    title: "Question 3: Mark Mumbai",
+                    questionImage: "https://i.ibb.co/jPXfb9nW/image.png",
+                    answerImage: "https://i.ibb.co/0nQY7XJ/mumbai.png" // Replace with actual Mumbai marker image
+                },
+                {
+                    title: "Question 4: Mark Delhi",
+                    questionImage: "https://i.ibb.co/jPXfb9nW/image.png",
+                    answerImage: "https://i.ibb.co/6vJ0p7Z/delhi.png" // Replace with actual Delhi marker image
+                }
+            ];
+            
+            // Initialize canvas
+            function resizeCanvas() {
+                const img = questionImage;
+                canvas.width = img.offsetWidth;
+                canvas.height = img.offsetHeight;
+            }
+            
+            // Load question
+            function loadQuestion(index) {
+                if (index < 0 || index >= questions.length) return;
+                
+                currentQuestion = index;
+                const q = questions[index];
+                questionTitle.textContent = q.title;
+                questionImage.src = q.questionImage;
+                answerImage.src = q.answerImage;
+                answerImage.classList.remove('show');
+                showAnswerBtn.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Update button states
+                prevBtn.disabled = (index === 0);
+                nextBtn.disabled = (index === questions.length - 1);
+            }
+            
+            // Drawing functions
+            function startDrawing(e) {
+                isDrawing = true;
+                draw(e);
+            }
+            
+            function stopDrawing() {
+                isDrawing = false;
+                ctx.beginPath();
+            }
+            
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                // Get position
+                let x, y;
+                if (e.type.includes('touch')) {
+                    const rect = canvas.getBoundingClientRect();
+                    x = e.touches[0].clientX - rect.left;
+                    y = e.touches[0].clientY - rect.top;
+                } else {
+                    x = e.offsetX;
+                    y = e.offsetY;
+                }
+                
+                if (currentTool === 'draw') {
+                    ctx.strokeStyle = 'red';
+                    ctx.globalCompositeOperation = 'source-over';
+                } else {
+                    ctx.strokeStyle = 'white';
+                    ctx.globalCompositeOperation = 'destination-out';
+                }
+                
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+            
+            // Save current question with drawing
+            function saveCurrentQuestion() {
+                const drawingData = canvas.toDataURL();
+                const savedItem = {
+                    questionIndex: currentQuestion,
+                    questionTitle: questions[currentQuestion].title,
+                    drawingData: drawingData,
+                    timestamp: new Date().toISOString()
+                };
+                
+                savedQuestions.push(savedItem);
+                localStorage.setItem('savedGeographyQuestions', JSON.stringify(savedQuestions));
+                alert('Question saved successfully!');
+            }
+            
+            // Load saved list
+            function loadSavedList() {
+                savedList.innerHTML = '';
+                
+                if (savedQuestions.length === 0) {
+                    savedList.innerHTML = '<p>No saved questions yet.</p>';
+                    return;
+                }
+                
+                savedQuestions.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'saved-item';
+                    div.innerHTML = `
+                        <span>${item.questionTitle}</span>
+                        <div>
+                            <button class="load-btn" data-index="${index}"><i class="fas fa-eye"></i> View</button>
+                            <button class="delete-btn" data-index="${index}"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    `;
+                    savedList.appendChild(div);
+                });
+                
+                // Add event listeners to new buttons
+                document.querySelectorAll('.load-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        loadSavedQuestion(index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        deleteSavedQuestion(index);
+                    });
+                });
+            }
+            
+            // Load a saved question
+            function loadSavedQuestion(savedIndex) {
+                const savedItem = savedQuestions[savedIndex];
+                currentQuestion = savedItem.questionIndex;
+                loadQuestion(currentQuestion);
+                
+                // Load the drawing after the image has loaded
+                questionImage.onload = function() {
+                    resizeCanvas();
+                    const img = new Image();
+                    img.onload = function() {
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    };
+                    img.src = savedItem.drawingData;
+                    savedModal.style.display = 'none';
+                };
+            }
+            
+            // Delete a saved question
+            function deleteSavedQuestion(index) {
+                if (confirm('Are you sure you want to delete this saved question?')) {
+                    savedQuestions.splice(index, 1);
+                    localStorage.setItem('savedGeographyQuestions', JSON.stringify(savedQuestions));
+                    loadSavedList();
+                }
+            }
+            
+            // Event Listeners
+            // Drawing events
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            // Touch events
+            canvas.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                startDrawing(e);
+            });
+            
+            canvas.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                draw(e);
+            });
+            
+            canvas.addEventListener('touchend', stopDrawing);
+            
+            // Tool selection
+            toolRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    currentTool = this.value;
+                });
+            });
+            
+            // Button events
+            showAnswerBtn.addEventListener('click', function() {
+                answerImage.classList.toggle('show');
+                this.innerHTML = answerImage.classList.contains('show') 
+                    ? '<i class="fas fa-eye-slash"></i> Hide Answer' 
+                    : '<i class="fas fa-eye"></i> Show Answer';
+            });
+            
+            clearBtn.addEventListener('click', function() {
+                if (confirm('Clear all drawings?')) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            });
+            
+            saveBtn.addEventListener('click', saveCurrentQuestion);
+            
+            savedListBtn.addEventListener('click', function() {
+                loadSavedList();
+                savedModal.style.display = 'flex';
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentQuestion > 0) {
+                    loadQuestion(currentQuestion - 1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentQuestion < questions.length - 1) {
+                    loadQuestion(currentQuestion + 1);
+                }
+            });
+            
+            closeModal.addEventListener('click', function() {
+                savedModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === savedModal) {
+                    savedModal.style.display = 'none';
+                }
+            });
+            
+            // Handle image load to set canvas size
+            questionImage.addEventListener('load', function() {
+                resizeCanvas();
+                // Redraw if coming back from a saved question
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('saved')) {
+                    const savedIndex = parseInt(urlParams.get('saved'));
+                    if (!isNaN(savedIndex) && savedIndex < savedQuestions.length) {
+                        loadSavedQuestion(savedIndex);
+                    }
+                }
+            });
+            
+            // Initialize
+            loadQuestion(0);
+            window.addEventListener('resize', resizeCanvas);
+        });
+    </script>
+</body>
+</html>

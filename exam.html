@@ -3,448 +3,457 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Examination Platform</title>
+    <title>Geography Exam</title>
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
             background-color: #f5f5f5;
             color: #333;
-            touch-action: none;
-            overflow-x: hidden;
+            line-height: 1.6;
         }
         
-        .top-nav {
+        .container {
+            max-width: 100%;
+            padding: 15px;
+            margin: 0 auto;
+        }
+        
+        header {
             background-color: #2c3e50;
             color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 8px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 60px;
         }
         
-        .timer-container {
+        .header-content {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
         }
         
         .timer {
-            font-size: 1.5rem;
+            font-size: 1rem;
             font-weight: bold;
+            background-color: #e74c3c;
+            padding: 5px 10px;
+            border-radius: 5px;
+            min-width: 90px;
+            text-align: center;
         }
         
-        .exam-time-info {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            margin-top: 3px;
-            text-align: right;
-        }
-        
-        .exam-container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
+        .card {
             background-color: white;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .waiting-room {
-            text-align: center;
-            padding: 50px 20px;
-        }
-        
-        .waiting-room h2 {
-            color: #3498db;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
             margin-bottom: 20px;
         }
         
-        .questions-wrapper {
-            display: none;
-            flex-direction: column;
-            gap: 30px;
-            margin-top: 20px;
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
         }
         
-        .question-container {
+        .btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-start {
+            background-color: #27ae60;
+        }
+        
+        .btn-start:hover {
+            background-color: #219653;
+        }
+        
+        .btn-submit {
+            background-color: #e74c3c;
+        }
+        
+        .btn-submit:hover {
+            background-color: #c0392b;
+        }
+        
+        .video-container {
             position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
             overflow: hidden;
-            touch-action: none;
-            user-select: none;
+            margin: 20px 0;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        
+        .zoomable-image {
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            cursor: zoom-in;
+            transition: transform 0.3s;
+        }
+        
+        .zoomed {
+            transform: scale(1.5);
+            cursor: zoom-out;
+            z-index: 100;
+            position: relative;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        ol {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            resize: vertical;
+            min-height: 150px;
+            margin-top: 10px;
         }
         
-        .question-header {
+        .upload-area {
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
             background-color: #f8f9fa;
-            padding: 10px 15px;
-            border-bottom: 1px solid #ddd;
-            font-weight: bold;
         }
         
-        .question-image-wrapper {
+        .exam-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        #no-test-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            overflow: hidden;
-            touch-action: none;
-        }
-        
-        .question-image {
-            display: block;
-            width: 100%;
-            transform-origin: 0 0;
-            touch-action: none;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-        
-        .submission-period {
+            height: 100%;
+            background-color: white;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             display: none;
-            text-align: center;
-            padding: 50px 20px;
         }
         
-        .submission-period h2 {
-            color: #e74c3c;
-            margin-bottom: 20px;
+        #no-test-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
         
-        .exam-ended {
-            display: none;
-            text-align: center;
-            padding: 50px 20px;
-        }
-        
-        .exam-ended h2 {
-            color: #27ae60;
-            margin-bottom: 20px;
-        }
-        
-        .status-message {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #7f8c8d;
+        @media (min-width: 768px) {
+            .container {
+                max-width: 800px;
+                padding: 20px;
+            }
+            
+            .btn {
+                width: auto;
+            }
+            
+            .header-title {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="top-nav">
-        <div class="logo">Exam Platform</div>
-        <div class="timer-container">
-            <div class="timer" id="examTimer">--:--:--</div>
-            <div class="exam-time-info">
-                <div>Date: 28/06/2025</div>
-                <div>Ends at: <span id="examEndTimeDisplay">6:52 PM</span></div>
-            </div>
-        </div>
+    <!-- No Test Screen (shows 1 hour after exam ends) -->
+    <div id="no-test-screen">
+        <img id="no-test-image" src="https://i.ibb.co/svZV8G4W/no-test.png" alt="No Test Available">
     </div>
-    
-    <div class="exam-container">
-        <!-- Waiting Room -->
-        <div class="waiting-room" id="waitingRoom">
-            <h2>Waiting Room</h2>
-            <p class="status-message">Your exam will begin shortly</p>
-            <div class="timer" id="startTimer">Starting in: 05:00</div>
-            <p>Please wait for the exam to start. Do not refresh the page.</p>
+
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <img src="https://i.ibb.co/3ybB7JRs/image.png" alt="Exam Logo" class="logo">
+                <span>Geography Exam</span>
+            </div>
+            <div class="timer" id="countdown">00:30:00</div>
         </div>
-        
-        <!-- Questions (hidden initially) -->
-        <div class="questions-wrapper" id="questionsWrapper">
-            <div class="question-container">
-                <div class="question-header">Question 1</div>
-                <div class="question-image-wrapper">
-                    <img src="https://i.ibb.co/fVP95vsR/i.png" alt="Question 1" class="question-image">
-                </div>
+    </header>
+
+    <div class="container">
+        <!-- Waiting Page -->
+        <div id="waiting-page" class="card">
+            <h2>Exam Instructions</h2>
+            <p>The exam will begin at <strong id="start-time-display">July 13, 2025 1:00 PM</strong> and end at <strong id="end-time-display">1:30 PM</strong>.</p>
+            
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             
-            <div class="question-container">
-                <div class="question-header">Question 2</div>
-                <div class="question-image-wrapper">
-                    <img src="https://i.ibb.co/mCZ7DH5k/image.png" alt="Question 2" class="question-image">
+            <h3>Please read these instructions carefully:</h3>
+            <ol>
+                <li>The exam duration is 30 minutes.</li>
+                <li>You will need to identify locations on the map of India.</li>
+                <li>Click on images to zoom in/out for better viewing.</li>
+                <li>After time expires, you'll be able to submit your answers.</li>
+                <li>Any attempt to refresh or leave the page will end your exam.</li>
+            </ol>
+            
+            <div id="waiting-timer" class="card" style="text-align: center; margin-top: 20px;">
+                <h3>Exam Starts In:</h3>
+                <div id="pre-exam-timer" style="font-size: 1.5rem; font-weight: bold;">--:--:--</div>
+            </div>
+            
+            <button id="start-btn" class="btn btn-start hidden">Start Exam</button>
+        </div>
+
+        <!-- Exam Page -->
+        <div id="exam-page" class="hidden">
+            <div class="card">
+                <h2>Geography Exam - India Map Identification</h2>
+                <p>Identify the locations marked on the map of India.</p>
+                
+                <div class="image-container">
+                    <img src="https://i.ibb.co/qLFGFP49/Outline-Map-of-India.png" 
+                         alt="Outline Map of India" 
+                         class="zoomable-image">
+                    
+                    <img src="https://i.ibb.co/pr490CBc/ACTION-PLAN.png" 
+                         alt="Action Plan" 
+                         class="zoomable-image">
                 </div>
             </div>
         </div>
-        
-        <!-- Submission Period -->
-        <div class="submission-period" id="submissionPeriod">
-            <h2>Exam Time Ended</h2>
-            <p class="status-message">You now have 15 minutes to submit your paper.</p>
-            <div class="timer" id="submissionTimer">15:00</div>
-        </div>
-        
-        <!-- Exam Ended -->
-        <div class="exam-ended" id="examEnded">
-            <h2>Exam Successfully Completed</h2>
-            <p class="status-message">Thank you for taking the exam.</p>
+
+        <!-- Submission Page -->
+        <div id="submission-page" class="hidden">
+            <div class="card">
+                <h2>Exam Completed</h2>
+                <p>Thank you for completing the exam. Please submit your answers below.</p>
+                
+                <img src="https://i.ibb.co/pr490CBc/ACTION-PLAN.png" 
+                     alt="Action Plan" 
+                     class="exam-image">
+                
+                <div class="upload-area">
+                    <p>Click the button below to submit your answers</p>
+                    <button id="submit-redirect" class="btn btn-submit">Submit Answers</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Exam timing configuration
-        const now = new Date();
+        // ===== CONFIGURATION ===== //
+        // Easy-to-edit exam timing (format: YYYY-MM-DDTHH:MM:SS)
+        const config = {
+            startTime: "2025-07-13T09:00:00", // July 13, 2025 1:00 PM
+            endTime: "2025-07-13T09:30:00",   // July 13, 2025 1:30 PM
+            redirectUrl: "https://www.sumit2.online",
+            noTestImageDelay: 1 // hours after exam ends to show no-test image
+        };
+        // ======================== //
         
-        // Set exam start time (current time + 5 minutes for demo)
-        const examStartTime = new Date(2025, 5, 28, 20, 30, 0);
+        // Calculate times
+        const examStartTime = new Date(config.startTime).getTime();
+        const examEndTime = new Date(config.endTime).getTime();
+        const noTestTime = examEndTime + (config.noTestImageDelay * 60 * 60 * 1000);
+        const examDuration = (examEndTime - examStartTime) / 1000; // in seconds
         
-        // Set exam end time (6:52 PM on 28/6/2025)
-        const examEndTime = new Date(2025, 6, 28, 20, 31, 0);
-        
-        // Format exam end time for display
-        document.getElementById('examEndTimeDisplay').textContent = 
-            examEndTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        // Format display times
+        const startDate = new Date(config.startTime);
+        const endDate = new Date(config.endTime);
+        document.getElementById('start-time-display').textContent = 
+            startDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + 
+            ' ' + startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        document.getElementById('end-time-display').textContent = 
+            endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
         
         // DOM elements
-        const waitingRoom = document.getElementById('waitingRoom');
-        const questionsWrapper = document.getElementById('questionsWrapper');
-        const startTimer = document.getElementById('startTimer');
-        const examTimer = document.getElementById('examTimer');
-        const submissionTimer = document.getElementById('submissionTimer');
-        const submissionPeriod = document.getElementById('submissionPeriod');
-        const examEnded = document.getElementById('examEnded');
+        const waitingPage = document.getElementById('waiting-page');
+        const examPage = document.getElementById('exam-page');
+        const submissionPage = document.getElementById('submission-page');
+        const noTestScreen = document.getElementById('no-test-screen');
+        const startBtn = document.getElementById('start-btn');
+        const countdown = document.getElementById('countdown');
+        const preExamTimer = document.getElementById('pre-exam-timer');
+        const submitRedirect = document.getElementById('submit-redirect');
         
-        // Initialize zoom/pan for all question images
-        const questionImages = document.querySelectorAll('.question-image');
-        
-        questionImages.forEach((img) => {
-            let scale = 1;
-            let posX = 0;
-            let posY = 0;
-            let lastX = 0;
-            let lastY = 0;
-            let isDragging = false;
-            let startDist = 0;
-            
-            // Store transform data
-            img.dataset.scale = '1';
-            img.dataset.posX = '0';
-            img.dataset.posY = '0';
-            
-            // Touch events
-            img.addEventListener('touchstart', handleTouchStart, { passive: false });
-            img.addEventListener('touchmove', handleTouchMove, { passive: false });
-            img.addEventListener('touchend', handleTouchEnd);
-            
-            // Mouse events
-            img.addEventListener('mousedown', handleMouseDown);
-            img.addEventListener('mousemove', handleMouseMove);
-            img.addEventListener('mouseup', handleMouseUp);
-            img.addEventListener('mouseleave', handleMouseUp);
-            img.addEventListener('wheel', handleWheel, { passive: false });
-            
-            function handleTouchStart(e) {
-                if (e.touches.length === 2) {
-                    e.preventDefault();
-                    const touch1 = e.touches[0];
-                    const touch2 = e.touches[1];
-                    startDist = Math.hypot(
-                        touch2.clientX - touch1.clientX,
-                        touch2.clientY - touch1.clientY
-                    );
-                    scale = parseFloat(img.dataset.scale);
-                } else if (e.touches.length === 1 && scale > 1) {
-                    e.preventDefault();
-                    isDragging = true;
-                    lastX = e.touches[0].clientX;
-                    lastY = e.touches[0].clientY;
-                }
-            }
-            
-            function handleTouchMove(e) {
-                if (e.touches.length === 2) {
-                    e.preventDefault();
-                    const touch1 = e.touches[0];
-                    const touch2 = e.touches[1];
-                    const dist = Math.hypot(
-                        touch2.clientX - touch1.clientX,
-                        touch2.clientY - touch1.clientY
-                    );
-                    
-                    const newScale = Math.max(1, Math.min(scale * (dist / startDist), 3));
-                    
-                    if (newScale !== scale) {
-                        scale = newScale;
-                        img.dataset.scale = scale.toString();
-                        updateTransform();
-                    }
-                } else if (e.touches.length === 1 && isDragging) {
-                    e.preventDefault();
-                    const deltaX = e.touches[0].clientX - lastX;
-                    const deltaY = e.touches[0].clientY - lastY;
-                    
-                    lastX = e.touches[0].clientX;
-                    lastY = e.touches[0].clientY;
-                    
-                    posX += deltaX;
-                    posY += deltaY;
-                    
-                    // Limit panning
-                    const maxX = (scale - 1) * img.width / 2;
-                    const maxY = (scale - 1) * img.height / 2;
-                    
-                    posX = Math.max(-maxX, Math.min(posX, maxX));
-                    posY = Math.max(-maxY, Math.min(posY, maxY));
-                    
-                    img.dataset.posX = posX.toString();
-                    img.dataset.posY = posY.toString();
-                    
-                    updateTransform();
-                }
-            }
-            
-            function handleTouchEnd() {
-                isDragging = false;
-            }
-            
-            function handleMouseDown(e) {
-                if (scale > 1) {
-                    e.preventDefault();
-                    isDragging = true;
-                    lastX = e.clientX;
-                    lastY = e.clientY;
-                }
-            }
-            
-            function handleMouseMove(e) {
-                if (isDragging) {
-                    e.preventDefault();
-                    const deltaX = e.clientX - lastX;
-                    const deltaY = e.clientY - lastY;
-                    
-                    lastX = e.clientX;
-                    lastY = e.clientY;
-                    
-                    posX += deltaX;
-                    posY += deltaY;
-                    
-                    // Limit panning
-                    const maxX = (scale - 1) * img.width / 2;
-                    const maxY = (scale - 1) * img.height / 2;
-                    
-                    posX = Math.max(-maxX, Math.min(posX, maxX));
-                    posY = Math.max(-maxY, Math.min(posY, maxY));
-                    
-                    img.dataset.posX = posX.toString();
-                    img.dataset.posY = posY.toString();
-                    
-                    updateTransform();
-                }
-            }
-            
-            function handleMouseUp() {
-                isDragging = false;
-            }
-            
-            function handleWheel(e) {
-                e.preventDefault();
-                
-                // Get mouse position relative to image
-                const rect = img.getBoundingClientRect();
-                const mouseX = e.clientX - rect.left;
-                const mouseY = e.clientY - rect.top;
-                
-                // Calculate image coordinates before zoom
-                const imgX = (mouseX - posX) / scale;
-                const imgY = (mouseY - posY) / scale;
-                
-                // Apply zoom
-                const delta = -e.deltaY;
-                if (delta > 0) {
-                    scale = Math.min(scale * 1.1, 3);
-                } else {
-                    scale = Math.max(scale / 1.1, 1);
-                }
-                
-                // Calculate new position to zoom toward mouse
-                posX = mouseX - imgX * scale;
-                posY = mouseY - imgY * scale;
-                
-                // Limit panning
-                const maxX = (scale - 1) * img.width / 2;
-                const maxY = (scale - 1) * img.height / 2;
-                
-                posX = Math.max(-maxX, Math.min(posX, maxX));
-                posY = Math.max(-maxY, Math.min(posY, maxY));
-                
-                img.dataset.scale = scale.toString();
-                img.dataset.posX = posX.toString();
-                img.dataset.posY = posY.toString();
-                
-                updateTransform();
-            }
-            
-            function updateTransform() {
-                img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-            }
-            
-            // Load saved transform when image loads
-            img.addEventListener('load', function() {
-                scale = parseFloat(img.dataset.scale);
-                posX = parseFloat(img.dataset.posX);
-                posY = parseFloat(img.dataset.posY);
-                updateTransform();
+        // Image zoom functionality
+        document.querySelectorAll('.zoomable-image').forEach(img => {
+            img.addEventListener('click', function() {
+                this.classList.toggle('zoomed');
             });
         });
         
-        // Main timer function
+        // Timer variables
+        let examInterval;
+        let remainingTime;
+        
+        // Update timers
         function updateTimers() {
-            const now = new Date();
+            const now = new Date().getTime();
             
-            // Before exam starts
+            // Check if we should show no-test screen
+            if (now >= noTestTime) {
+                showNoTestScreen();
+                return;
+            }
+            
+            // Pre-exam countdown
             if (now < examStartTime) {
                 const timeLeft = examStartTime - now;
-                const minutes = Math.floor(timeLeft / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                
-                startTimer.textContent = `Starting in: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                examTimer.textContent = "--:--:--";
-            }
-            // During exam
-            else if (now < examEndTime) {
-                waitingRoom.style.display = 'none';
-                questionsWrapper.style.display = 'flex';
-                
-                const timeLeft = examEndTime - now;
                 const hours = Math.floor(timeLeft / (1000 * 60 * 60));
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
                 
-                examTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }
-            // Submission period
-            else if (now < new Date(examEndTime.getTime() + 15 * 60 * 1000)) {
-                questionsWrapper.style.display = 'none';
-                submissionPeriod.style.display = 'block';
+                preExamTimer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 
-                const submissionTimeLeft = new Date(examEndTime.getTime() + 15 * 60 * 1000) - now;
-                const minutes = Math.floor(submissionTimeLeft / (1000 * 60));
-                const seconds = Math.floor((submissionTimeLeft % (1000 * 60)) / 1000);
+                // Show start button 1 minute before exam starts
+                if (timeLeft < 60000) {
+                    startBtn.classList.remove('hidden');
+                }
+            } 
+            // During exam
+            else if (now >= examStartTime && now < examEndTime) {
+                const timeLeft = examEndTime - now;
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
                 
-                submissionTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }
-            // Exam completely ended
+                countdown.textContent = `00:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                
+                // Start exam if not already started
+                if (!waitingPage.classList.contains('hidden')) {
+                    startExam();
+                }
+            } 
+            // After exam but before no-test screen
             else {
                 endExam();
             }
         }
         
-        function endExam() {
-            submissionPeriod.style.display = 'none';
-            examEnded.style.display = 'block';
-            examTimer.textContent = "Exam Ended";
+        // Show no-test screen
+        function showNoTestScreen() {
+            document.body.style.overflow = 'hidden';
+            noTestScreen.style.display = 'flex';
+            
+            // Hide all other sections
+            waitingPage.classList.add('hidden');
+            examPage.classList.add('hidden');
+            submissionPage.classList.add('hidden');
+            document.querySelector('header').style.display = 'none';
+            document.querySelector('.container').style.display = 'none';
         }
         
-        // Update timers every second
+        // Start exam function
+        function startExam() {
+            waitingPage.classList.add('hidden');
+            examPage.classList.remove('hidden');
+            
+            // Clear any existing interval
+            if (examInterval) clearInterval(examInterval);
+            
+            // Start exam countdown
+            remainingTime = Math.floor((examEndTime - Date.now()) / 1000);
+            examInterval = setInterval(() => {
+                const minutes = Math.floor(remainingTime / 60);
+                const seconds = remainingTime % 60;
+                
+                countdown.textContent = `00:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                
+                if (remainingTime <= 0) {
+                    clearInterval(examInterval);
+                    endExam();
+                }
+                
+                remainingTime--;
+            }, 1000);
+        }
+        
+        // End exam function
+        function endExam() {
+            clearInterval(examInterval);
+            examPage.classList.add('hidden');
+            waitingPage.classList.add('hidden');
+            submissionPage.classList.remove('hidden');
+            countdown.textContent = "Time's Up!";
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', startExam);
+        
+        submitRedirect.addEventListener('click', function() {
+            window.location.href = config.redirectUrl;
+        });
+        
+        // Initialize timers
         updateTimers();
         setInterval(updateTimers, 1000);
+        
+        // Prevent context menu on images
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+        });
     </script>
 </body>
 </html>

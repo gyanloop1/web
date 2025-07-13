@@ -2,26 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geography Exam</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>MATHS Exam</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            touch-action: manipulation;
         }
         
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
             background-color: #f5f5f5;
             color: #333;
             line-height: 1.6;
+        }
+        
+        #zoom-container {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            transform-origin: 0 0;
+            transition: transform 0.1s ease-out;
         }
         
         .container {
             max-width: 100%;
             padding: 15px;
             margin: 0 auto;
+            min-height: 100vh;
         }
         
         header {
@@ -71,6 +85,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 20px;
             margin-bottom: 20px;
+            transform-origin: center center;
         }
         
         h1, h2 {
@@ -227,27 +242,31 @@
         <img id="no-test-image" src="https://i.ibb.co/svZV8G4W/no-test.png" alt="No Test Available">
     </div>
 
-    <header>
-        <div class="header-content">
-            <div class="header-title">
-                <img src="https://i.ibb.co/3ybB7JRs/image.png" alt="Exam Logo" class="logo">
-                <span>Geography Exam</span>
+    <div id="zoom-container">
+        <header>
+            <div class="header-content">
+                <div class="header-title">
+                    <img src="https://i.ibb.co/3ybB7JRs/image.png" alt="Exam Logo" class="logo">
+                    <span>MATHS Exam</span>
+                </div>
+                <div class="timer" id="countdown">00:30:00</div>
             </div>
-            <div class="timer" id="countdown">00:30:00</div>
-        </div>
-    </header>
+        </header>
 
-    <div class="container">
-        <!-- Waiting Page -->
-        <div id="waiting-page" class="card">
-            <h2>Exam Instructions</h2>
-            <p>The exam will begin at <strong id="start-time-display">July 13, 2025 1:00 PM</strong> and end at <strong id="end-time-display">1:30 PM</strong>.</p>
-            
-            <div class="video-container">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            
-            <a href="https://gyanloop1.github.io/web/tastcode" style="
+        <div class="container">
+            <!-- Waiting Page -->
+            <div id="waiting-page" class="card">
+                <h2>Exam Instructions</h2>
+                <p>The exam will begin at <strong id="start-time-display">July 14, 2025 8:00 AM</strong> and end at <strong id="end-time-display">8:40 AM</strong>.</p>
+                
+                <div class="video-container">
+                    <iframe width="560" height="315" src="https://www.youtube.com/watch?v=yRJ6A_y7-Ek" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                
+                <h3>Please read these instructions carefully:</h3>
+                <ol>
+                
+                <a href="https://drive.google.com/drive/folders/1KReU8vfCdflu60JqlOPKhwoRKcyUvBHa?usp=sharing" style="
   display: inline-block;
   padding: 10px 20px;
   background-color: #4CAF50;
@@ -256,57 +275,59 @@
   border-radius: 8px;
   font-size: 16px;
   text-align: center;">
-  Go to Website
+  কিভাবে এক্সাম দেবো?
 </a>
-
-            <h3>Please read these instructions carefully:</h3>
-            <ol>
-                <li>রেজাল্ট দেখার জন্য রেজাল্ট পোর্টাল ওপেন কর</li>
-                <li>You will need to identify locations on the map of India.</li>
-                <li>Click on images to zoom in/out for better viewing.</li>
-                <li>After time expires, you'll be able to submit your answers.</li>
-                <li>Any attempt to refresh or leave the page will end your exam.</li>
-            </ol>
-            
-            <div id="waiting-timer" class="card" style="text-align: center; margin-top: 20px;">
-                <h3>Exam Starts In:</h3>
-                <div id="pre-exam-timer" style="font-size: 1.5rem; font-weight: bold;">--:--:--</div>
-            </div>
-            
-            <button id="start-btn" class="btn btn-start hidden">Start Exam</button>
-        </div>
-
-        <!-- Exam Page -->
-        <div id="exam-page" class="hidden">
-            <div class="card">
-                <h2>Geography Exam - India Map Identification</h2>
-                <p>Identify the locations marked on the map of India.</p>
+                    <li>পরীক্ষার সময়সীমা 4০ মিনিট।</li>
+  <li>সময়মতো পরীক্ষা সম্পন্ন ও জমা দিতে হবে।</li>
+  <li>TOTAL MARKS -20 </li>
+  <li>ভালভাবে দেখার জন্য ছবিতে ক্লিক করে জুম ইন/আউট করতে পারেন।</li>
+  <li>সময় শেষ হওয়ার পরে আপনি উত্তর জমা দিতে পারবেন।</li>
+  <li>পরীক্ষার সময় রিফ্রেশ বা পৃষ্ঠা ত্যাগ করলে পরীক্ষা বাতিল হবে।</li>
+  <li>কোনো ধরনের চিটিং বা অসদুপায়ে পরীক্ষায় অংশগ্রহণ করলে তা অযোগ্যতা হিসাবে গণ্য হবে।</li>
+</ul>
                 
-                <div class="image-container">
-                    <img src="https://i.ibb.co/fzgBQwMk/12.png" 
-                         alt="Outline Map of India" 
-                         class="zoomable-image">
+                <div id="waiting-timer" class="card" style="text-align: center; margin-top: 20px;">
+                    <h3>Exam Starts In:</h3>
+                    <div id="pre-exam-timer" style="font-size: 1.5rem; font-weight: bold;">--:--:--</div>
+                </div>
+                
+                <button id="start-btn" class="btn btn-start hidden">Start Exam</button>
+            </div>
+
+            <!-- Exam Page -->
+            <div id="exam-page" class="hidden">
+                <div class="card">
+                    <h2>MATH EXAM </h2>
+                    <p>BY SUMIT HALDAR</p>
                     
-                    <img src="https://i.ibb.co/pr490CBc/ACTION-PLAN.png" 
-                         alt="Action Plan" 
-                         class="zoomable-image">
+                    <div class="image-container">
+                        <img src="https://i.ibb.co/8gMpLgDJ/Q1.png" 
+                             alt="Outline Map of India" 
+                             class="zoomable-image">
+                             
+                             <img src="https://i.ibb.co/5WxFXYdn/Q2.png" 
+                             alt="Outline Map of India" 
+                             class="zoomable-image">
+                        
+                        
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Submission Page -->
-        <div id="submission-page" class="hidden">
-            <div class="card">
-                <h2>Exam Completed</h2>
-                <p>Thank you for completing the exam. Please submit your answers below.</p>
-                
-                <img src="https://i.ibb.co/pr490CBc/ACTION-PLAN.png" 
-                     alt="Action Plan" 
-                     class="exam-image">
-                
-                <div class="upload-area">
-                    <p>Click the button below to submit your answers</p>
-                    <button id="submit-redirect" class="btn btn-submit">Submit Answers</button>
+            <!-- Submission Page -->
+            <div id="submission-page" class="hidden">
+                <div class="card">
+                    <h2>Exam Completed</h2>
+                    <p>Thank you for completing the exam. Please submit your answers below.</p>
+                    
+                    <img src="https://i.ibb.co/7JrgVKxp/image.png" 
+                         alt="Action Plan" 
+                         class="exam-image">
+                    
+                    <div class="upload-area">
+                        <p>Click the button below to submit your answers</p>
+                        <button id="submit-redirect" class="btn btn-submit">Submit Answers</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -316,9 +337,9 @@
         // ===== CONFIGURATION ===== //
         // Easy-to-edit exam timing (format: YYYY-MM-DDTHH:MM:SS)
         const config = {
-            startTime: "2025-07-13T11:30:00", // July 13, 2025 1:00 PM
-            endTime: "2025-07-13T11:55:00",   // July 13, 2025 1:30 PM
-            redirectUrl: "https://www.sumit2.online",
+            startTime: "2025-07-14T08:00:00", // July 13, 2025 1:00 PM
+            endTime: "2025-07-14T08:40:00",   // July 13, 2025 1:30 PM
+            redirectUrl: "https://classroom.google.com/c/NzgyMTA0NTg1MTEy/a/NzgzMTczNjYxMzM3/details",
             noTestImageDelay: 1 // hours after exam ends to show no-test image
         };
         // ======================== //
@@ -347,6 +368,74 @@
         const countdown = document.getElementById('countdown');
         const preExamTimer = document.getElementById('pre-exam-timer');
         const submitRedirect = document.getElementById('submit-redirect');
+        const zoomContainer = document.getElementById('zoom-container');
+        
+        // Pinch-to-zoom variables
+        let initialDistance = null;
+        let currentScale = 1;
+        let maxScale = 3;
+        let minScale = 1;
+        
+        // Handle touch events for pinch-to-zoom
+        zoomContainer.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                initialDistance = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+            }
+        });
+        
+        zoomContainer.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const currentDistance = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                
+                if (initialDistance) {
+                    const scale = currentDistance / initialDistance;
+                    const newScale = Math.min(maxScale, Math.max(minScale, currentScale * scale));
+                    
+                    if (newScale !== currentScale) {
+                        currentScale = newScale;
+                        zoomContainer.style.transform = `scale(${currentScale})`;
+                        zoomContainer.style.width = `${100 / currentScale}%`;
+                        zoomContainer.style.height = `${100 / currentScale}%`;
+                    }
+                }
+            }
+        });
+        
+        zoomContainer.addEventListener('touchend', function() {
+            initialDistance = null;
+        });
+        
+        // Double-tap zoom
+        let lastTap = 0;
+        zoomContainer.addEventListener('touchend', function(e) {
+            if (e.touches.length > 0) return;
+            
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            if (tapLength < 300 && tapLength > 0) {
+                // Double tap detected
+                if (currentScale === 1) {
+                    currentScale = 2;
+                } else {
+                    currentScale = 1;
+                }
+                
+                zoomContainer.style.transform = `scale(${currentScale})`;
+                zoomContainer.style.width = `${100 / currentScale}%`;
+                zoomContainer.style.height = `${100 / currentScale}%`;
+            }
+            
+            lastTap = currentTime;
+        });
         
         // Image zoom functionality
         document.querySelectorAll('.zoomable-image').forEach(img => {
@@ -413,6 +502,7 @@
             submissionPage.classList.add('hidden');
             document.querySelector('header').style.display = 'none';
             document.querySelector('.container').style.display = 'none';
+            zoomContainer.style.display = 'none';
         }
         
         // Start exam function
@@ -469,3 +559,4 @@
     </script>
 </body>
 </html>
+

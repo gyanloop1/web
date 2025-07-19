@@ -33,7 +33,6 @@
       min-height: 100vh;
     }
 
-    /* Disclaimer Popup */
     #disclaimerPopup {
       position: fixed;
       top: 0; left: 0;
@@ -78,7 +77,6 @@
 
     .top-banner img {
       width: 100%;
-      max-width: 100%;
       height: auto;
       border-radius: 12px;
       margin-bottom: 20px;
@@ -91,18 +89,21 @@
 
     .chapters-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 20px;
     }
 
     .chapter-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
       background-color: var(--card-bg);
       border-radius: 10px;
-      padding: 20px;
+      padding: 15px;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
       cursor: pointer;
       border: 1px solid #DDDDDD;
+      flex-wrap: wrap;
     }
 
     .chapter-card:hover {
@@ -115,34 +116,43 @@
       height: 60px;
       border-radius: 12px;
       overflow: hidden;
-      margin: 0 auto 15px;
-      transition: all 0.3s;
+      flex-shrink: 0;
     }
 
     .chapter-icon img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
     }
 
-    .chapter-card:hover .chapter-icon {
-      transform: rotate(5deg) scale(1.1);
+    .chapter-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .chapter-title {
       font-size: 18px;
       font-weight: 600;
-      margin-bottom: 10px;
-      text-align: center;
+      margin-bottom: 5px;
       color: var(--dark);
       font-family: 'Tiro Bangla', serif;
+      text-align: left;
+    }
+
+    .chapter-description {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: 'Tiro Bangla', serif;
+      text-align: left;
     }
 
     .subtopics-container {
       display: none;
       margin-top: 15px;
       animation: fadeIn 0.3s ease-out;
+      width: 100%;
     }
 
     @keyframes fadeIn {
@@ -192,13 +202,6 @@
       font-family: 'Tiro Bangla', serif;
     }
 
-    .subtopic-name {
-      font-size: 13px;
-      margin-bottom: 4px;
-      color: var(--primary);
-      font-weight: 500;
-    }
-
     .video-date {
       font-size: 12px;
       color: var(--text-muted);
@@ -210,6 +213,7 @@
 
     .active-chapter {
       border: 2px solid var(--primary);
+      flex-direction: column;
     }
 
     .back-btn {
@@ -233,6 +237,15 @@
       .chapters-grid {
         grid-template-columns: 1fr;
       }
+
+      .chapter-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .chapter-icon {
+        margin-bottom: 10px;
+      }
     }
   </style>
 </head>
@@ -251,7 +264,7 @@
     </div>
   </div>
 
-  <!-- Top banner image -->
+  <!-- Top banner -->
   <div class="top-banner" id="topBanner">
     <img src="https://i.ibb.co/y9PfYgY/image.png" alt="Top Banner">
   </div>
@@ -262,73 +275,266 @@
     </button>
 
     <div class="chapters-grid" id="chaptersGrid">
+
+      <!-- Chapter Card -->
       <div class="chapter-card" onclick="showSubtopics(this)">
         <div class="chapter-icon">
-          <img src="https://i.ibb.co/y12DRRM/image.png" alt="Chapter Icon">
+          <img src="https://i.ibb.co/rfF4TLFj/image.png" alt="Chapter Icon">
         </div>
-        <div class="chapter-title">জ্ঞানচক্ষু</div>
+        <div class="chapter-info">
+          <div class="chapter-title">জ্ঞানচক্ষু</div>
+          <div class="chapter-description">গল্প ও নাটক বা কবিতা সংক্রান্ত আলোচনা</div>
+        </div>
         <div class="subtopics-container">
           <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=GUZRox5RICw', '_blank')">
-            <img src="https://img.youtube.com/vi/GUZRox5RICw/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+            <img src="https://img.youtube.com/vi/GUZRox5RICw/mqdefault.jpg" class="video-thumbnail" />
             <div class="video-info">
               <div class="video-title">জ্ঞানচক্ষু গল্পের সম্পূর্ণ আলোচনা</div>
-              
               <div class="video-date">Credit: Smarat Exclusive</div>
             </div>
           </button>
-          <button class="subtopic-btn" onclick="window.open('https://youtu.be/9nZNhHp-3IQ', '_blank')">
-            <img src="https://img.youtube.com/vi/9nZNhHp-3IQ/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
-            <div class="video-info">
-              <div class="video-title">জ্ঞানচক্ষু নাটক</div>
-              
-              <div class="video-date">Credit: Saptarshi</div>
-            </div>
-          </button>
         </div>
+
+         <!--add more videos ----->
+
       </div>
 
+      <!-- Add more chapter-cards below as needed -->
+
+<!-- Chapter Card -->
       <div class="chapter-card" onclick="showSubtopics(this)">
         <div class="chapter-icon">
-          <img src="https://i.ibb.co/nMcTbhpn/image.png" alt="Chapter Icon">
+          <img src="https://i.ibb.co/G34jF4hc/image.png" alt="Chapter Icon">
         </div>
-        <div class="chapter-title">কঅসুখী একজন</div>
+        <div class="chapter-info">
+          <div class="chapter-title">অসুখী একজন</div>
+          <div class="chapter-description">গল্প ও নাটক বা কবিতা সংক্রান্ত আলোচনা</div>
+        </div>
         <div class="subtopics-container">
-          <button class="subtopic-btn" onclick="window.open('https://youtu.be/wh0fAPZVOPc', '_blank')">
-            <img src="https://img.youtube.com/vi/wh0fAPZVOPc/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=lz0G_rkNp_A', '_blank')">
+            <img src="https://img.youtube.com/vi/lz0G_rkNp_A/mqdefault.jpg" class="video-thumbnail" />
             <div class="video-info">
-              <div class="video-title">অসুখী একজন কবিতার বিষয়বস্তু</div>
-              
+              <div class="video-title"> সম্পূর্ণ আলোচনা</div>
               <div class="video-date">Credit: Smarat Exclusive</div>
             </div>
           </button>
-          
         </div>
+
+         <!--add more videos ----->
+
       </div>
-      <div class="chapters-grid" id="chaptersGrid">
+
+
+<!-- Chapter Card -->
       <div class="chapter-card" onclick="showSubtopics(this)">
         <div class="chapter-icon">
-          <img src="https://i.ibb.co/y12DRRM/image.png" alt="Chapter Icon">
+          <img src="https://i.ibb.co/7tJwmFNz/image.png" alt="Chapter Icon">
         </div>
-        <div class="chapter-title">জ্ঞানচক্ষু</div>
+        <div class="chapter-info">
+          <div class="chapter-title">আয় আরো বেঁধে বেঁধে থাকি</div>
+          <div class="chapter-description">গল্প ও নাটক বা কবিতা সংক্রান্ত আলোচনা</div>
+        </div>
         <div class="subtopics-container">
-          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=GUZRox5RICw', '_blank')">
-            <img src="https://img.youtube.com/vi/GUZRox5RICw/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=rHjIV1_Py14', '_blank')">
+            <img src="https://img.youtube.com/vi/rHjIV1_Py14/mqdefault.jpg" class="video-thumbnail" />
             <div class="video-info">
-              <div class="video-title">জ্ঞানচক্ষু গল্পের সম্পূর্ণ আলোচনা</div>
-              
+              <div class="video-title"> সম্পূর্ণ আলোচনা</div>
               <div class="video-date">Credit: Smarat Exclusive</div>
             </div>
           </button>
-          <button class="subtopic-btn" onclick="window.open('https://youtu.be/9nZNhHp-3IQ', '_blank')">
-            <img src="https://img.youtube.com/vi/9nZNhHp-3IQ/mqdefault.jpg" class="video-thumbnail" alt="Video thumbnail" />
+        </div>
+
+         <!--add more videos ----->
+
+      </div>
+
+
+<!-- Chapter Card -->
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/HTDrCxJy/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-info">
+          <div class="chapter-title">আফ্রিকা </div>
+          <div class="chapter-description">গল্প ও নাটক বা কবিতা সংক্রান্ত আলোচনা</div>
+        </div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=z2rGWSOxT9g', '_blank')">
+            <img src="https://img.youtube.com/vi/z2rGWSOxT9g/mqdefault.jpg" class="video-thumbnail" />
             <div class="video-info">
-              <div class="video-title">জ্ঞানচক্ষু নাটক</div>
-              
-              <div class="video-date">Credit: Saptarshi</div>
+              <div class="video-title"> সম্পূর্ণ আলোচনা</div>
+              <div class="video-date">Credit: Smarat Exclusive</div>
             </div>
           </button>
         </div>
+
+         <!--add more videos ----->
+
       </div>
+
+<!-- Chapter Card -->
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/XrCzQd87/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-info">
+          <div class="chapter-title">হারিয়ে যাওয়া কালি কলম </div>
+          <div class="chapter-description">গল্প ও নাটক বা কবিতা সংক্রান্ত আলোচনা</div>
+        </div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=YERu5BwBGIs', '_blank')">
+            <img src="https://img.youtube.com/vi/YERu5BwBGIs/mqdefault.jpg" class="video-thumbnail" />
+            <div class="video-info">
+              <div class="video-title"> সম্পূর্ণ আলোচনা</div>
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+        </div>
+
+         <!--add more videos ----->
+
+      </div>
+
+<!-- Chapter Card -->
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/fV6sdY7L/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-info">
+          <div class="chapter-title">বহুরূপী</div>
+          <div class="chapter-description">গল্প ও নাটক বা কবিতা সংক্রান্ত আলোচনা</div>
+        </div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=sKJKieyThGg', '_blank')">
+            <img src="https://img.youtube.com/vi/sKJKieyThGg/mqdefault.jpg" class="video-thumbnail" />
+            <div class="video-info">
+              <div class="video-title"> সম্পূর্ণ আলোচনা</div>
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+        </div>
+
+         <!--add more videos ----->
+
+      </div>
+
+
+<!-- Chapter Card -->
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/SD2r3HLj/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-info">
+          <div class="chapter-title">সিরাজদৌলা</div>
+          <div class="chapter-description">গল্প ও নাটক বা কবিতা সংক্রান্ত আলোচনা</div>
+        </div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=gTXtthfiq0U', '_blank')">
+            <img src="https://img.youtube.com/vi/gTXtthfiq0U/mqdefault.jpg" class="video-thumbnail" />
+            <div class="video-info">
+              <div class="video-title"> সম্পূর্ণ আলোচনা</div>
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+        </div>
+
+         <!--add more videos ----->
+
+      </div>
+
+
+<!-- Chapter Card -->
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/0p4K7cfq/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-info">
+          <div class="chapter-title">পথের দাবী</div>
+          <div class="chapter-description">গল্প ও নাটক বা কবিতা সংক্রান্ত আলোচনা</div>
+        </div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=qPhnhrUjU5o', '_blank')">
+            <img src="https://img.youtube.com/vi/qPhnhrUjU5o/mqdefault.jpg" class="video-thumbnail" />
+            <div class="video-info">
+              <div class="video-title"> সম্পূর্ণ আলোচনা</div>
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+        </div>
+
+         <!--add more videos ----->
+
+      </div>
+
+<!-- Chapter Card -->
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/ccjCwysT/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-info">
+          <div class="chapter-title">প্রলয়োল্লাস</div>
+          <div class="chapter-description">গল্প ও নাটক বা কবিতা সংক্রান্ত আলোচনা</div>
+        </div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=2JWAPKmtmpk', '_blank')">
+            <img src="https://img.youtube.com/vi/2JWAPKmtmpk/mqdefault.jpg" class="video-thumbnail" />
+            <div class="video-info">
+              <div class="video-title"> সম্পূর্ণ আলোচনা</div>
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+        </div>
+
+         <!--add more videos ----->
+
+      </div>
+
+
+<!-- Chapter Card -->
+      <div class="chapter-card" onclick="showSubtopics(this)">
+        <div class="chapter-icon">
+          <img src="https://i.ibb.co/qYnW5hrq/image.png" alt="Chapter Icon">
+        </div>
+        <div class="chapter-info">
+          <div class="chapter-title">বাংলা ব্যাকরণ</div>
+          <div class="chapter-description">ব্যাকরণ সংক্রান্ত আলোচনা</div>
+        </div>
+        <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=T88uv5_gkL8', '_blank')">
+            <img src="https://img.youtube.com/vi/T88uv5_gkL8/mqdefault.jpg" class="video-thumbnail" />
+            <div class="video-info">
+              <div class="video-title"> সমাস শেখার সহজ টেকনিক part 1</div>
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+        </div>
+
+ <div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=vkwodUkfCXY', '_blank')">
+            <img src="https://img.youtube.com/vi/vkwodUkfCXY/mqdefault.jpg" class="video-thumbnail" />
+            <div class="video-info">
+              <div class="video-title"> সমাস শেখার সহজ টেকনিক part-2</div>
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+        </div>
+
+<div class="subtopics-container">
+          <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=jIaPwJYTjhI', '_blank')">
+            <img src="https://img.youtube.com/vi/jIaPwJYTjhI/mqdefault.jpg" class="video-thumbnail" />
+            <div class="video-info">
+              <div class="video-title"> সমাস শেখার সহজ টেকনিক part-3</div>
+              <div class="video-date">Credit: Smarat Exclusive</div>
+            </div>
+          </button>
+        </div>
+
+         <!--add more videos ----->
+
+      </div>
+
+
+
     </div>
   </div>
 
@@ -348,7 +554,6 @@
         c.classList.remove('active-chapter');
         c.style.display = 'none';
       });
-
       card.classList.add('active-chapter');
       card.style.display = 'block';
       document.querySelector('.back-btn').style.display = 'block';
@@ -359,9 +564,8 @@
       const allCards = document.querySelectorAll('.chapter-card');
       allCards.forEach(c => {
         c.classList.remove('active-chapter');
-        c.style.display = 'block';
+        c.style.display = 'flex';
       });
-
       document.querySelector('.back-btn').style.display = 'none';
       document.getElementById('topBanner').style.display = 'block';
     }

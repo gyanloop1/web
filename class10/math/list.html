@@ -1,426 +1,1535 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genius Nest</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            min-height: 100vh;
-            padding-top: 70px; /* To account for fixed navbar */
-        }
-        
-        /* Top Navigation - Now Fixed */
-        .top-nav {
-            background-color: #1e1e1e;
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        .brand-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        
-        .brand-name span {
-            color: #4dabf7;
-        }
-        
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: #e0e0e0;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-        
-        .theme-toggle:hover {
-            background-color: #333;
-        }
-        
-        /* Banner - Adjusted for fixed nav */
-        .banner {
-            width: 100%;
-            height: 300px;
-            background-image: linear-gradient(135deg, #1e3a8a, #111827);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-            margin-top: -70px; /* Counteract body padding */
-            padding-top: 70px; /* Make content appear below nav */
-        }
-        
-        .banner::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
-            opacity: 0.3;
-        }
-        
-        .banner-content {
-            position: relative;
-            z-index: 1;
-            padding: 2rem;
-            max-width: 800px;
-        }
-        
-        .banner h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .banner p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
-        }
-        
-        /* Main Content */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem 3rem;
-        }
-        
-        /* Buttons Grid */
-        .buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        /* Main Button Style */
-        .main-button {
-            display: flex;
-            align-items: center;
-            padding: 1.2rem 1.5rem;
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-            min-height: 80px;
-            width: 100%;
-        }
-        
-        .main-button:hover {
-            background-color: #2d2d2d;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-        
-        .main-button.active {
-            background-color: #4dabf7;
-            color: white;
-        }
-        
-        .main-button.active i {
-            color: white;
-        }
-        
-        .main-button i {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: #4dabf7;
-            transition: all 0.3s ease;
-            min-width: 30px;
-        }
-        
-        .main-button:hover i {
-            transform: scale(1.1);
-        }
-        
-        .button-text h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-            line-height: 1.4;
-        }
-        
-        /* Sub Buttons Container */
-        .sub-buttons {
-            grid-column: 1 / -1;
-            display: none;
-            background-color: #252525;
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            margin-top: -0.5rem;
-            margin-bottom: 1rem;
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .sub-buttons.active {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-        
-        /* Sub Button Style */
-        .sub-button {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem 1rem;
-            background-color: #333;
-            color: #e0e0e0;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: left;
-            text-decoration: none;
-        }
-        
-        .sub-button:hover {
-            background-color: #4dabf7;
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .sub-button i {
-            font-size: 1rem;
-            margin-right: 0.8rem;
-            color: #4dabf7;
-            transition: all 0.2s ease;
-        }
-        
-        .sub-button:hover i {
-            color: white;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            body {
-                padding-top: 60px;
-            }
-            
-            .top-nav {
-                padding: 0.8rem 1rem;
-            }
-            
-            .banner {
-                margin-top: -60px;
-                padding-top: 60px;
-                height: 250px;
-            }
-            
-            .banner h1 {
-                font-size: 2rem;
-            }
-            
-            .banner p {
-                font-size: 1rem;
-            }
-            
-            .container {
-                padding: 0 1rem 2rem;
-            }
-            
-            .buttons-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #4A90E2;
+      --secondary: #E0F2F7;
+      --dark: #333;
+      --light: #fff;
+      --card-bg: #F8F8F8;
+      --text-muted: #666;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Alkatra', cursive, sans-serif;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    #disclaimerPopup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    #disclaimerPopup .popup-box {
+      background: #fff;
+      padding: 30px;
+      max-width: 600px;
+      border-radius: 10px;
+      text-align: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #disclaimerPopup h2 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    #disclaimerPopup p {
+      font-size: 15px;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    #disclaimerPopup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4A90E2;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .top-banner img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .chapters-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .chapter-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      border: 1px solid #DDDDDD;
+      flex-wrap: wrap;
+    }
+
+    .chapter-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(74, 144, 226, 0.2);
+    }
+
+    .chapter-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .chapter-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .chapter-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .chapter-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--dark);
+      font-family: 'Tiro Bangla', serif;
+      text-align: left;
+    }
+
+    .chapter-description {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: 'Tiro Bangla', serif;
+      text-align: left;
+    }
+
+    .subtopics-container {
+      display: none;
+      margin-top: 15px;
+      animation: fadeIn 0.3s ease-out;
+      width: 100%;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .subtopic-btn {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      width: 100%;
+      background-color: var(--light);
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .subtopic-btn:hover {
+      background-color: #f1f1f1;
+    }
+
+    .subtopic-btn .video-thumbnail {
+      width: 120px;
+      height: auto;
+      border-radius: 8px;
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+
+    .video-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .video-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--dark);
+      font-family: 'Tiro Bangla', serif;
+    }
+
+    .video-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .active-chapter .subtopics-container {
+      display: block;
+    }
+
+    .active-chapter {
+      border: 2px solid var(--primary);
+      flex-direction: column;
+    }
+
+    .back-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+      background-color: #3A80D5;
+    }
+
+    @media (max-width: 768px) {
+      .chapters-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chapter-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .chapter-icon {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Top Navigation - Now Fixed -->
-    <nav class="top-nav">
-        <div class="brand-name">Gyanloop <span>বাংলা
-</span></div>
-        <button class="theme-toggle" id="themeToggle">
-            <i class="fas fa-moon"></i>
-        </button>
-    </nav>
-    
-    <!-- Banner -->
-    <div class="banner">
-        <div class="banner-content">
-            <h1>বাংলা শেখার আদর্শ স্থান</h1>
-            <p>#Be better everyday</p>
-        </div>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="container">
-        <div class="buttons-grid">
-            <!-- Math Topic Buttons -->
-           <button class="main-button" onclick="toggleSubButtons(this, 'quadratic')">
-    <i class="fas fa-square-root-alt"></i>
-    <div class="button-text">
-        <h3>mcq test </h3>
-    </div>
-</button>
 
-<div class="sub-buttons" id="quadratic">
-    <a href="https://gyanloop1.github.io/web/mcq/sublist" class="sub-button">
-       <i class="fa-regular fa-clipboard"></i>
-        <div class="button-text">go</div>
-    </a>
-    
+  <!-- Disclaimer Popup -->
+  <div id="disclaimerPopup">
+    <div class="popup-box">
+      <h2>Disclaimer & Credit Notice</h2>
+      <p>
+        We do not own the rights to the YouTube videos shared on this website. All videos are the original works of their respective creators and are publicly available on YouTube.<br><br>
+        These videos are shared solely for educational purposes to help students. Full credit goes to the original creators.<br><br>
+        If you're a content owner and would like any content removed, please contact us.
+      </p>
+      <button onclick="agreeDisclaimer()">I Agree</button>
+    </div>
+  </div>
+
+  <!-- Top banner -->
+  <div class="top-banner" id="topBanner">
+    <img src="https://i.ibb.co/dwsMjjjz/image.png" alt="Top Banner">
+  </div>
+
+  <div class="chapters-container">
+    <button class="back-btn" onclick="showAllChapters()">
+      <i class="fas fa-arrow-left"></i> Back to All Chapters
+    </button>
+
+    <div class="chapters-grid" id="chaptersGrid">
+
+   <div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">একচলবিশিষ্ট দ্বিঘাত সমীকরণ</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=e-q_olOu04s', '_blank')">
+      <img src="https://img.youtube.com/vi/e-q_olOu04s/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">দ্বিঘাত সমীকরণ ব্যবহারের সঠিক নিয়ম এবং এর প্রমাণ | EduTech Academy | Sukumar Sen #quadraticequation</div>
+        <div class="video-date">Credit: EduTech Academy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=YvMmgrdJqrE', '_blank')">
+      <img src="https://img.youtube.com/vi/YvMmgrdJqrE/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">একচলবিশিষ্ট দ্বিঘাত সমীকরণ | Quadratic Equation | One Shot | Class 10th | WBBSE</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=SM3dUPSUjVo', '_blank')">
+      <img src="https://img.youtube.com/vi/SM3dUPSUjVo/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">দ্বিঘাত সমীকরণ ।। দ্বিঘাত সমীকরণ সমাধান ।। middle term ।। middle term factor ।। middle term shortcut</div>
+        <div class="video-date">Credit: Math With Sutanu</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=T3N3jIWXpMA', '_blank')">
+      <img src="https://img.youtube.com/vi/T3N3jIWXpMA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">class 10 math kose dekhi 1.1 Part-1//dighat samikaran class 10 chapter 1.1//কষে দেখি 1.1 class 10</div>
+        <div class="video-date">Credit: Tutionix</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=BmNp1bDuOYQ', '_blank')">
+      <img src="https://img.youtube.com/vi/BmNp1bDuOYQ/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">একচল বিশিষ্ট দ্বিঘাত সমীকরণ Class 10 ONE SHOT|Statistics Class 10 in Bengali|Madhyamik Math|Somenath</div>
+        <div class="video-date">Credit: Som's Classroom নবজাগরণ কোচিং</div>
+      </div>
+    </button>
+  </div>
 </div>
 
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">সরল সুদকষা</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=UWtqjPz4B9Y', '_blank')">
+      <img src="https://img.youtube.com/vi/UWtqjPz4B9Y/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">🔴সরল সুদকষা CLASS-1 | Sujan Sir Math | Simple Interest Math Tricks in Bengali | WBP, KP, RAIL,PSC</div>
+        <div class="video-date">Credit: Yourstudy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=j3YrF86ireI', '_blank')">
+      <img src="https://img.youtube.com/vi/j3YrF86ireI/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">সরল সুদকষা : সরল সুদের সব অঙ্ক করুন একটি সূত্রের সাহায্যে || simple interest math problems</div>
+        <div class="video-date">Credit: Math Samachar</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=NbLd-2pZWvk', '_blank')">
+      <img src="https://img.youtube.com/vi/NbLd-2pZWvk/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">সরল সুদকষা | Sujan Sir Math | Simple Interest Math Tricks in Bengali | WBP, KP, RAIL | Saral Sudkasa</div>
+        <div class="video-date">Credit: Yourstudy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=D3z-mRZTgOU', '_blank')">
+      <img src="https://img.youtube.com/vi/D3z-mRZTgOU/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">🔴সরল সুদকষা | Class-2 | Sujan Sir Math | Simple Interest Math Tricks in Bengali | WBP, KP, RAIL,PSC</div>
+        <div class="video-date">Credit: Yourstudy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=IARyqA6wixc', '_blank')">
+      <img src="https://img.youtube.com/vi/IARyqA6wixc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">🔴সরল সুদকষা | Class-3 | Sujan Sir Math | Simple Interest Math Tricks in Bengali | WBP, KP, RAIL,PSC</div>
+        <div class="video-date">Credit: Yourstudy</div>
+      </div>
+    </button>
+  </div>
+</div>
 
-            
-            <!-- Continue with all other topics following the same pattern -->
-        </div>
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">বৃত্ত সম্পর্কিত উপপাদ্য</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=wIA4ZIw91KE', '_blank')">
+      <img src="https://img.youtube.com/vi/wIA4ZIw91KE/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্ত বৃত্তান্ত (বৃত্ত সংক্রান্ত উপপাদ্য) / All about circle (Advance)</div>
+        <div class="video-date">Credit: Zubayer's Academy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=vEJEvncNsO4', '_blank')">
+      <img src="https://img.youtube.com/vi/vEJEvncNsO4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Theorems related to circle in bangla | বৃত্ত সম্পর্কিত উপপাদ্য in One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=P2K-Ym0QZxA', '_blank')">
+      <img src="https://img.youtube.com/vi/P2K-Ym0QZxA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্ত সম্পর্কিত উপপাদ্য class 10//upopaddo 32 class 10//wb class 10 math chapter 3</div>
+        <div class="video-date">Credit: Tutionix</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=mwoKtszsQqw', '_blank')">
+      <img src="https://img.youtube.com/vi/mwoKtszsQqw/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্ত সম্পর্কিত উপপাদ্য class 10 |</div>
+        <div class="video-date">Credit: Math Boundary</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=JbyzAghdmEA', '_blank')">
+      <img src="https://img.youtube.com/vi/JbyzAghdmEA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Class10math//বৃত্ত সম্পর্কিত উপপাদ্য//কষে দেখি 3.2//Page 66//THEOREMS RELATED TO CIRCLE//</div>
+        <div class="video-date">Credit: Pradip Tarafdar 2.0</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">আয়তঘন</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=KaOCRmAbZYU', '_blank')">
+      <img src="https://img.youtube.com/vi/KaOCRmAbZYU/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">#madhyamik 2024 #class 10 #আয়তঘন ও ঘনক সূত্র সমূহ @akshaydarmathclass</div>
+        <div class="video-date">Credit: AKSHAY DAR MATH CLASS</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=RLeLr_dq10I', '_blank')">
+      <img src="https://img.youtube.com/vi/RLeLr_dq10I/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">আয়তঘন অঙ্কণ পদ্ধতি</div>
+        <div class="video-date">Credit: ALI TUTORIAL</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=Gn-ZWx34CGI', '_blank')">
+      <img src="https://img.youtube.com/vi/Gn-ZWx34CGI/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">আয়তঘন ও ঘনক -এর সূত্রাবলী।</div>
+        <div class="video-date">Credit: Science Ghar</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=EtbX9rvOy58', '_blank')">
+      <img src="https://img.youtube.com/vi/EtbX9rvOy58/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Rectangular parallelopiped or cuboid in Bangla | আয়তঘন in One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=Bl8E4wCGVLA', '_blank')">
+      <img src="https://img.youtube.com/vi/Bl8E4wCGVLA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ঘনবস্তু সংক্রান্ত সূত্র সমূহ। আয়তঘন, ঘনক, চোঙ, শঙ্কু, গোলক, অর্ধ গোলক। #ganitverse #গনিতভার্স</div>
+        <div class="video-date">Credit: গনিত ভার্স - GANIT VERSE</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">অনুপাত ও সমানুপাত</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=PVEYEcVELdk', '_blank')">
+      <img src="https://img.youtube.com/vi/PVEYEcVELdk/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">৫ সেকেন্ডে অনুপাত ও সমানুপাতের অংক করার ম্যাজিক</div>
+        <div class="video-date">Credit: Mottasin Pahlovi- BUETian</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=ctsnKwtbxoc', '_blank')">
+      <img src="https://img.youtube.com/vi/ctsnKwtbxoc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Ratio & Proportion Tricks | অনুপাত ও সমানুপাত | Maths Trick | Suman Sir Math</div>
+        <div class="video-date">Credit: Future Bright Institute</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=MK9hGMcXX6E', '_blank')">
+      <img src="https://img.youtube.com/vi/MK9hGMcXX6E/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Ratio and Proportion Tricks | অনুপাত ও সমানুপাত | Anupat Samanupat | for Food SI,Police,SSC,Rail</div>
+        <div class="video-date">Credit: Yourstudy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=nIEHUzcP6SA', '_blank')">
+      <img src="https://img.youtube.com/vi/nIEHUzcP6SA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">🔴Army Agniveer Math Ratio and Proportion Part-3 | অনুপাত ও সমানুপাত | Army Math Class বাংলাতে🎉</div>
+        <div class="video-date">Credit: The Fastest Academy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=1Jv6VPJfCpc', '_blank')">
+      <img src="https://img.youtube.com/vi/1Jv6VPJfCpc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">অনুপাত ও সমানুপাত এর অংক আর ভুল হবেনা (এর পর অনুপাত ও সমানুপাত এর অংক সহজ লাগবে) | Ratio-Proportion</div>
+        <div class="video-date">Credit: Math Samachar</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">চক্রবৃদ্ধি সুদ ও সমহার বৃদ্ধি বা হ্রাস</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=GN1sZg2foLk', '_blank')">
+      <img src="https://img.youtube.com/vi/GN1sZg2foLk/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">চক্রবৃদ্ধি সুদ ও সমহার বৃদ্ধি বা হ্রাস | Part-1| Kose Dekhi-6.1| Class 10 Math Chapter 6 | WBBSE |</div>
+        <div class="video-date">Credit: EVERYMATH++</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=pH41_yc1RGc', '_blank')">
+      <img src="https://img.youtube.com/vi/pH41_yc1RGc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">চক্রবৃদ্ধি সুদ ও সমাহার বৃদ্ধি বা হ্রাস ,কষে দেখি 6.2, class 10 chapter 6.2,part 1,</div>
+        <div class="video-date">Credit: EduEmploy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=vSKwCNsiY1A', '_blank')">
+      <img src="https://img.youtube.com/vi/vSKwCNsiY1A/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">চক্রবৃদ্ধি সুদ ও সমহার বৃদ্ধি বা হ্রাস</div>
+        <div class="video-date">Credit: GUIDE FOR MATHEMATICS</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=Vx7jGMX-YtQ', '_blank')">
+      <img src="https://img.youtube.com/vi/Vx7jGMX-YtQ/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">চক্রবৃদ্ধি সুদ ও সমহার বৃদ্ধি বা হ্রাস |পার্ট#1|দশম শ্রেণী গণিত</div>
+        <div class="video-date">Credit: Blackboard</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=JEYV4kbrEfU', '_blank')">
+      <img src="https://img.youtube.com/vi/JEYV4kbrEfU/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Compound interest in bangla | চক্রবৃদ্ধি সুদ ও সমহার বৃদ্ধি বা হ্রাস in One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">বৃত্তস্থ কোণ সম্পর্কিত উপপাদ্য</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=fldsQiyyGq8', '_blank')">
+      <img src="https://img.youtube.com/vi/fldsQiyyGq8/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তস্থ কোণ সম্পর্কিত উপপাদ্য (Theorems Related to Angles in a Circle) | Class 10 Chapter 7 | WBBSE</div>
+        <div class="video-date">Credit: Gonit Classroom</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=uybgcdZhQdM', '_blank')">
+      <img src="https://img.youtube.com/vi/uybgcdZhQdM/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তস্থ কোণ সম্পর্কিত উপপাদ্য in One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=SVR4NSc7tN0', '_blank')">
+      <img src="https://img.youtube.com/vi/SVR4NSc7tN0/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তস্থ কোণ সম্পর্কিত উপপাদ্য || Class 10 Mathematics || WBBSE</div>
+        <div class="video-date">Credit: Parthasgram Class</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=qQCty7Xbkqc', '_blank')">
+      <img src="https://img.youtube.com/vi/qQCty7Xbkqc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">#বৃত্তস্থ কোণ সম্পর্কিত উপপাদ্য/Class-10 Math/মাধ্যমিক/Chapter-7/Theorems Related to Angles in a Cir</div>
+        <div class="video-date">Credit: Study Mathematics with (Kamal)</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=ODiLFQV97rw', '_blank')">
+      <img src="https://img.youtube.com/vi/ODiLFQV97rw/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তস্থ কোণ সম্পর্কিত উপপাদ্য Class 10||Short Tricks||Madhyamik||গণিত||Akd Sir||One Shot</div>
+        <div class="video-date">Credit: Som's Classroom নবজাগরণ কোচিং</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">লম্ব বৃত্তাকার চোঙ</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=6-M8YG3o6-s', '_blank')">
+      <img src="https://img.youtube.com/vi/6-M8YG3o6-s/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Part 2 লম্ব বৃত্তাকার চোঙ | আধুনিক পদ্ধতিতে খুব সহজ নিয়মে শিখে নাও | cylinder math shortcut tricks</div>
+        <div class="video-date">Credit: Friendly Competitive</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=uO0ullZciwI', '_blank')">
+      <img src="https://img.youtube.com/vi/uO0ullZciwI/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Right Circular Cylinder in Bangla | লম্ব বৃত্তাকার চোঙ in One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=WLaTDr72eOA', '_blank')">
+      <img src="https://img.youtube.com/vi/WLaTDr72eOA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">লম্ব বৃত্তাকার চোঙ। Circular cylinder. সম্পূর্ণ ধারণা। Total concept.</div>
+        <div class="video-date">Credit: STUDY LAMP PRATIMA MISS</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=J5NcVk73yu8', '_blank')">
+      <img src="https://img.youtube.com/vi/J5NcVk73yu8/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">লম্ব বৃত্তাকার চোঙ | Right Circular Cylinder | Basic | Class 10 | Saddam Sir | Learn Maths Online</div>
+        <div class="video-date">Credit: Learn Maths Online</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=x6PKribQLF0', '_blank')">
+      <img src="https://img.youtube.com/vi/x6PKribQLF0/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">লম্ব-বৃত্তাকার চোঙের সমস্ত সূত্র । Right-circular Cylinder full concept in Bangla</div>
+        <div class="video-date">Credit: Life Guru Bangla</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">দ্বিঘাত করণী</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=ET3SkYlzOac', '_blank')">
+      <img src="https://img.youtube.com/vi/ET3SkYlzOac/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">দ্বিঘাত করণী ( quadratic surd ) part 1 by SM study</div>
+        <div class="video-date">Credit: SM STUDY</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=cuPbNXQ_DBw', '_blank')">
+      <img src="https://img.youtube.com/vi/cuPbNXQ_DBw/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Quadratic Surd in Bangla | দ্বিঘাত করণী in One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=wxbEJrppKZs', '_blank')">
+      <img src="https://img.youtube.com/vi/wxbEJrppKZs/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">🔴Introduction Part: Quadratic Surds | দ্বিঘাত করণী | WBBSE | Class 10 | ​@Susovanmath</div>
+        <div class="video-date">Credit: Math-e-mania with Susovan</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=-afaAeI9Xqw', '_blank')">
+      <img src="https://img.youtube.com/vi/-afaAeI9Xqw/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">🔴 Part - II : Quadratic Surds | দ্বিঘাত করণী | WBBSE | Class 10 | ​@Susovanmath</div>
+        <div class="video-date">Credit: Math-e-mania with Susovan</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=57aR79zKTMM', '_blank')">
+      <img src="https://img.youtube.com/vi/57aR79zKTMM/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">দ্বিঘাত করণী দশম শ্রেনী | Quadratic Surd Class 10 | যোগ, বিয়োগ, গুণ ও ভাগের সহজ নিয়ম।</div>
+        <div class="video-date">Credit: Ganit Shofor</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">বৃত্তস্থ চতুর্ভুজ সংক্রান্ত উপপাদ্য</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=PrdgwoAaSic', '_blank')">
+      <img src="https://img.youtube.com/vi/PrdgwoAaSic/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Theorems related to cyclic quadrilateral | বৃত্তস্থ চতুর্ভুজ সংক্রান্ত উপপাদ্য in One Shot | WBBSE</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=8ZrFpZ5LEkY', '_blank')">
+      <img src="https://img.youtube.com/vi/8ZrFpZ5LEkY/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তস্থ চতুর্ভুজ সংক্রান্ত উপপাদ্য Class10 ONE SHOT|কষে দেখি:10|Madhyamik Mathematics Class 10|Avi</div>
+        <div class="video-date">Credit: Som's Classroom - Madhyamik</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=pQ7vSfJbEeM', '_blank')">
+      <img src="https://img.youtube.com/vi/pQ7vSfJbEeM/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তস্থ চতুর্ভুজ সংক্রান্ত উপপাদ্য | ক্লাস 10 গণিত</div>
+        <div class="video-date">Credit: বঙ্গ শিক্ষা (bongosikha)</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=4k5o2w_561Q', '_blank')">
+      <img src="https://img.youtube.com/vi/4k5o2w_561Q/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তস্থ চতুর্ভুজ সংক্রান্ত উপপাদ্য</div>
+        <div class="video-date">Credit: গনিত প্রেমিক</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=H6xowi5ei4M', '_blank')">
+      <img src="https://img.youtube.com/vi/H6xowi5ei4M/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তস্থ চতুর্ভুজ সংক্রান্ত উপপাদ্য | Class 10 math kose dekhi 10 | কষে দেখি 10 | wbbse | part 1</div>
+        <div class="video-date">Credit: sm mathematics 1992</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">ত্রিভুজের পরিবৃত্ত ও অন্তর্বৃত্ত অঙ্কন</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=QVRvHNLi1FM', '_blank')">
+      <img src="https://img.youtube.com/vi/QVRvHNLi1FM/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">সম্পাদ্য ৯: কোনো নির্দিষ্ট ত্রিভুজের পরিবৃত্ত আঁকতে হবে।</div>
+        <div class="video-date">Credit: Mathematics Class 360</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=W3G1M4dwv0s', '_blank')">
+      <img src="https://img.youtube.com/vi/W3G1M4dwv0s/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">সম্পাদ্য/ ত্রিভুজের পরিবৃত্ত ও অন্তর্বৃত্ত অঙ্কন</div>
+        <div class="video-date">Credit: PRAYAS SIKSHABINDU</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=5l_E7t611hk', '_blank')">
+      <img src="https://img.youtube.com/vi/5l_E7t611hk/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্ত সংক্রান্ত সম্পাদ্য পরিবৃত্ত অন্তর্বৃত্ত বহির্বৃত্ত অঙ্কন class 9-10 | ssc math chapter 8</div>
+        <div class="video-date">Credit: Math Magic Point</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=MfeOfO-i4hk', '_blank')">
+      <img src="https://img.youtube.com/vi/MfeOfO-i4hk/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিভুজের পরিবৃত্ত ও অন্তর্বৃত্ত অঙ্কন | দশম শ্রেনী |</div>
+        <div class="video-date">Credit: Ganit Shofor</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=EEF_tmOXXtg', '_blank')">
+      <img src="https://img.youtube.com/vi/EEF_tmOXXtg/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">সমবাহু ত্রিভুজের পরিবৃত্ত ও অন্তর্বৃত্ত অঙ্কন | construction of circumcircle and incircle #shorts</div>
+        <div class="video-date">Credit: WB Maths Class 9&10</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">গোলক</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=jGI0wAKhnyA', '_blank')">
+      <img src="https://img.youtube.com/vi/jGI0wAKhnyA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">১৩.৩২. অধ্যায় ১৩ : ঘন জ্যামিতি - গোলক কাকে বলে? (What is called Sphere?) [SSC]</div>
+        <div class="video-date">Credit: 10MS Class 6 - 10</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=ou6a-nrI23A', '_blank')">
+      <img src="https://img.youtube.com/vi/ou6a-nrI23A/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">১৩.৩৩. অধ্যায় ১৩ : ঘন জ্যামিতি - গোলকের তলের ক্ষেত্রফল নির্ণয় (Finding out the area of Sphere) [SSC]</div>
+        <div class="video-date">Credit: 10MS Class 6 - 10</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=AZYIj8xbpTc', '_blank')">
+      <img src="https://img.youtube.com/vi/AZYIj8xbpTc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">১৩.৩৪. অধ্যায় ১৩ : ঘন জ্যামিতি - গোলকের আয়তন নির্ণয় (Finding out the volume of Sphere) [SSC]</div>
+        <div class="video-date">Credit: 10MS Class 6 - 10</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=5PhE6Y3sPSc', '_blank')">
+      <img src="https://img.youtube.com/vi/5PhE6Y3sPSc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">SPHERE// গোলক// গোলকের concept clear, সূত্র ও প্রশ্নের অংক সমাধান//</div>
+        <div class="video-date">Credit: ROKEYS MATH</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=L33u7GfKoos', '_blank')">
+      <img src="https://img.youtube.com/vi/L33u7GfKoos/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Sphere and Cylinder Math Tricks // গোলক ও চোখের অংক // #shorts</div>
+        <div class="video-date">Credit: M For Math Magic</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">ভেদ</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=IrpjwYGnbWE', '_blank')">
+      <img src="https://img.youtube.com/vi/IrpjwYGnbWE/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">VED | ভেদ | OFFICIAL TRAILER | SHAKIB KHAN | JISSHU SHENGUPTA | 12 APRIL 2025 | FAN MADE</div>
+        <div class="video-date">Credit: Cine Damaka</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=Ugf3cIz_fcw', '_blank')">
+      <img src="https://img.youtube.com/vi/Ugf3cIz_fcw/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ভেদ - Variation | Class 10 Maths | WBBSE | Tutopia Learning App</div>
+        <div class="video-date">Credit: Tutopia Learning App</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=OtgD1vnwb9k', '_blank')">
+      <img src="https://img.youtube.com/vi/OtgD1vnwb9k/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">VED ( ভেদ) - Trailer | Shakib Khan | Idhika Paul | Jisshu Sengupta | Movie Cruzzer</div>
+        <div class="video-date">Credit: Movie Cruzzer</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=946IAiZsvNk', '_blank')">
+      <img src="https://img.youtube.com/vi/946IAiZsvNk/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">🔴 নগাঁৱত যুৱতীৰ মৃতদেহ উদ্ধাৰৰ ঘটনাৰ ৰহস্য ভেদ</div>
+        <div class="video-date">Credit: My News NE</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=4ygcv5UAzRw', '_blank')">
+      <img src="https://img.youtube.com/vi/4ygcv5UAzRw/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ভেদ, variation, দশম শ্রেণী কষে দেখি ১৩, মাধ্যমিক পরীক্ষা, class 10 variation chapter 13</div>
+        <div class="video-date">Credit: Math Tutor</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">অংশীদারি কারবার</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=r7XekWQRz6U', '_blank')">
+      <img src="https://img.youtube.com/vi/r7XekWQRz6U/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">অংশীদারি কারবার | Sujan Sir Math | WBP, KP, RAIL, PSC | Partnership Math in Bengali</div>
+        <div class="video-date">Credit: Yourstudy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=53IPl3yFvzQ', '_blank')">
+      <img src="https://img.youtube.com/vi/53IPl3yFvzQ/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Partnership Math in Bengali | অংশীদারি কারবার অঙ্ক | WBP/KP Math | SSC MTS/GD Math Live Class</div>
+        <div class="video-date">Credit: The Way Of Solution</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=5VpI1tMIw9A', '_blank')">
+      <img src="https://img.youtube.com/vi/5VpI1tMIw9A/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">অংশীদারি কারবার অংক | Partnership Math in Bengali | PSC Clerkship, RRB NTPC | WBP/KP Math 2024 Class</div>
+        <div class="video-date">Credit: The Way Of Solution</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=qnuSAREgkB8', '_blank')">
+      <img src="https://img.youtube.com/vi/qnuSAREgkB8/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">অংশীদারী কারবার | RAILWAY, WBP, KP, SSC | Partnership Math in Bengali | Suman Sir Math</div>
+        <div class="video-date">Credit: Future Bright Institute</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=XyYDuXYmESg', '_blank')">
+      <img src="https://img.youtube.com/vi/XyYDuXYmESg/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">🔰 PARTNERSHIP || অংশীদারি কারবার || CLASS - 1 || @maths_with_mrinmoy_sir</div>
+        <div class="video-date">Credit: MATHS with Mrinmoy sir</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">বৃত্তের স্পর্শক সংক্রান্ত উপপাদ্য</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=rHJRURdIqMs', '_blank')">
+      <img src="https://img.youtube.com/vi/rHJRURdIqMs/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তের স্পর্শক সংক্রান্ত উপপাদ্য (Theorems Related to Tangent of a Circle) | Class 10 Chapter 15</div>
+        <div class="video-date">Credit: Gonit Classroom</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=JTE8Xmgy3rM', '_blank')">
+      <img src="https://img.youtube.com/vi/JTE8Xmgy3rM/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তের স্পর্শক সংক্রান্ত উপপাদ্য @guideformathematics5775</div>
+        <div class="video-date">Credit: GUIDE FOR MATHEMATICS</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=QaIM0xi8P1c', '_blank')">
+      <img src="https://img.youtube.com/vi/QaIM0xi8P1c/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তের স্পর্শক সংক্রান্ত উপপাদ্য | উপপাদ্য - 40 | প্রয়োগ সহ</div>
+        <div class="video-date">Credit: Smart class Mathematics and more</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=JowkZzFh5dA', '_blank')">
+      <img src="https://img.youtube.com/vi/JowkZzFh5dA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তের স্পর্শক সংক্রান্ত উপপাদ্য in One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=vTS6cGB171I', '_blank')">
+      <img src="https://img.youtube.com/vi/vTS6cGB171I/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">দশম শ্রেণির গুরুত্বপূর্ণ অঙ্ক | অধ্যায়: বৃত্তের স্পর্শক সংক্রান্ত উপপাদ্য #studywitheduins #eduins</div>
+        <div class="video-date">Credit: eduins</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">লম্ব বৃত্তাকার শঙ্কু</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=wOHUl4YyVCc', '_blank')">
+      <img src="https://img.youtube.com/vi/wOHUl4YyVCc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Right Circular Cone in Bangla | লম্ব বৃত্তাকার শঙ্কু in One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=KFi2WSuwM5g', '_blank')">
+      <img src="https://img.youtube.com/vi/KFi2WSuwM5g/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">লম্ব বৃত্তাকার শঙ্কু (Part 2) Right Circular Cone Shortcut Tricks Solution🔥Most Important any Exam💥</div>
+        <div class="video-date">Credit: Friendly Competitive</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=xlhoVPQZdT4', '_blank')">
+      <img src="https://img.youtube.com/vi/xlhoVPQZdT4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">শঙ্কু (Cone)|| লম্ব বৃত্তাকার শঙ্কু (Right circular cone) || #wbmatheasy</div>
+        <div class="video-date">Credit: WB Math Easy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=chjAWgs3bmo', '_blank')">
+      <img src="https://img.youtube.com/vi/chjAWgs3bmo/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">লম্ব বৃত্তাকার শঙ্কু | Class- 10 | Right Circular cone |কষে দেখি-16-Question-13(B) and 13(C) #wbbse</div>
+        <div class="video-date">Credit: Lecture by Santu Mandal</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=Fn4g6EasYBE', '_blank')">
+      <img src="https://img.youtube.com/vi/Fn4g6EasYBE/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">লম্ব বৃত্তাকার শঙ্কু/পরিমিতি/Pranay's Math Hub #subirdas #mensuration #পরিমিতি #rightcircularcone</div>
+        <div class="video-date">Credit: Pranay's Math Hub</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">বৃত্তের স্পর্শক অঙ্কন</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=2YUSV2LP9v4', '_blank')">
+      <img src="https://img.youtube.com/vi/2YUSV2LP9v4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তের স্পর্শক অঙ্কন||class-10||প্রশ্ন নং-4||কষে দেখি-17</div>
+        <div class="video-date">Credit: FS education07</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=sCG_hzqfK-s', '_blank')">
+      <img src="https://img.youtube.com/vi/sCG_hzqfK-s/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বহিঃস্থ বিন্দু থেকে বৃত্তে স্পর্শক অঙ্কন | ৯ম - ১০ম শ্রেণি সাধারন গণিত অধ্যায় ৮ - সম্পাদ্য ৮ | [ssc]</div>
+        <div class="video-date">Credit: Golder Study Arena</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=W13VcrGsLDY', '_blank')">
+      <img src="https://img.youtube.com/vi/W13VcrGsLDY/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">সম্পাদ্য ৮: বৃত্তের বহিঃস্থ কোনো বিন্দু থেকে বৃত্তটির স্পর্শক আঁকতে হবে।</div>
+        <div class="video-date">Credit: Mathematics Class 360</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=ptse9k2iN28', '_blank')">
+      <img src="https://img.youtube.com/vi/ptse9k2iN28/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">How to Draw a Tangent to a Circle? বৃত্তের স্পর্শক অংকন #geometry #math #viral</div>
+        <div class="video-date">Credit: Anushilan</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=dNA05HbRCn8', '_blank')">
+      <img src="https://img.youtube.com/vi/dNA05HbRCn8/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বৃত্তের স্পর্শক অঙ্কন | সম্পাদ্য বৃত্তের স্পর্শক অঙ্কন Class 10 | Drawing Tangent To A Circle</div>
+        <div class="video-date">Credit: Dekhi Shuni O Shikhi</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">সদৃশতা</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=c-ZWgWSNTNA', '_blank')">
+      <img src="https://img.youtube.com/vi/c-ZWgWSNTNA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">১৪.০৯. অধ্যায় ১৪ : অনুপাত, সদৃশতা ও প্রতিসমতা - জ্যামিতিক চিত্রের রেখা ও ঘূর্ণন প্রতিসমতা [SSC]</div>
+        <div class="video-date">Credit: 10MS Class 6 - 10</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=v2ERTyhagXc', '_blank')">
+      <img src="https://img.youtube.com/vi/v2ERTyhagXc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">সর্বসমতা ও সদৃশতা</div>
+        <div class="video-date">Credit: Math Lab By Ramkrishna Pal</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=GPyIJgLFQSE', '_blank')">
+      <img src="https://img.youtube.com/vi/GPyIJgLFQSE/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">১৪.০৮. অধ্যায় ১৪ : অনুপাত, সদৃশতা ও প্রতিসমতা - ত্রিভুজের সর্বসমতা ও সদৃশতা : উপপাদ্য (৫, ৬) [SSC]</div>
+        <div class="video-date">Credit: 10MS Class 6 - 10</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=x7QVQd5AZtQ', '_blank')">
+      <img src="https://img.youtube.com/vi/x7QVQd5AZtQ/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">১৪.০১. অধ্যায় ১৪ : অনুপাত, সদৃশতা ও প্রতিসমতা - জ্যামিতিক সমানুপাত [SSC]</div>
+        <div class="video-date">Credit: 10MS Class 6 - 10</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=u-poZMgghcc', '_blank')">
+      <img src="https://img.youtube.com/vi/u-poZMgghcc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিভুজের সদৃশতা | সদৃশতার শর্ত | থ্যালসের উপপাদ্য | Similarity of Triangles</div>
+        <div class="video-date">Credit: A BOOK OF MATHS</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">বিভিন্ন ঘনবস্তু সংক্রান্ত বাস্তব সমস্যা</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=NGTZe5xQ92U', '_blank')">
+      <img src="https://img.youtube.com/vi/NGTZe5xQ92U/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">বিভিন্ন ঘনবস্তু সংক্রান্ত বাস্তব সমস্যা in One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=N1aisdR8owI', '_blank')">
+      <img src="https://img.youtube.com/vi/N1aisdR8owI/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Kose dekhi 19 Class 10 Part-1//বিভিন্ন ঘনবস্তু সংক্রান্ত বাস্তব সমস্যা কষে দেখি 19</div>
+        <div class="video-date">Credit: Tutionix</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=csiZqakK4fU', '_blank')">
+      <img src="https://img.youtube.com/vi/csiZqakK4fU/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">দশম শ্রেণির গুরুত্বপূর্ণ অঙ্ক | বিভিন্ন ঘনবস্তু সংক্রান্ত বাস্তব সমস্যা l Problem Solved 10</div>
+        <div class="video-date">Credit: Eduins</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=97k_moNSY2c', '_blank')">
+      <img src="https://img.youtube.com/vi/97k_moNSY2c/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">wbbse Class 10 math chapter 19 ||বিভিন্ন ঘনবস্তু সংক্রান্ত সমস্যা ||class x math kose dekhi 19 |</div>
+        <div class="video-date">Credit: sm mathematics 1992</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=0XnmLL0qhZw', '_blank')">
+      <img src="https://img.youtube.com/vi/0XnmLL0qhZw/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">দশম শ্রেণির গুরুত্বপূর্ণ অঙ্ক | বিভিন্ন ঘনবস্তু সংক্রান্ত বাস্তব সমস্যা l Problem Solved 9</div>
+        <div class="video-date">Credit: eduins</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">কোণ পরিমাপের ধারণা</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=qlkaylEqBjU', '_blank')">
+      <img src="https://img.youtube.com/vi/qlkaylEqBjU/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Concept of measurement of angle | ত্রিকোণমিতি: কোণ পরিমাপের ধারণা in One Shot | WBBSE/Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=Mdjs8nSEF_g', '_blank')">
+      <img src="https://img.youtube.com/vi/Mdjs8nSEF_g/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Wbbse class 10 math chapter 20 || Trigonometry | class x math kose dekhi 20 | কোণ পরিমাপের ধারণা</div>
+        <div class="video-date">Credit: sm mathematics 1992</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=pkxNANM0kWc', '_blank')">
+      <img src="https://img.youtube.com/vi/pkxNANM0kWc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিকোণমিতি কোণ পরিমাপের ধারণা | কষে দেখি 20 | class 10 WBBSE | Concept of measurement</div>
+        <div class="video-date">Credit: Parthasgram Class</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=DrmMEAZQMZA', '_blank')">
+      <img src="https://img.youtube.com/vi/DrmMEAZQMZA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Trigonometry: Concept of Angle measurements||ত্রিকোণমিতি:কোণ পরিমাপের ধারণা|| দশম শ্রেণী অধ্যায়ঃ20</div>
+        <div class="video-date">Credit: We LOVE Maths</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=_Kyk4tZdm3A', '_blank')">
+      <img src="https://img.youtube.com/vi/_Kyk4tZdm3A/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Concept of Measurement of Angle || কোণ পরিমাপের ধারণা || Chapter 20 Solution || Part 1 || WBBSE</div>
+        <div class="video-date">Credit: Madhyamik</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">মধ্যাসমানুপাতী নির্ণয়</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=fhKeesCzkZg', '_blank')">
+      <img src="https://img.youtube.com/vi/fhKeesCzkZg/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">জ্যামিতিক উপায়ে মধ্যসমানুপাতি অঙ্কন ও মান নির্ণয় | How to Construct and Evaluate Median Proportion</div>
+        <div class="video-date">Credit: Sanjoy Mahata</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=4KK4VCQyCK8', '_blank')">
+      <img src="https://img.youtube.com/vi/4KK4VCQyCK8/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">অনুপাত ও সমানুপাত | Ratio and Proportion | Part-2 #madhyamik2026</div>
+        <div class="video-date">Credit: Learn Easy Official</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=BbYmZA7L6M8', '_blank')">
+      <img src="https://img.youtube.com/vi/BbYmZA7L6M8/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">অনুপাত ও সমানুপাত | Ratio and Proportion | Part-9 // কষে দেখি -5.3 #madhyamik2026</div>
+        <div class="video-date">Credit: Learn Easy Official</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=m8JBLJTGmIA', '_blank')">
+      <img src="https://img.youtube.com/vi/m8JBLJTGmIA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">অনুপাত ও সমানুপাত | Ratio and Proportion | Part-1 #madhyamik2026</div>
+        <div class="video-date">Credit: Learn Easy Official</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">পিথাগোরাসের উপপাদ্য</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=wLHqj1U8Ly4', '_blank')">
+      <img src="https://img.youtube.com/vi/wLHqj1U8Ly4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">০৯.০১. অধ্যায় ৯ : পিথাগোরাসের উপপাদ্য - পীথাগোরাসের উপপাদ্য ১ [JSC]</div>
+        <div class="video-date">Credit: 10MS Class 6 - 10</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=AwurM2_1Rko', '_blank')">
+      <img src="https://img.youtube.com/vi/AwurM2_1Rko/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">পিথাগোরাসের উপপাদ্য || অষ্টম শ্রেণি || ৮ম শ্রেণি || Pythagoras Theorem for Class eight</div>
+        <div class="video-date">Credit: Community Solution School</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=Iz74Ih9eeto', '_blank')">
+      <img src="https://img.youtube.com/vi/Iz74Ih9eeto/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">পিথাগোরাসের উপপাদ্য প্রমাণ (সমকোণী ত্রিভুজের সাহায্যে)</div>
+        <div class="video-date">Credit: Zubayer's Academy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=X7BLSgmu4T4', '_blank')">
+      <img src="https://img.youtube.com/vi/X7BLSgmu4T4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Pythagorean Theorem || Pythagoras Upopaddo || সদৃশকোণী ত্রিভুজের সাহায্যে পিথাগোরাসের উপপাদ্য</div>
+        <div class="video-date">Credit: Technique Easy Education</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=1HhE8uVvEfs', '_blank')">
+      <img src="https://img.youtube.com/vi/1HhE8uVvEfs/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Pythagorean Theorem || Pythagoras Upopaddo || দুইটি সমকোণী ত্রিভুজের সাহায্যে পিথাগোরাসের উপপাদ্য</div>
+        <div class="video-date">Credit: Technique Easy Education</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">ত্রিকোণমিতিক অনুপাত এবং ত্রিকোণমিতিক অভেদাবলি</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=0DebzSJ2Xu4', '_blank')">
+      <img src="https://img.youtube.com/vi/0DebzSJ2Xu4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিকোণমিতিক অনুপাত এবং ত্রিকোণমিতিক অভেদাবলি কষে দেখি 23.2 || Trigonometry Class 10 || Part-2</div>
+        <div class="video-date">Credit: Smart class Mathematics and more</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=l5WYGIOloDo', '_blank')">
+      <img src="https://img.youtube.com/vi/l5WYGIOloDo/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিকোণমিতিক অনুপাত ও ত্রিকোণমিতিক অভেদাবলি In Bangla | One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=MuDCuY79CGk', '_blank')">
+      <img src="https://img.youtube.com/vi/MuDCuY79CGk/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিকোণমিতিক অনুপাত | Class 10 math chapter 23.1 in Bengali | kose dekhi 23.1 | part 1 | WBBSE</div>
+        <div class="video-date">Credit: sm mathematics 1992</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=BSjlSLwWfME', '_blank')">
+      <img src="https://img.youtube.com/vi/BSjlSLwWfME/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিকোণমিতিক অনুপাত এবং ত্রিকোণমিতি অভেদাবলি//কষে দেখি-23.2//Class10 #TRIGONOMETRIC_RATIO Part 1</div>
+        <div class="video-date">Credit: E Activities</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=w7UBu6P67f0', '_blank')">
+      <img src="https://img.youtube.com/vi/w7UBu6P67f0/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিকোণমিতিক অনুপাত এবং ত্রিকোণমিতিক অভেদাবলি/ Trigonometric ratio and Trigonometric Identities</div>
+        <div class="video-date">Credit: Mathematics Online</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">পূরক কোণের ত্রিকোণমিতিক অনুপাত</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=zKdLEOz613E', '_blank')">
+      <img src="https://img.youtube.com/vi/zKdLEOz613E/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">০৯.১২. অধ্যায় ৯ : ত্রিকোণমিতিক অনুপাত - পূরক কোণের ত্রিকোণমিতিক অনুপাত [SSC]</div>
+        <div class="video-date">Credit: 10 Minute School</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=Iy0xR4F36Ws', '_blank')">
+      <img src="https://img.youtube.com/vi/Iy0xR4F36Ws/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">পূরক কোণের ত্রিকোণমিতিক অনুপাত | Trigonometric Ratios of Complementary Angle | Class 10 Chapter 24</div>
+        <div class="video-date">Credit: Gonit Classroom</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=RJga7hEmEd8', '_blank')">
+      <img src="https://img.youtube.com/vi/RJga7hEmEd8/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Trigonometric Ratios Of Complementary Angle | পূরক কোণের ত্রিকোণমিতিক অনুপাত | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=tme1z-K4JwQ', '_blank')">
+      <img src="https://img.youtube.com/vi/tme1z-K4JwQ/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">// পূরক কোণের ত্রিকোণমিতিক অনুপাত // Trigonometric Ratios Of Complementary Angles //</div>
+        <div class="video-date">Credit: Exam House</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=2rN_YRLJPXs', '_blank')">
+      <img src="https://img.youtube.com/vi/2rN_YRLJPXs/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিকোণমিতি পার্ট-4: পূরক কোণের ত্রিকোণমিতিক অনুপাত নির্ণয়। এভাবে শিখলে আর ভুল হবে না!</div>
+        <div class="video-date">Credit: DAILY MATHCLASS</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">উচ্চতা ও দূরত্ব</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=w1CmKbNhHBI', '_blank')">
+      <img src="https://img.youtube.com/vi/w1CmKbNhHBI/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Height and Distance(উচ্চতা এবং দূরত্ব) || Marathon Class || By Monoranjan Sir</div>
+        <div class="video-date">Credit: Toppers Group (শিক্ষা আশ্রম)</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=s29U_pDgmfc', '_blank')">
+      <img src="https://img.youtube.com/vi/s29U_pDgmfc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">উচ্চতা ও দূরত্ব|Height & Distance|মাত্র 5 সেকেন্ডে|উচ্চতা ও দুরত্ব tricks in bangla|SSCPT|TET</div>
+        <div class="video-date">Credit: Trick Torial</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=M0wZsMR_gUc', '_blank')">
+      <img src="https://img.youtube.com/vi/M0wZsMR_gUc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">উচ্চতা ও দূরত্ব (Height & Distance)||Class-10 || Part-1||WBBSE</div>
+        <div class="video-date">Credit: Physics & Mathematics Mobile Classroom</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=VhxONT12i9k', '_blank')">
+      <img src="https://img.youtube.com/vi/VhxONT12i9k/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">ত্রিকোণমিতিক অনুপাতের প্রয়োগ: উচ্চতা ও দূরত্ব In One Shot | WBBSE/ Madhyamik</div>
+        <div class="video-date">Credit: PW Bangla</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=ynnV8W8Q0T4', '_blank')">
+      <img src="https://img.youtube.com/vi/ynnV8W8Q0T4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">উচ্চতা ও দূরত্ব | Class 10 math chapter 25 | kose dekhi 25 | Trigonometry | wbbse | part 1</div>
+        <div class="video-date">Credit: sm mathematics 1992</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/JWqKzsK1/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">রাশিবিজ্ঞান</div>
+    <div class="chapter-description">এই অধ্যায়ের উপর আলোচনা</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=MsknB95sCsM', '_blank')">
+      <img src="https://img.youtube.com/vi/MsknB95sCsM/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Statistics in Bengali | রাশিবিজ্ঞান অঙ্ক | SSC, Rail, WBP/KP & PSC 2025 Exam | Maths Class | TWS</div>
+        <div class="video-date">Credit: TWS Academy</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=uybbK-iDzPs', '_blank')">
+      <img src="https://img.youtube.com/vi/uybbK-iDzPs/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">class 12 chepter 3 education bengali/class 12 chepter 3/রাশিবিজ্ঞান/১টি নিয়মে ১০০টি করতে পারবে/2023</div>
+        <div class="video-date">Credit: Shyamal exclusive</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=pC_vjr_oqIc', '_blank')">
+      <img src="https://img.youtube.com/vi/pC_vjr_oqIc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">রাশি বিজ্ঞান | Statistics | Mean, Median, Mode, Range | Math Short Tricks | গড়, মধ্যমা, বহুলক,পরিসর</div>
+        <div class="video-date">Credit: Future Bright Institute</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=Nvx8BDR5Msc', '_blank')">
+      <img src="https://img.youtube.com/vi/Nvx8BDR5Msc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">রাশিবিজ্ঞান এর ধারনা ( CONCEPT OF STATISTICS )</div>
+        <div class="video-date">Credit: LEARN "EDUCATION"- in a moment</div>
+      </div>
+    </button>
+    <button class="subtopic-btn" onclick="window.open('http://www.youtube.com/watch?v=v_G5RiXLRW4', '_blank')">
+      <img src="https://img.youtube.com/vi/v_G5RiXLRW4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Koshe Dekhi 26.1 Class 10 WBBSE|Mean Statististics Class10|রাশিবিজ্ঞান গড় নির্ণয়|Page 329 Class 10</div>
+        <div class="video-date">Credit: Som's Classroom নবজাগরণ কোচিং</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+      <!-- Add more chapter-cards below as needed -->
+
     </div>
-    
-    <script>
-        // Toggle sub-buttons
-        function toggleSubButtons(button, subId) {
-            // Close all other sub-buttons first
-            document.querySelectorAll('.sub-buttons').forEach(sub => {
-                if (sub.id !== subId) {
-                    sub.classList.remove('active');
-                    const mainBtn = document.querySelector(`.main-button[onclick*="${sub.id}"]`);
-                    if (mainBtn) mainBtn.classList.remove('active');
-                }
-            });
-            
-            // Toggle the clicked one
-            const subButtons = document.getElementById(subId);
-            subButtons.classList.toggle('active');
-            button.classList.toggle('active');
-        }
-        
-        // Close sub-buttons when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.main-button') && !event.target.closest('.sub-buttons')) {
-                document.querySelectorAll('.sub-buttons').forEach(sub => {
-                    sub.classList.remove('active');
-                });
-                document.querySelectorAll('.main-button').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-            }
-        });
-        
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('light-theme');
-            
-            if (document.body.classList.contains('light-theme')) {
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('theme', 'light');
-            } else {
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-        
-        // Check for saved theme preference
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-theme');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-        
-        // Add light theme styles
-        const style = document.createElement('style');
-        style.textContent = `
-            body.light-theme {
-                background-color: #f5f5f5;
-                color: #333;
-            }
-            
-            body.light-theme .top-nav {
-                background-color: #4dabf7;
-                color: white;
-            }
-            
-            body.light-theme .main-button {
-                background-color: white;
-                color: #333;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            
-            body.light-theme .main-button:hover {
-                background-color: #f0f0f0;
-            }
-            
-            body.light-theme .sub-buttons {
-                background-color: #f0f0f0;
-            }
-            
-            body.light-theme .sub-button {
-                background-color: #e0e0e0;
-                color: #333;
-            }
-            
-            body.light-theme .banner {
-                background-image: linear-gradient(135deg, #4dabf7, #1e88e5);
-            }
-            
-            body.light-theme .sub-button i {
-                color: #4dabf7;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Animation for buttons when they come into view
-        document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('.main-button');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            buttons.forEach((button, index) => {
-                button.style.opacity = '0';
-                button.style.transform = 'translateY(20px)';
-                button.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
-                observer.observe(button);
-            });
-        });
-    </script>
+  </div>
+
+  <script>
+    function agreeDisclaimer() {
+      document.getElementById('disclaimerPopup').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    window.onload = function () {
+      document.body.style.overflow = 'hidden';
+    };
+
+    function showSubtopics(card) {
+      const allCards = document.querySelectorAll('.chapter-card');
+      allCards.forEach(c => {
+        c.classList.remove('active-chapter');
+        c.style.display = 'none';
+      });
+      card.classList.add('active-chapter');
+      card.style.display = 'block';
+      document.querySelector('.back-btn').style.display = 'block';
+      document.getElementById('topBanner').style.display = 'none';
+    }
+
+    function showAllChapters() {
+      const allCards = document.querySelectorAll('.chapter-card');
+      allCards.forEach(c => {
+        c.classList.remove('active-chapter');
+        c.style.display = 'flex';
+      });
+      document.querySelector('.back-btn').style.display = 'none';
+      document.getElementById('topBanner').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
+
+      

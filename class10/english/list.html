@@ -1,426 +1,525 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genius Nest</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            min-height: 100vh;
-            padding-top: 70px; /* To account for fixed navbar */
-        }
-        
-        /* Top Navigation - Now Fixed */
-        .top-nav {
-            background-color: #1e1e1e;
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        .brand-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        
-        .brand-name span {
-            color: #4dabf7;
-        }
-        
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: #e0e0e0;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-        
-        .theme-toggle:hover {
-            background-color: #333;
-        }
-        
-        /* Banner - Adjusted for fixed nav */
-        .banner {
-            width: 100%;
-            height: 300px;
-            background-image: linear-gradient(135deg, #1e3a8a, #111827);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-            margin-top: -70px; /* Counteract body padding */
-            padding-top: 70px; /* Make content appear below nav */
-        }
-        
-        .banner::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
-            opacity: 0.3;
-        }
-        
-        .banner-content {
-            position: relative;
-            z-index: 1;
-            padding: 2rem;
-            max-width: 800px;
-        }
-        
-        .banner h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .banner p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
-        }
-        
-        /* Main Content */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem 3rem;
-        }
-        
-        /* Buttons Grid */
-        .buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        /* Main Button Style */
-        .main-button {
-            display: flex;
-            align-items: center;
-            padding: 1.2rem 1.5rem;
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-            min-height: 80px;
-            width: 100%;
-        }
-        
-        .main-button:hover {
-            background-color: #2d2d2d;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-        
-        .main-button.active {
-            background-color: #4dabf7;
-            color: white;
-        }
-        
-        .main-button.active i {
-            color: white;
-        }
-        
-        .main-button i {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: #4dabf7;
-            transition: all 0.3s ease;
-            min-width: 30px;
-        }
-        
-        .main-button:hover i {
-            transform: scale(1.1);
-        }
-        
-        .button-text h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-            line-height: 1.4;
-        }
-        
-        /* Sub Buttons Container */
-        .sub-buttons {
-            grid-column: 1 / -1;
-            display: none;
-            background-color: #252525;
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            margin-top: -0.5rem;
-            margin-bottom: 1rem;
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .sub-buttons.active {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-        
-        /* Sub Button Style */
-        .sub-button {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem 1rem;
-            background-color: #333;
-            color: #e0e0e0;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: left;
-            text-decoration: none;
-        }
-        
-        .sub-button:hover {
-            background-color: #4dabf7;
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .sub-button i {
-            font-size: 1rem;
-            margin-right: 0.8rem;
-            color: #4dabf7;
-            transition: all 0.2s ease;
-        }
-        
-        .sub-button:hover i {
-            color: white;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            body {
-                padding-top: 60px;
-            }
-            
-            .top-nav {
-                padding: 0.8rem 1rem;
-            }
-            
-            .banner {
-                margin-top: -60px;
-                padding-top: 60px;
-                height: 250px;
-            }
-            
-            .banner h1 {
-                font-size: 2rem;
-            }
-            
-            .banner p {
-                font-size: 1rem;
-            }
-            
-            .container {
-                padding: 0 1rem 2rem;
-            }
-            
-            .buttons-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #4A90E2;
+      --secondary: #E0F2F7;
+      --dark: #333;
+      --light: #fff;
+      --card-bg: #F8F8F8;
+      --text-muted: #666;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Alkatra', cursive, sans-serif;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    #disclaimerPopup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    #disclaimerPopup .popup-box {
+      background: #fff;
+      padding: 30px;
+      max-width: 600px;
+      border-radius: 10px;
+      text-align: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #disclaimerPopup h2 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    #disclaimerPopup p {
+      font-size: 15px;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    #disclaimerPopup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4A90E2;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .top-banner img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .chapters-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .chapter-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      border: 1px solid #DDDDDD;
+      flex-wrap: wrap;
+    }
+
+    .chapter-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(74, 144, 226, 0.2);
+    }
+
+    .chapter-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .chapter-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .chapter-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .chapter-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--dark);
+      font-family: 'Tiro Bangla', serif;
+      text-align: left;
+    }
+
+    .chapter-description {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: 'Tiro Bangla', serif;
+      text-align: left;
+    }
+
+    .subtopics-container {
+      display: none;
+      margin-top: 15px;
+      animation: fadeIn 0.3s ease-out;
+      width: 100%;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .subtopic-btn {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      width: 100%;
+      background-color: var(--light);
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .subtopic-btn:hover {
+      background-color: #f1f1f1;
+    }
+
+    .subtopic-btn .video-thumbnail {
+      width: 120px;
+      height: auto;
+      border-radius: 8px;
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+
+    .video-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .video-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--dark);
+      font-family: 'Tiro Bangla', serif;
+    }
+
+    .video-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .active-chapter .subtopics-container {
+      display: block;
+    }
+
+    .active-chapter {
+      border: 2px solid var(--primary);
+      flex-direction: column;
+    }
+
+    .back-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+      background-color: #3A80D5;
+    }
+
+    @media (max-width: 768px) {
+      .chapters-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chapter-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .chapter-icon {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Top Navigation - Now Fixed -->
-    <nav class="top-nav">
-        <div class="brand-name">Gyanloop <span>English 
-</span></div>
-        <button class="theme-toggle" id="themeToggle">
-            <i class="fas fa-moon"></i>
-        </button>
-    </nav>
-    
-    <!-- Banner -->
-    <div class="banner">
-        <div class="banner-content">
-            <h1>English শেখার আদর্শ স্থান</h1>
-            <p>#Be better everyday</p>
-        </div>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="container">
-        <div class="buttons-grid">
-            <!-- Math Topic Buttons -->
-           <button class="main-button" onclick="toggleSubButtons(this, 'quadratic')">
-    <i class="fas fa-square-root-alt"></i>
-    <div class="button-text">
-        <h3>mcq test </h3>
-    </div>
-</button>
 
-<div class="sub-buttons" id="quadratic">
-    <a href="https://gyanloop1.github.io/web/mcq/sublist" class="sub-button">
-       <i class="fa-regular fa-clipboard"></i>
-        <div class="button-text">go</div>
-    </a>
-    
+  <!-- Disclaimer Popup -->
+  <div id="disclaimerPopup">
+    <div class="popup-box">
+      <h2>Disclaimer & Credit Notice</h2>
+      <p>
+        We do not own the rights to the YouTube videos shared on this website. All videos are the original works of their respective creators and are publicly available on YouTube.<br><br>
+        These videos are shared solely for educational purposes to help students. Full credit goes to the original creators.<br><br>
+        If you're a content owner and would like any content removed, please contact us.
+      </p>
+      <button onclick="agreeDisclaimer()">I Agree</button>
+    </div>
+  </div>
+
+  <!-- Top banner -->
+  <div class="top-banner" id="topBanner">
+    <img src="https://i.ibb.co/mCv30VmK/image.png" alt="Top Banner">
+  </div>
+
+  <div class="chapters-container">
+
+  <button class="back-btn" onclick="showAllChapters()">
+    <i class="fas fa-arrow-left"></i> Back to All Chapters
+  </button>
+
+  <div class="chapters-grid" id="chaptersGrid">
+
+    <!-- Grammar -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">Grammar</div>
+    <div class="chapter-description">Key grammar topics and examples</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=q0aXLl3JjU4', '_blank')">
+      <img src="https://img.youtube.com/vi/q0aXLl3JjU4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">English Grammar Full Course</div>
+        <div class="video-date">Credit: Learn English with Emma</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- Writing Skills -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">Writing Skills</div>
+    <div class="chapter-description">Formal letters, reports, and paragraphs</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=G9dRBY3EFo4', '_blank')">
+      <img src="https://img.youtube.com/vi/G9dRBY3EFo4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Writing Skills | Class 10 English</div>
+        <div class="video-date">Credit: Magnet Brains</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- Father's Help — R.K. Narayan -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">Father's Help — R.K. Narayan</div>
+    <div class="chapter-description">Story of Swami and his school day conflict</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=8ZCbnclMH5M', '_blank')">
+      <img src="https://img.youtube.com/vi/8ZCbnclMH5M/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Father's Help by R.K. Narayan | Summary & Explanation</div>
+        <div class="video-date">Credit: Magnet Brains</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- The Passing Away of Bapu — Nayantara Sehgal -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">The Passing Away of Bapu — Nayantara Sehgal</div>
+    <div class="chapter-description">A moving narrative of Gandhiji’s last days</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=y_4O9RZTtXE', '_blank')">
+      <img src="https://img.youtube.com/vi/y_4O9RZTtXE/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">The Passing Away of Bapu | Explanation</div>
+        <div class="video-date">Credit: Magnet Brains</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- The Cat — A.B. Paterson -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">The Cat — A.B. Paterson</div>
+    <div class="chapter-description">A humorous poem about a mischievous cat</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=F6u8z0RJ0Jc', '_blank')">
+      <img src="https://img.youtube.com/vi/F6u8z0RJ0Jc/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">The Cat by A.B. Paterson | Poem Explanation</div>
+        <div class="video-date">Credit: Learn With Fun</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- Our Runaway Kite — L.M. Montgomery -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">Our Runaway Kite — L.M. Montgomery</div>
+    <div class="chapter-description">A touching story about family reunion through a kite</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=v6WhdbFyubE', '_blank')">
+      <img src="https://img.youtube.com/vi/v6WhdbFyubE/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Our Runaway Kite - Summary and Explanation</div>
+        <div class="video-date">Credit: Magnet Brains</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- Fable — Ralph Waldo Emerson -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">Fable — Ralph Waldo Emerson</div>
+    <div class="chapter-description">A philosophical dialogue between a mountain and a squirrel</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=bNQzrcmEpcg', '_blank')">
+      <img src="https://img.youtube.com/vi/bNQzrcmEpcg/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Fable by Ralph Waldo Emerson | Poem Explanation</div>
+        <div class="video-date">Credit: Study Point</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- My Own True Family — Ted Hughes -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">My Own True Family — Ted Hughes</div>
+    <div class="chapter-description">A poem revealing the poet’s spiritual bond with nature</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=JznWUXchdt4', '_blank')">
+      <img src="https://img.youtube.com/vi/JznWUXchdt4/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">My Own True Family | Poem Explanation</div>
+        <div class="video-date">Credit: Magnet Brains</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- Sea Fever — John Masefield -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">Sea Fever — John Masefield</div>
+    <div class="chapter-description">A powerful poem of longing for the sea</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=lQQOXvkg-vA', '_blank')">
+      <img src="https://img.youtube.com/vi/lQQOXvkg-vA/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">Sea Fever | Poem Summary & Analysis</div>
+        <div class="video-date">Credit: English Literature Simplified</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- The Snail — William Cowper -->
+<div class="chapter-card" onclick="showSubtopics(this)">
+  <div class="chapter-icon">
+    <img src="https://i.ibb.co/21gSF8z5/image.png" alt="Chapter Icon">
+  </div>
+  <div class="chapter-info">
+    <div class="chapter-title">The Snail — William Cowper</div>
+    <div class="chapter-description">A quiet reflection on the life of a snail</div>
+  </div>
+  <div class="subtopics-container">
+    <button class="subtopic-btn" onclick="window.open('https://www.youtube.com/watch?v=p5kLbboeKhk', '_blank')">
+      <img src="https://img.youtube.com/vi/p5kLbboeKhk/mqdefault.jpg" class="video-thumbnail" />
+      <div class="video-info">
+        <div class="video-title">The Snail | Summary & Analysis</div>
+        <div class="video-date">Credit: Study Space</div>
+      </div>
+    </button>
+  </div>
 </div>
 
 
-            
-            <!-- Continue with all other topics following the same pattern -->
-        </div>
-    </div>
     
-    <script>
-        // Toggle sub-buttons
-        function toggleSubButtons(button, subId) {
-            // Close all other sub-buttons first
-            document.querySelectorAll('.sub-buttons').forEach(sub => {
-                if (sub.id !== subId) {
-                    sub.classList.remove('active');
-                    const mainBtn = document.querySelector(`.main-button[onclick*="${sub.id}"]`);
-                    if (mainBtn) mainBtn.classList.remove('active');
-                }
-            });
-            
-            // Toggle the clicked one
-            const subButtons = document.getElementById(subId);
-            subButtons.classList.toggle('active');
-            button.classList.toggle('active');
-        }
-        
-        // Close sub-buttons when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.main-button') && !event.target.closest('.sub-buttons')) {
-                document.querySelectorAll('.sub-buttons').forEach(sub => {
-                    sub.classList.remove('active');
-                });
-                document.querySelectorAll('.main-button').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-            }
-        });
-        
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('light-theme');
-            
-            if (document.body.classList.contains('light-theme')) {
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('theme', 'light');
-            } else {
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-        
-        // Check for saved theme preference
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-theme');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-        
-        // Add light theme styles
-        const style = document.createElement('style');
-        style.textContent = `
-            body.light-theme {
-                background-color: #f5f5f5;
-                color: #333;
-            }
-            
-            body.light-theme .top-nav {
-                background-color: #4dabf7;
-                color: white;
-            }
-            
-            body.light-theme .main-button {
-                background-color: white;
-                color: #333;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            
-            body.light-theme .main-button:hover {
-                background-color: #f0f0f0;
-            }
-            
-            body.light-theme .sub-buttons {
-                background-color: #f0f0f0;
-            }
-            
-            body.light-theme .sub-button {
-                background-color: #e0e0e0;
-                color: #333;
-            }
-            
-            body.light-theme .banner {
-                background-image: linear-gradient(135deg, #4dabf7, #1e88e5);
-            }
-            
-            body.light-theme .sub-button i {
-                color: #4dabf7;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Animation for buttons when they come into view
-        document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('.main-button');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            buttons.forEach((button, index) => {
-                button.style.opacity = '0';
-                button.style.transform = 'translateY(20px)';
-                button.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
-                observer.observe(button);
-            });
-        });
-    </script>
+
+      <!-- Add more chapter-cards below as needed -->
+
+    </div>
+  </div>
+
+  <script>
+    function agreeDisclaimer() {
+      document.getElementById('disclaimerPopup').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    window.onload = function () {
+      document.body.style.overflow = 'hidden';
+    };
+
+    function showSubtopics(card) {
+      const allCards = document.querySelectorAll('.chapter-card');
+      allCards.forEach(c => {
+        c.classList.remove('active-chapter');
+        c.style.display = 'none';
+      });
+      card.classList.add('active-chapter');
+      card.style.display = 'block';
+      document.querySelector('.back-btn').style.display = 'block';
+      document.getElementById('topBanner').style.display = 'none';
+    }
+
+    function showAllChapters() {
+      const allCards = document.querySelectorAll('.chapter-card');
+      allCards.forEach(c => {
+        c.classList.remove('active-chapter');
+        c.style.display = 'flex';
+      });
+      document.querySelector('.back-btn').style.display = 'none';
+      document.getElementById('topBanner').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
+
+
+      

@@ -2,437 +2,1150 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Geography Quiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GyanLoop - Learn Smarter with India's Best Online Learning Platform</title>
+    <meta name="description" content="GyanLoop offers industry-relevant courses with expert mentorship to help you build in-demand skills and advance your career.">
+    <link rel="icon" href="https://i.ibb.co/jkpPLS84/ga.png" type="image/png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Baloo+Da+2:wght@400..800&family=Mina:wght@400;700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "GyanLoop",
+      "url": "https://www.gyanloop.com",
+      "logo": "https://i.ibb.co/jkpPLS84/ga.png",
+      "sameAs": [
+        "https://www.instagram.com/gyanloop",
+        "https://www.facebook.com/gyanloop",
+        "https://www.youtube.com/@gyanloop"
+      ]
+    }
+    </script>
+    
     <style>
+        :root {
+            --primary-color: #7b2cbf;
+            --primary-dark: #5a189a;
+            --primary-light: #9d4edd;
+            --secondary-color: #f8f9fa;
+            --text-color: #2b2d42;
+            --light-text: #6c757d;
+            --white: #ffffff;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border-radius: 8px;
+        }
+
         * {
-            box-sizing: border-box;
-            touch-action: manipulation;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f5f5f5;
-            padding: 10px;
             margin: 0;
-            min-height: 100vh;
-            -webkit-tap-highlight-color: transparent;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .header {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 10px;
+
+        body {
+            font-family: 'Baloo Da 2', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        
-        .question-title {
-            margin: 5px 0;
-            font-size: 1.2em;
-            color: #333;
-            font-weight: bold;
-            padding: 0 10px;
-            text-align: center;
-            word-break: break-word;
+
+        .bangla-font {
+            font-family: 'Tiro Bangla', serif;
         }
-        
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
         .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+            font-size: 1rem;
+            font-family: 'Baloo Da 2', sans-serif;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 15px;
             position: relative;
-            margin-bottom: 10px;
-            width: 100%;
-            max-width: 800px;
+            display: inline-block;
         }
-        
-        #question-image {
-            width: 100%;
-            height: auto;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-            display: block;
-        }
-        
-        #answer-image {
+
+        .section-title h2:after {
+            content: '';
             position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: auto;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
+            z-index: 1000;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
-        
-        #answer-image.show {
-            opacity: 0.8;
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
         }
-        
-        #drawing-canvas {
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #B1BD26;
+            font-family: 'Alkatra', cursive;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:after {
+            content: '';
             position: absolute;
-            top: 0;
+            bottom: -5px;
             left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+            z-index: 1001;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.1) 0%, rgba(255, 255, 255, 1) 100%);
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text {
+            flex: 1;
+            padding-right: 50px;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--light-text);
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .hero-image img {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+           
+        }
+
+        .hero-pattern {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(var(--primary-light), transparent 70%);
+            border-radius: 50%;
+            filter: blur(50px);
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .pattern-1 {
+            top: -200px;
+            right: -200px;
+        }
+
+        .pattern-2 {
+            bottom: -150px;
+            left: -150px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Courses Section */
+        .courses {
+            background: var(--secondary-color);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .course-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .course-img img {
             width: 100%;
             height: 100%;
-            cursor: crosshair;
+            object-fit: cover;
+            transition: var(--transition);
         }
-        
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            margin: 10px 0;
-            width: 100%;
-            max-width: 800px;
+
+        .course-card:hover .course-img img {
+            transform: scale(1.1);
         }
-        
-        button {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            flex: 1 1 120px;
-            min-width: 0;
-            white-space: nowrap;
+
+        .course-info {
+            padding: 20px;
         }
-        
-        button:active {
-            transform: scale(0.95);
-        }
-        
-        button i {
-            font-size: 14px;
-        }
-        
-        #show-answer-btn {
-            background-color: #2196F3;
-        }
-        
-        #clear-btn {
-            background-color: #f44336;
-        }
-        
-        #prev-btn {
-            background-color: #607D8B;
-        }
-        
-        #next-btn {
-            background-color: #009688;
-        }
-        
-        .tool-options {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+
+        .course-info h3 {
             margin-bottom: 10px;
-            width: 100%;
-            max-width: 800px;
-            padding: 0 10px;
+            font-size: 1.3rem;
         }
-        
-        .tool-options label {
+
+        .course-info p {
+            color: var(--light-text);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .course-price {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .course-enroll {
+            width: 100%;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            position: relative;
+        }
+
+        .testimonial-slider {
+            overflow: hidden;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-slide {
+            min-width: 100%;
+            padding: 0 15px;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card .quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: var(--light-text);
+            position: relative;
+        }
+
+        .testimonial-card .quote:before,
+        .testimonial-card .quote:after {
+            content: '"';
+            font-size: 2rem;
+            color: var(--primary-light);
+            opacity: 0.5;
+            position: absolute;
+        }
+
+        .testimonial-card .quote:before {
+            top: -15px;
+            left: -10px;
+        }
+
+        .testimonial-card .quote:after {
+            bottom: -30px;
+            right: -10px;
+        }
+
+        .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 5px;
-            padding: 5px 10px;
-            background-color: #e0e0e0;
-            border-radius: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .author-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+            border: 3px solid var(--primary-light);
+        }
+
+        .author-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .author-info p {
+            color: var(--light-text);
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            margin: 0 5px;
             cursor: pointer;
+            transition: var(--transition);
         }
-        
-        .tool-options input[type="radio"] {
-            margin: 0;
+
+        .slider-dot.active {
+            background: var(--primary-color);
+            transform: scale(1.2);
         }
-        
-        @media (max-width: 480px) {
-            button {
-                padding: 8px 10px;
-                font-size: 12px;
+
+        /* FAQ Section */
+        .faq {
+            background: var(--secondary-color);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            margin-bottom: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .faq-question i {
+            transition: var(--transition);
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer-content {
+            padding: 0 20px 20px;
+            color: var(--light-text);
+        }
+
+        /* Footer */
+        footer {
+            background: #2a2a2a;
+            color: var(--white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--white);
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .footer-col p {
+            color: #bbb;
+            margin-bottom: 20px;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            display: block;
+            padding: 5px 0;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .contact-info {
+            margin-top: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #bbb;
+        }
+
+        .contact-item i {
+            margin-right: 10px;
+            color: var(--primary-color);
+            width: 20px;
+            text-align: center;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        [data-aos] {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        [data-aos="fade-up"] {
+            transform: translateY(30px);
+            opacity: 0;
+        }
+
+        [data-aos="fade-down"] {
+            transform: translateY(-30px);
+            opacity: 0;
+        }
+
+        [data-aos="fade-left"] {
+            transform: translateX(-30px);
+            opacity: 0;
+        }
+
+        [data-aos="fade-right"] {
+            transform: translateX(30px);
+            opacity: 0;
+        }
+
+        [data-aos="zoom-in"] {
+            transform: scale(0.9);
+            opacity: 0;
+        }
+
+        [data-aos].aos-animate {
+            transform: translate(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-text {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+
+            .hero-btns {
+                justify-content: center;
             }
             
-            button i {
-                font-size: 12px;
+            .hero-image {
+                margin-top: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                padding-left: 30px;
+                transition: var(--transition);
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
             }
             
-            .question-title {
-                font-size: 1em;
+            .hero {
+                padding-top: 100px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="question-title" id="question-title">Question 1: Mark the Himalayas</div>
-    </div>
-    
-    <div class="tool-options">
-        <label>
-            <input type="radio" name="tool" value="draw" checked>
-            <i class="fas fa-pen"></i> Draw (Red)
-        </label>
-        <label>
-            <input type="radio" name="tool" value="erase">
-            <i class="fas fa-eraser"></i> Eraser
-        </label>
-    </div>
-    
-    <div class="container">
-        <img id="question-image" src="https://i.ibb.co/jPXfb9nW/image.png" alt="Question Image">
-        <img id="answer-image" src="https://i.ibb.co/qbGfcdz/image.png" alt="Answer Image">
-        <canvas id="drawing-canvas"></canvas>
-    </div>
-    
-    <div class="controls">
-        <button id="prev-btn"><i class="fas fa-arrow-left"></i> Previous</button>
-        <button id="show-answer-btn"><i class="fas fa-eye"></i> Show Answer</button>
-        <button id="clear-btn"><i class="fas fa-trash-alt"></i> Clear</button>
-        <button id="next-btn"><i class="fas fa-arrow-right"></i> Next</button>
-    </div>
-    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="logo-container">
+                    <img src="https://i.ibb.co/jkpPLS84/ga.png" alt="GyanLoop Logo" class="logo-img">
+                    <span class="logo-text">GyanLoop</span>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">Mentorship</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#" class="btn">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-pattern pattern-1"></div>
+        <div class="hero-pattern pattern-2"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text" data-aos="fade-right">
+                    <h1>Learn Smarter with <span class="bangla-font">GyanLoop</span></h1>
+                    <p>Join thousands of learners who have transformed their careers with our industry-relevant courses and expert mentorship.</p>
+                    <div class="hero-btns">
+                        <a href="#" class="btn">Join Now</a>
+                        <a href="#" class="btn btn-outline">Explore Courses</a>
+                    </div>
+                </div>
+                <div class="hero-image" data-aos="fade-left">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Students learning">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses">
+        <div class="container">
+            <div class="section-title" data-aos="fade-down">
+                <h2>Our Featured Courses</h2>
+                <p>Discover our most popular courses designed to help you master in-demand skills and advance your career.</p>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="course-img">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Web Development">
+                    </div>
+                    <div class="course-info">
+                        <h3>Full Stack Web Development</h3>
+                        <div class="course-meta">
+                            <span>6 Months</span>
+                            <span class="course-price">₹12,999</span>
+                        </div>
+                        <p>Master HTML, CSS, JavaScript, React, Node.js and build real-world projects.</p>
+                        <a href="#" class="btn course-enroll">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="course-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="course-img">
+                        <img src="https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1376&q=80" alt="Data Science">
+                    </div>
+                    <div class="course-info">
+                        <h3>Data Science & ML</h3>
+                        <div class="course-meta">
+                            <span>8 Months</span>
+                            <span class="course-price">₹15,999</span>
+                        </div>
+                        <p>Learn Python, Pandas, NumPy, Scikit-learn and work on real datasets.</p>
+                        <a href="#" class="btn course-enroll">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="course-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="course-img">
+                        <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="App Development">
+                    </div>
+                    <div class="course-info">
+                        <h3>Android App Development</h3>
+                        <div class="course-meta">
+                            <span>5 Months</span>
+                            <span class="course-price">₹10,999</span>
+                        </div>
+                        <p>Build professional Android apps using Kotlin and Jetpack components.</p>
+                        <a href="#" class="btn course-enroll">Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title" data-aos="fade-down">
+                <h2>Student Success Stories</h2>
+                <p>Hear from our students who have transformed their careers with GyanLoop.</p>
+            </div>
+            <div class="testimonial-slider">
+                <div class="testimonial-track">
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card" data-aos="zoom-in">
+                            <p class="quote">GyanLoop's Full Stack course helped me land my dream job at a top tech company. The mentors were incredibly supportive and the curriculum was perfectly structured.</p>
+                            <div class="testimonial-author">
+                                <div class="author-img">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rahul Sharma">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Rahul Sharma</h4>
+                                    <p>SDE at Amazon</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card" data-aos="zoom-in">
+                            <p class="quote">The Data Science course exceeded my expectations. I went from knowing nothing to building my own ML models in just 6 months. Highly recommend!</p>
+                            <div class="testimonial-author">
+                                <div class="author-img">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya Patel">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Priya Patel</h4>
+                                    <p>Data Scientist at Microsoft</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card" data-aos="zoom-in">
+                            <p class="quote">Thanks to GyanLoop's mentorship program, I gained the confidence and skills to start my own tech startup. The community is amazing!</p>
+                            <div class="testimonial-author">
+                                <div class="author-img">
+                                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Amit Singh">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Amit Singh</h4>
+                                    <p>Founder, TechVista</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-nav">
+                <div class="slider-dot active"></div>
+                <div class="slider-dot"></div>
+                <div class="slider-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-title" data-aos="fade-down">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find answers to common questions about our courses and programs.</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>How do I enroll in a course?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>You can enroll in any course by clicking the "Enroll Now" button on the course page. You'll be guided through the payment process and gain immediate access to the course materials.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>What payment methods do you accept?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>We accept all major credit/debit cards, UPI payments, net banking, and popular digital wallets like Paytm, PhonePe, and Google Pay.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>Do you offer placement assistance?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Yes! Our placement cell works with top companies to help our students find great opportunities. We provide resume reviews, mock interviews, and direct referrals to our hiring partners.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>Can I access the course material after completion?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Absolutely! You get lifetime access to all course materials, including future updates. You can revisit the content anytime to refresh your knowledge.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <div class="logo-container">
+                        <img src="https://i.ibb.co/jkpPLS84/ga.png" alt="GyanLoop Logo" class="logo-img" style="height: 30px;">
+                        <span class="logo-text">GyanLoop</span>
+                    </div>
+                    <p>Empowering learners with industry-relevant skills and mentorship to build successful careers in technology.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">Mentorship</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Courses</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Web Development</a></li>
+                        <li><a href="#">Data Science</a></li>
+                        <li><a href="#">Android Development</a></li>
+                        <li><a href="#">UI/UX Design</a></li>
+                        <li><a href="#">Cloud Computing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>hello@gyanloop.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+91 9876543210</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Bangalore, India</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 GyanLoop. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const questionTitle = document.getElementById('question-title');
-            const questionImage = document.getElementById('question-image');
-            const answerImage = document.getElementById('answer-image');
-            const canvas = document.getElementById('drawing-canvas');
-            const ctx = canvas.getContext('2d', { willReadFrequently: true });
-            
-            // Buttons
-            const showAnswerBtn = document.getElementById('show-answer-btn');
-            const clearBtn = document.getElementById('clear-btn');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const toolRadios = document.querySelectorAll('input[name="tool"]');
-            
-            // State variables
-            let isDrawing = false;
-            let currentTool = 'draw';
-            let currentQuestion = 0;
-            let lastX = 0;
-            let lastY = 0;
-            
-            // Optimized touch handling variables
-            let touchId = null;
-            let isTouchDevice = ('ontouchstart' in window);
-            
-            // Questions data
-            const questions = [
-                {
-                    title: "Question 1: Mark the Himalayas",
-                    questionImage: "https://i.ibb.co/jPXfb9nW/image.png",
-                    answerImage: "https://i.ibb.co/qbGfcdz/image.png"
-                },
-                {
-                    title: "Question 2: Mark Kolkata",
-                    questionImage: "https://i.ibb.co/jPXfb9nW/image.png",
-                    answerImage: "https://i.ibb.co/4W6w1vZ/kolkata.png"
-                },
-                {
-                    title: "Question 3: Mark Mumbai",
-                    questionImage: "https://i.ibb.co/jPXfb9nW/image.png",
-                    answerImage: "https://i.ibb.co/0nQY7XJ/mumbai.png"
-                },
-                {
-                    title: "Question 4: Mark Delhi",
-                    questionImage: "https://i.ibb.co/jPXfb9nW/image.png",
-                    answerImage: "https://i.ibb.co/6vJ0p7Z/delhi.png"
-                }
-            ];
-            
-            // Initialize canvas with optimized settings
-            function resizeCanvas() {
-                const img = questionImage;
-                const width = img.offsetWidth;
-                const height = img.offsetHeight;
-                
-                if (canvas.width !== width || canvas.height !== height) {
-                    canvas.width = width;
-                    canvas.height = height;
-                    
-                    // Set up canvas drawing properties for smooth drawing
-                    ctx.lineJoin = 'round';
-                    ctx.lineCap = 'round';
-                    ctx.lineWidth = 4;
-                    ctx.strokeStyle = 'red';
-                }
-            }
-            
-            // Load question
-            function loadQuestion(index) {
-                if (index < 0 || index >= questions.length) return;
-                
-                currentQuestion = index;
-                const q = questions[index];
-                questionTitle.textContent = q.title;
-                questionImage.src = q.questionImage;
-                answerImage.src = q.answerImage;
-                answerImage.classList.remove('show');
-                showAnswerBtn.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Update button states
-                prevBtn.disabled = (index === 0);
-                nextBtn.disabled = (index === questions.length - 1);
-            }
-            
-            // Optimized drawing functions
-            function startDrawing(e) {
-                isDrawing = true;
-                
-                // Get position
-                const pos = getPosition(e);
-                lastX = pos.x;
-                lastY = pos.y;
-                
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-                
-                // For touch devices, prevent default to avoid scrolling
-                if (e.type === 'touchstart') {
-                    e.preventDefault();
-                    touchId = e.changedTouches[0].identifier;
-                }
-            }
-            
-            function draw(e) {
-                if (!isDrawing) return;
-                
-                // For touch devices, make sure we're using the same touch point
-                if (e.type === 'touchmove' && touchId !== null) {
-                    const touch = Array.from(e.changedTouches).find(t => t.identifier === touchId);
-                    if (!touch) return;
-                    e = touch;
-                }
-                
-                // Get position
-                const pos = getPosition(e);
-                const x = pos.x;
-                const y = pos.y;
-                
-                // Set drawing style based on tool
-                if (currentTool === 'draw') {
-                    ctx.strokeStyle = 'red';
-                    ctx.globalCompositeOperation = 'source-over';
-                } else {
-                    ctx.strokeStyle = 'white';
-                    ctx.globalCompositeOperation = 'destination-out';
-                }
-                
-                // Draw line
-                ctx.lineTo(x, y);
-                ctx.stroke();
-                
-                lastX = x;
-                lastY = y;
-                
-                // For touch devices, prevent default to avoid scrolling
-                if (e.type === 'touchmove') {
-                    e.preventDefault();
-                }
-            }
-            
-            function stopDrawing() {
-                isDrawing = false;
-                touchId = null;
-            }
-            
-            // Helper function to get position from either mouse or touch event
-            function getPosition(e) {
-                const rect = canvas.getBoundingClientRect();
-                let clientX, clientY;
-                
-                if (e.type.includes('touch')) {
-                    clientX = e.clientX || e.touches[0].clientX;
-                    clientY = e.clientY || e.touches[0].clientY;
-                } else {
-                    clientX = e.clientX;
-                    clientY = e.clientY;
-                }
-                
-                return {
-                    x: clientX - rect.left,
-                    y: clientY - rect.top
-                };
-            }
-            
-            // Event Listeners
-            // Mouse events
-            canvas.addEventListener('mousedown', startDrawing);
-            canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('mouseup', stopDrawing);
-            canvas.addEventListener('mouseout', stopDrawing);
-            
-            // Touch events with passive: false for better performance
-            canvas.addEventListener('touchstart', startDrawing, { passive: false });
-            canvas.addEventListener('touchmove', draw, { passive: false });
-            canvas.addEventListener('touchend', stopDrawing, { passive: false });
-            canvas.addEventListener('touchcancel', stopDrawing, { passive: false });
-            
-            // Tool selection
-            toolRadios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    currentTool = this.value;
-                });
-            });
-            
-            // Button events
-            showAnswerBtn.addEventListener('click', function() {
-                answerImage.classList.toggle('show');
-                this.innerHTML = answerImage.classList.contains('show') 
-                    ? '<i class="fas fa-eye-slash"></i> Hide Answer' 
-                    : '<i class="fas fa-eye"></i> Show Answer';
-            });
-            
-            clearBtn.addEventListener('click', function() {
-                if (confirm('Clear all drawings?')) {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }
-            });
-            
-            prevBtn.addEventListener('click', function() {
-                if (currentQuestion > 0) {
-                    loadQuestion(currentQuestion - 1);
-                }
-            });
-            
-            nextBtn.addEventListener('click', function() {
-                if (currentQuestion < questions.length - 1) {
-                    loadQuestion(currentQuestion + 1);
-                }
-            });
-            
-            // Handle image load to set canvas size
-            questionImage.addEventListener('load', function() {
-                resizeCanvas();
-            });
-            
-            // Initialize
-            loadQuestion(0);
-            window.addEventListener('resize', resizeCanvas);
-            
-            // Optimize for mobile devices
-            if (isTouchDevice) {
-                // Disable some browser gestures that might interfere
-                document.addEventListener('gesturestart', function(e) {
-                    e.preventDefault();
-                });
-                
-                // Prevent elastic scrolling
-                document.body.style.overscrollBehavior = 'contain';
-            }
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
         });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Sticky header on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            header.classList.toggle('sticky', window.scrollY > 0);
+        });
+
+        // Testimonial Slider
+        const track = document.querySelector('.testimonial-track');
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+
+        function goToSlide(index) {
+            track.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Auto slide change
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            goToSlide(currentSlide);
+        }, 5000);
+
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+
+        // Scroll Animation
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('[data-aos]');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.classList.add('aos-animate');
+                }
+            });
+        }
+
+        // Initial check
+        animateOnScroll();
+
+        // Check on scroll
+        window.addEventListener('scroll', animateOnScroll);
     </script>
 </body>
 </html>
